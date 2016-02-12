@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1455271262820" name="Release" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1455290292283" name="Release" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.nestor.bundles.rest"/>
@@ -324,6 +324,184 @@
       <directive name="filter" value="(objectClass=javax.ws.rs.core.Application)"/>
       <directive name="resolution" value="optional"/>
       <directive name="cardinality" value="multiple"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.amplifino.nestor.useradmin.spi.obelix"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="9059a4bf18f02f4df89f67329543ae47421bfdcd42879d8afe3d75c99ea907c7"/>
+      <attribute name="url" value="com.amplifino.nestor.useradmin.spi.obelix/com.amplifino.nestor.useradmin.spi.obelix-1.0.0.jar"/>
+      <attribute name="size" type="Long" value="23916"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="com.amplifino.nestor.useradmin.spi.obelix"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="com.amplifino.nestor.useradmin.spi.obelix"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="com.amplifino.nestor.useradmin.spi.RoleRepository"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="com.amplifino.nestor.useradmin.spi.RoleRepository"/>
+      <attribute name="osgi.command.function" value="dumpRoles"/>
+      <attribute name="osgi.command.scope" value="useradmin"/>
+      <directive name="uses" value="com.amplifino.nestor.useradmin.spi"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.nestor.useradmin.spi)(version&gt;=1.0.0)(!(version&gt;=1.1.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.obelix.injections)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.obelix.sets)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.obelix.sortedmaps)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.obelix.space)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.annotation)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.core)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.databind)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.databind.introspect)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.databind.type)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.fasterxml.jackson.module.jaxb)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.common.base)(version&gt;=18.0.0)(!(version&gt;=19.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(version&gt;=1.8.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.1.0)(!(version&gt;=2.0.0)))"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="com.amplifino.nestor.useradmin"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="aff5b6f4fd45e27e0ea63f514e197a11d4aa2bfacd0bfe3d290f022c4c2facc0"/>
+      <attribute name="url" value="com.amplifino.nestor.useradmin/com.amplifino.nestor.useradmin-1.0.0.jar"/>
+      <attribute name="size" type="Long" value="72606"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="com.amplifino.nestor.useradmin"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="com.amplifino.nestor.useradmin"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.osgi.service.useradmin"/>
+      <attribute name="version" type="Version" value="1.1.0"/>
+      <attribute name="bundle-symbolic-name" value="com.amplifino.nestor.useradmin"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+      <directive name="uses" value="org.osgi.framework"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.amplifino.nestor.useradmin.spi"/>
+      <attribute name="version" type="Version" value="1.0.0"/>
+      <attribute name="bundle-symbolic-name" value="com.amplifino.nestor.useradmin"/>
+      <attribute name="bundle-version" type="Version" value="1.0.0"/>
+      <directive name="uses" value="org.osgi.framework"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="org.osgi.service.useradmin.UserAdmin"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="org.osgi.service.useradmin.UserAdminListener"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="org.osgi.service.useradmin.UserAdminListener"/>
+      <directive name="uses" value="org.osgi.service.useradmin"/>
+    </capability>
+    <capability namespace="osgi.service">
+      <attribute name="objectClass" type="List&lt;String&gt;" value="org.osgi.service.useradmin.UserAdmin"/>
+      <directive name="uses" value="org.osgi.service.useradmin"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.amplifino.nestor.useradmin.spi)(version&gt;=1.0.0)(!(version&gt;=1.1.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(version&gt;=1.8.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.component)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.event)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.useradmin)(version&gt;=1.1.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.extender">
+      <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=com.amplifino.nestor.useradmin.spi.RoleRepository)"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=org.osgi.service.event.EventAdmin)"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=org.osgi.service.useradmin.UserAdminListener)"/>
+      <directive name="effective" value="active"/>
+      <directive name="resolution" value="optional"/>
+      <directive name="cardinality" value="multiple"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=org.osgi.service.event.EventAdmin)"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=org.osgi.service.useradmin.UserAdminListener)"/>
+      <directive name="resolution" value="optional"/>
+      <directive name="cardinality" value="multiple"/>
+      <directive name="effective" value="active"/>
+    </requirement>
+    <requirement namespace="osgi.service">
+      <directive name="filter" value="(objectClass=com.amplifino.nestor.useradmin.spi.RoleRepository)"/>
       <directive name="effective" value="active"/>
     </requirement>
     <requirement namespace="osgi.extender">
