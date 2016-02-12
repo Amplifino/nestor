@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.wrappers;
+package com.amplifino.nestor.jdbc.wrappers;
 
 import java.sql.*;
 import java.util.*;

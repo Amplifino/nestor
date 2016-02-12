@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.pools;
+package com.amplifino.nestor.adapters;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import javax.sql.ConnectionEventListener;
 import javax.sql.PooledConnection;
 import javax.sql.StatementEventListener;
 
-import com.amplifino.jdbc.wrappers.OnCloseConnectionWrapper;
+import com.amplifino.nestor.jdbc.wrappers.OnCloseConnectionWrapper;
 
 class PooledConnectionAdapter implements PooledConnection {
 

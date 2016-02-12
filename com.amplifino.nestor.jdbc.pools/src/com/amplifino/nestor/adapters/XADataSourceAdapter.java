@@ -1,4 +1,4 @@
-package com.amplifino.nestor.transaction.datasources;
+package com.amplifino.nestor.adapters;
 
 import java.sql.SQLException;
 
@@ -6,7 +6,7 @@ import javax.sql.ConnectionPoolDataSource;
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
 
-import com.amplifino.jdbc.wrappers.CommonDataSourceWrapper;
+import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
 public class XADataSourceAdapter extends CommonDataSourceWrapper implements XADataSource {
 

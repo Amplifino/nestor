@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.pools;
+package com.amplifino.nestor.jdbc.pools;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,7 +13,8 @@ import javax.sql.PooledConnection;
 
 import com.amplifino.counters.Counts;
 import com.amplifino.counters.CountsSupplier;
-import com.amplifino.jdbc.wrappers.CommonDataSourceWrapper;
+import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
+import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.pools.Pool;
 
 public class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {

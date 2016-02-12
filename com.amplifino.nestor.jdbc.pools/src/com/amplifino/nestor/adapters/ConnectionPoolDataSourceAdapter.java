@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.pools;
+package com.amplifino.nestor.adapters;
 
 import java.sql.SQLException;
 
@@ -6,7 +6,7 @@ import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
 import javax.sql.PooledConnection;
 
-import com.amplifino.jdbc.wrappers.CommonDataSourceWrapper;
+import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
 public class ConnectionPoolDataSourceAdapter extends CommonDataSourceWrapper implements ConnectionPoolDataSource {
 

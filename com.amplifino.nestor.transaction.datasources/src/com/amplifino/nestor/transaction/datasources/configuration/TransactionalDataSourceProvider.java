@@ -1,4 +1,4 @@
-package com.amplifino.nestor.transaction.datasources;
+package com.amplifino.nestor.transaction.datasources.configuration;
 
 import java.sql.SQLException;
 import java.util.Dictionary;
@@ -21,8 +21,10 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.metatype.annotations.Designate;
 
-import com.amplifino.jdbc.pools.ConnectionPoolDataSourceAdapter;
-import com.amplifino.jdbc.pools.DataSourceAdapter;
+import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
+import com.amplifino.nestor.adapters.DataSourceAdapter;
+import com.amplifino.nestor.adapters.XADataSourceAdapter;
+import com.amplifino.nestor.transaction.datasources.TransactionalDataSource;
 
 @Component(name="com.amplifino.nestor.transaction.datasources", configurationPolicy=ConfigurationPolicy.REQUIRE)
 @Designate(ocd=TransactionalDataSourceConfiguration.class, factory=true)

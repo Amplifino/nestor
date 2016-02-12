@@ -16,8 +16,8 @@ import javax.transaction.TransactionManager;
 import javax.transaction.TransactionSynchronizationRegistry;
 import javax.transaction.xa.XAResource;
 
-import com.amplifino.jdbc.wrappers.CommonDataSourceWrapper;
-import com.amplifino.jdbc.wrappers.OnCloseConnectionWrapper;
+import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
+import com.amplifino.nestor.jdbc.wrappers.OnCloseConnectionWrapper;
 import com.amplifino.pools.Pool;
 
 public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener {
@@ -132,11 +132,11 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		pool.evict((XAConnection) event.getSource());
 	}
 	
-	void close() {
+	public void close() {
 		pool.close();		
 	}
 	
-	static Builder builder(XADataSource xaDataSource, TransactionManager manager, TransactionSynchronizationRegistry synchronization) {
+	public static Builder builder(XADataSource xaDataSource, TransactionManager manager, TransactionSynchronizationRegistry synchronization) {
 		return new Builder(xaDataSource, manager, synchronization);
 	}
 	

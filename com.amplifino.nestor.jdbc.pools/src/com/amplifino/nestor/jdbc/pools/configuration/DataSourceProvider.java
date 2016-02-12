@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.pools;
+package com.amplifino.nestor.jdbc.pools.configuration;
 
 import java.sql.SQLException;
 import java.util.Dictionary;
@@ -19,6 +19,11 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.metatype.annotations.Designate;
 
+import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
+import com.amplifino.nestor.adapters.ConnectionPoolDataSourceXaAdapter;
+import com.amplifino.nestor.adapters.DataSourceAdapter;
+import com.amplifino.nestor.jdbc.pools.PoolDataSource;
+
 @Component(configurationPolicy=ConfigurationPolicy.REQUIRE)
 @Designate(ocd=DataSourceConfiguration.class, factory=true)
 public class DataSourceProvider {
@@ -34,7 +39,7 @@ public class DataSourceProvider {
 		props.put(DataSourceFactory.JDBC_URL, configuration.url());
 		props.put(DataSourceFactory.JDBC_USER, configuration.user());
 		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
-		ConnectionPoolDataSource connectionPoolDataSource = dataSourceFactory.createConnectionPoolDataSource(props);
+		ConnectionPoolDataSource connectionPoolDataSource = createConnectionPoolDataSource(configuration);
 		PoolDataSource.Builder builder = PoolDataSource.builder(connectionPoolDataSource)
 			.name(configuration.dataSourceName())
 			.useIsValid(configuration.useConnectionIsValid())
@@ -53,6 +58,27 @@ public class DataSourceProvider {
 		dictionary.put(DataSourceFactory.JDBC_DATABASE_NAME, configuration.dataSourceName());	
 		dictionary.put("application", configuration.application());
 		registration = context.registerService(DataSource.class, dataSource,  dictionary);
+	}
+	
+	private ConnectionPoolDataSource createConnectionPoolDataSource(DataSourceConfiguration configuration) throws SQLException {
+		Properties props = new Properties();
+		props.put(DataSourceFactory.JDBC_URL, configuration.url());
+		props.put(DataSourceFactory.JDBC_USER, configuration.user());
+		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
+		switch(configuration.factoryMethod()) {
+			case DATASOURCE:
+				return ConnectionPoolDataSourceAdapter.on(dataSourceFactory.createDataSource(props));
+			case CONNECTIONPOOLDATASOURCE:
+				return dataSourceFactory.createConnectionPoolDataSource(props);
+			case XADATASOURCE:
+				return ConnectionPoolDataSourceXaAdapter.on(dataSourceFactory.createXADataSource(props));
+			case DRIVER:
+				DataSource dataSource = DataSourceAdapter.on(dataSourceFactory.createDriver(new Properties()), 
+					configuration.url(), configuration.user(), configuration._password());
+				return ConnectionPoolDataSourceAdapter.on(dataSource);
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 	
 	@Deactivate 

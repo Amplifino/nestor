@@ -1,10 +1,12 @@
 -dsannotations: *
 Export-Package: \
-	com.amplifino.jdbc.pools,\
-	com.amplifino.jdbc.wrappers
+	com.amplifino.nestor.jdbc.pools,\
+	com.amplifino.nestor.jdbc.wrappers,\
+	com.amplifino.nestor.adapters
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	osgi.core;version=6.0,\
 	osgi.annotation;version=6.0,\
 	com.amplifino.counters;version=latest,\
 	com.amplifino.pools;version=latest
+Private-Package: com.amplifino.nestor.jdbc.pools.configuration

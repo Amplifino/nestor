@@ -1,4 +1,4 @@
-package com.amplifino.jdbc.pools;
+package com.amplifino.nestor.adapters;
 
 import java.io.PrintWriter;
 import java.sql.Connection;

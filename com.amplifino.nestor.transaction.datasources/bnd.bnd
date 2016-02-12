@@ -5,6 +5,9 @@
 	com.amplifino.pools;version=latest,\
 	com.amplifino.counters;version=latest,\
 	com.amplifino.nestor.transaction.provider;version=latest
-Private-Package: com.amplifino.nestor.transaction.datasources
+Private-Package: \
+	com.amplifino.nestor.transaction.datasources,\
+	com.amplifino.nestor.transaction.datasources.configuration
 Bundle-Version: 1.0.0
 -dsannotations: *
+Export-Package: org.osgi.service.jdbc
