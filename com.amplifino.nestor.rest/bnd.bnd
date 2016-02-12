@@ -1,0 +1,26 @@
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino Rest Whiteboard using Jersey
+Bundle-Description: Whiteboard for JAX RS Applications
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: utility
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Include-Resource: LICENSE, README.md, bnd.bnd
+-dsannotations: *
+Private-Package: com.amplifino.nestor.rest
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	org.apache.felix.http.servlet-api;version=1.1,\
+	com.fasterxml.jackson.core.jackson-annotations;version=2.5,\
+	com.fasterxml.jackson.core.jackson-core;version=2.5,\
+	com.fasterxml.jackson.datatype.jackson-datatype-jsr310;version=2.5,\
+	com.fasterxml.jackson.core.jackson-databind;version=2.5,\
+	javax.ws.rs-api;version=2.0,\
+	osgi.core;version=6.0,\
+	com.fasterxml.jackson.module.jackson-module-jaxb-annotations;version=2.5,\
+	org.glassfish.jersey.core.jersey-server;version=2.22,\
+	org.glassfish.jersey.core.jersey-common;version=2.22,\
+	org.glassfish.jersey.media.jersey-media-json-jackson;version=2.22,\
+	org.glassfish.jersey.containers.jersey-container-servlet-core;version=2.22,\
+	org.glassfish.hk2.osgi-resource-locator;version=1.0

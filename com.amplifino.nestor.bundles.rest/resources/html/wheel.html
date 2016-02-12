@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://redotheweb.com/DependencyWheel/js/d3.dependencyWheel.js"></script>
+<h1>OSGI Dependency Wheel</h1>
+<div id="wheel"></div>
+<script>
+var chart = d3.chart.dependencyWheel();
+chart
+	.width(900)
+	.margin(200);
+d3.json('/api/osgi/wheel', function(data) {
+    d3.select('#wheel')
+        .datum(data)
+        .call(chart);
+  });
+</script>
+</body>
