@@ -24,9 +24,10 @@ import com.amplifino.nestor.logging.LogBridge;
 
 public class LogForwardingTest {
 
+	private final static String LOGGERNAME = "com.amplifino.nestor.logging.test";
 	private final BundleContext context = FrameworkUtil.getBundle(getClass()).getBundleContext();
 	private final CountDownLatch latch = new CountDownLatch(1);
-	private final Logger logger = Logger.getLogger(getClass().getPackage().getName());
+	private final Logger logger = Logger.getLogger(LOGGERNAME);
 	private LogBridge bridge;
 	
 	@Before
@@ -69,7 +70,7 @@ public class LogForwardingTest {
 	}
 	
 	public void logged(LogEntry entry) {
-		if (entry.getMessage().contains(getClass().getPackage().getName())) {
+		if (entry.getMessage().contains(LOGGERNAME)) {
 			latch.countDown();
 		}
 	}

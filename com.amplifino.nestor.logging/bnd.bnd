@@ -1,4 +1,4 @@
-Bundle-Version: 1.0
+Bundle-Version: 1.0.0
 Bundle-Name: Amplifino Logging Bridge
 Bundle-Description: Bridge from java.util.logging to OSGI log service
 Bundle-Copyright: Amplifino (c) 2015, 2016
