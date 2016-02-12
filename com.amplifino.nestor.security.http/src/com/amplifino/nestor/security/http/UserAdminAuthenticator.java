@@ -16,14 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.useradmin.UserAdmin;
 
-@Component(name="com.amplifino.nestor.security.http", configurationPolicy=ConfigurationPolicy.OPTIONAL)
-@Designate(ocd = AuthenticatorConfiguration.class, factory=true)
+@Component(name="com.amplifino.nestor.security.http")
+@Designate(ocd = AuthenticatorConfiguration.class)
 public class UserAdminAuthenticator implements Filter {
 
 	@Reference
