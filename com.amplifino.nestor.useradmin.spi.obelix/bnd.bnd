@@ -1,0 +1,13 @@
+Bundle-Version: 1.0.0
+-dsannotations: *
+Private-Package: com.amplifino.useradmin.spi.obelix
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	com.amplifino.obelix;version=1.0,\
+	com.fasterxml.jackson.core.jackson-databind;version=2.5,\
+	com.fasterxml.jackson.core.jackson-core;version=2.5,\
+	com.fasterxml.jackson.core.jackson-annotations;version=2.5,\
+	osgi.core;version=6.0,\
+	com.amplifino.nestor.useradmin;version=latest,\
+	com.fasterxml.jackson.module.jackson-module-jaxb-annotations;version=2.5,\
+	com.google.guava;version=18.0
