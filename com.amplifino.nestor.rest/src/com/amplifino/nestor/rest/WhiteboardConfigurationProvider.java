@@ -39,7 +39,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  * The configuration is only registered after HK2 is fully initialized
  *
  */
-@Component(name="com.amplifino.jersey.whiteboard")
+@Component(name="com.amplifino.nestor.rest")
 @Designate(ocd = WhiteboardConfiguration.class)
 public class WhiteboardConfigurationProvider {
 	private static final int stateMask =

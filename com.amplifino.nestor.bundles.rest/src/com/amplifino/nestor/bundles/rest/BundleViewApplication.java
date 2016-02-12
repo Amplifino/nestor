@@ -16,18 +16,18 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 import com.amplifino.nestor.dot.DotService;
 
 @Component(service=Application.class, property={
-		"alias=/osgi", 
-		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PATTERN + "=/apps/osgi/*",
+		"alias=/bundles", 
+		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PATTERN + "=/apps/bundles/*",
 		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PREFIX + "=/resources"})
 
-public class OsgiApplication extends Application {
+public class BundleViewApplication extends Application {
 
 	private volatile BundleContext context;
 	
 	@Reference
 	private DotService dotService;
 	
-	public OsgiApplication()  {
+	public BundleViewApplication()  {
 	}
 
 	@Activate
@@ -37,7 +37,7 @@ public class OsgiApplication extends Application {
 	
 	@Override
 	public Set<Class<?>> getClasses() {
-		return Stream.of(OsgiResource.class).collect(Collectors.toSet());
+		return Stream.of(BundleResource.class).collect(Collectors.toSet());
 	}
 	
 	@Override

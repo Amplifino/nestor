@@ -9,7 +9,7 @@ import org.osgi.service.component.annotations.Component;
 
 import com.amplifino.nestor.dot.DotService;
 
-@Component
+@Component(name="com.amplifino.nestor.dot")
 public class DotServiceImpl implements DotService {
 
 	@Override

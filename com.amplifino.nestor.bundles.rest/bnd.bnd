@@ -1,6 +1,6 @@
 Bundle-Version: 1.0.0
-Bundle-Name: Amplifino Logging Bridge
-Bundle-Description: Bridge from java.util.logging to OSGI log service
+Bundle-Name: Amplifino Graphical Bundle Wiring Viewer
+Bundle-Description: Shows wiring between bundles and packages
 Bundle-Copyright: Amplifino (c) 2015, 2016
 Bundle-Category: utility
 Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -16,3 +16,4 @@ Private-Package: com.amplifino.nestor.bundles.rest
 	com.amplifino.nestor.dot;version=latest,\
 	org.glassfish.hk2.api;version=2.4,\
 	org.glassfish.hk2.external.javax.inject;version=2.4
+Bundle-DocURL: https://github.com/Amplifino/nestor

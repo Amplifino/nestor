@@ -30,12 +30,12 @@ import com.amplifino.nestor.dot.DigraphBuilder;
 import com.amplifino.nestor.dot.DotService;
 
 @Path("/")
-public class OsgiResource {
+public class BundleResource {
 
 	private final BundleContext context;
 	
 	@Inject
-	public OsgiResource(BundleContext context) {
+	public BundleResource(BundleContext context) {
 		this.context = context;		
 	}
 	
@@ -167,6 +167,6 @@ public class OsgiResource {
 	}
 	
 	private String url(Bundle bundle) {
-		return "/api/osgi/image/" + bundle.getBundleId();
+		return "/api/bundles/image/" + bundle.getBundleId();
 	}
 }

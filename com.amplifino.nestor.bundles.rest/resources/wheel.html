@@ -10,7 +10,7 @@ var chart = d3.chart.dependencyWheel();
 chart
 	.width(900)
 	.margin(200);
-d3.json('/api/osgi/wheel', function(data) {
+d3.json('/api/bundles/wheel', function(data) {
     d3.select('#wheel')
         .datum(data)
         .call(chart);

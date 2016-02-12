@@ -1,6 +1,6 @@
 Bundle-Version: 1.0.0
-Bundle-Name: Interface for dot prograp
-Bundle-Description: Java interface for dot layout program
+Bundle-Name: Amplifino Interface for GraphViz dot program
+Bundle-Description: Java interface for GraphViz dot layout program
 Bundle-Copyright: Amplifino (c) 2015, 2016
 Bundle-Category: utility
 Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -12,3 +12,4 @@ Export-Package: com.amplifino.nestor.dot
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	osgi.annotation;version=6.0
+Bundle-DocURL: https://github.com/Amplifino/nestor
