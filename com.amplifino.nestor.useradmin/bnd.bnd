@@ -1,0 +1,10 @@
+Bundle-Version: 1.0.0
+-dsannotations: *
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.core;version=6.0,\
+	osgi.annotation;version=6.0
+Private-Package: com.amplifino.nestor.useradmin
+Export-Package: \
+	org.osgi.service.useradmin,\
+	com.amplifino.nestor.useradmin.spi
