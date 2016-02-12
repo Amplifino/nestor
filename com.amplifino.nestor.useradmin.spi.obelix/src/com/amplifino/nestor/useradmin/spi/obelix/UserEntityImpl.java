@@ -1,4 +1,4 @@
-package com.amplifino.useradmin.spi.obelix;
+package com.amplifino.nestor.useradmin.spi.obelix;
 
 import java.util.Map;
 

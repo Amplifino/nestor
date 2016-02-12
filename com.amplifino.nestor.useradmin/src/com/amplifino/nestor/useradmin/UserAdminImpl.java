@@ -27,7 +27,7 @@ import com.amplifino.nestor.useradmin.spi.RoleRepository;
 import com.amplifino.nestor.useradmin.spi.UserEntity;
 
 
-@Component(name="com.amplifino.useradmin")
+@Component(name="com.amplifino.nestor.useradmin")
 public class UserAdminImpl implements UserAdmin {
 	
 	@Reference

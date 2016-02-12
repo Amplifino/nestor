@@ -1,6 +1,6 @@
 Bundle-Version: 1.0.0
 -dsannotations: *
-Private-Package: com.amplifino.useradmin.spi.obelix
+Private-Package: com.amplifino.nestor.useradmin.spi.obelix
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	com.amplifino.obelix;version=1.0,\

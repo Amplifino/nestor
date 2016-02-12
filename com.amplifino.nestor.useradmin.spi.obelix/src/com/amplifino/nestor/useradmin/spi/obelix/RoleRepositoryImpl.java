@@ -1,4 +1,4 @@
-package com.amplifino.useradmin.spi.obelix;
+package com.amplifino.nestor.useradmin.spi.obelix;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -37,7 +37,8 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
-@Component(property={"osgi.command.scope=useradmin", "osgi.command.function=dumpRoles"})
+@Component(name="com.amplifino.nestor.useradmin.spi.obelix.RoleRepository",
+	property={"osgi.command.scope=useradmin", "osgi.command.function=dumpRoles"})
 public class RoleRepositoryImpl implements RoleRepository {
 
 	private volatile InfiniteMap<String, RoleDto>  roles;
