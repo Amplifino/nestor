@@ -1,0 +1,16 @@
+Bundle-Version: 1.0
+Bundle-Name: Amplifino Logging Bridge
+Bundle-Description: Bridge from java.util.logging to OSGI log service
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: utility
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Include-Resource: LICENSE, README.md, bnd.bnd
+-dsannotations: *
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.annotation;version=6.0
+Private-Package: com.amplifino.nestor.logging.impl
+Export-Package: com.amplifino.nestor.logging
+Bundle-DocURL: https://github.com/Amplifino/nestor
