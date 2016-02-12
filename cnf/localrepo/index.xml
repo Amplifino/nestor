@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1455287453341" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1455313597101" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.obelix"/>
@@ -2967,6 +2967,219 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.message.filtering.spi)(version&gt;=2.22.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.h2"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="1d931d6763e4c0bc09bba5fb989d62ac5b81fcabc69393442c3f591be5030166"/>
+      <attribute name="url" value="org.h2/org.h2-1.4.190.jar"/>
+      <attribute name="size" type="Long" value="1710131"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.api"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.constant"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.fulltext"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.jdbc"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.jdbcx"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.tools"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.util"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.value"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.bnf"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.bnf.context"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.mvstore"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.mvstore.type"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.h2.mvstore.rtree"/>
+      <attribute name="version" type="Version" value="1.4.190"/>
+      <attribute name="bundle-symbolic-name" value="org.h2"/>
+      <attribute name="bundle-version" type="Version" value="1.4.190"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.management)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming.spi)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net.ssl)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.servlet)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.servlet.http)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.sql)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.tools)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.transaction.xa)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.analysis)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.analysis.standard)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.document)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.index)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.queryParser)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.search)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.store)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.lucene.util)(version&gt;=3.0.0)(!(version&gt;=3.1.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.vividsolutions.jts.geom)(version&gt;=1.13.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.vividsolutions.jts.io)(version&gt;=1.13.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.api)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.fulltext)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.jdbcx)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.tools)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.util)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.h2.value)(version&gt;=1.4.190)(!(version&gt;=1.5.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(version&gt;=1.5.0))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.jdbc)(version&gt;=1.0.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.slf4j)(version&gt;=1.6.0)(!(version&gt;=1.7.0)))"/>
+      <directive name="resolution" value="optional"/>
     </requirement>
   </resource>
 </repository>

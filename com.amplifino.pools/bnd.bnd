@@ -1,0 +1,6 @@
+-buildpath: \
+	com.amplifino.counters;version=latest,\
+	osgi.annotation;version=6.0,\
+	biz.aQute.junit;version=3.0
+-dsannotations: *
+Export-Package: com.amplifino.pools

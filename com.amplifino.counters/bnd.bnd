@@ -1,0 +1,2 @@
+Export-Package: com.amplifino.counters
+-buildpath: osgi.annotation;version=6.0

@@ -1,0 +1,10 @@
+-dsannotations: *
+Export-Package: \
+	com.amplifino.jdbc.pools,\
+	com.amplifino.jdbc.wrappers
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.core;version=6.0,\
+	osgi.annotation;version=6.0,\
+	com.amplifino.counters;version=latest,\
+	com.amplifino.pools;version=latest

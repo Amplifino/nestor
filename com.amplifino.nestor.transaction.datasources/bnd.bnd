@@ -1,0 +1,10 @@
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.core;version=6.0,\
+	com.amplifino.nestor.jdbc.pools;version=latest,\
+	com.amplifino.pools;version=latest,\
+	com.amplifino.counters;version=latest,\
+	com.amplifino.nestor.transaction.provider;version=latest
+Private-Package: com.amplifino.nestor.transaction.datasources
+Bundle-Version: 1.0.0
+-dsannotations: *
