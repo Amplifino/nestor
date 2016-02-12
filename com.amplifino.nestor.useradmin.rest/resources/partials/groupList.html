@@ -1,0 +1,25 @@
+<div>
+	<h1>Groups</h1>
+	<p>
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="group in groups">
+				<td>{{group.name}}</td>
+				<td><button class="btn btn-default" ng-click="editGroup(group)">edit</button></td>
+				<td><button class="btn btn-default" ng-click="deleteGroup(group)">delete</button></td>
+			</tr>
+		</tbody>
+	</table>
+	</p>
+	<p>
+    <button class="btn btn-default" ng-click="createNewGroup()">create new group</button>
+    </p>
+</div>
+

@@ -1,0 +1,15 @@
+<div>
+    <h1>Create Group</h1>
+	<div class="row">
+  		<div class="col-md-2">
+   			<label for="name">Group Name:</label>
+   		</div>
+   		<div class="col-md-10">
+       		<input type="text" id="name" class="form-control" ng-model="group.name" />
+       	</div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div ng-include src="'partials/groupDetail.html'"></div>
+    <button class="btn btn-primary" ng-click="createNewGroup()" ng-disabled="!canCreate()">create group</button>
+    <p>{{status}}</p>
+</div>

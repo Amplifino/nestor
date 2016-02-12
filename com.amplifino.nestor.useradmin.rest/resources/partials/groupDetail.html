@@ -1,0 +1,83 @@
+<div class="row" ng-controller="GroupDetailCtrl">
+	<div class="col-md-6">
+   		<label>Group Properties</label>
+    	<table class="table table-bordered">
+	    	<thead>
+	   			<tr>
+	   				<td>key</td>
+	        		<td>value</td>
+	       			<td></td>
+	       		</tr>
+	    	</thead>
+	     	<tbody>
+	        	<tr ng-repeat= "key in group.getPropertyNames()">
+	        		<td>{{key}}</td>
+	        		<td><input type=text" class="form-control" ng-model="group.properties[key]"/></td>
+	        		<td><button class="btn btn-default" ng-click="group.removeProperty(key)">delete</button></td>
+	       		</tr>
+	    	</tbody>
+	   	</table>
+   		<label>Add Property</label><br/>
+   		<div class="row">
+   			<div class="col-md-1">
+   				<label for="key">key:</label>
+			</div>
+			<div class="col-md-4">
+		  		<input type="text" id="key" class="form-control" ng-model="key"/>
+    		</div>
+   			<div class="col-md-1">
+				<label for="value">value:</label>
+			</div>
+			<div class="col-md-4">
+  				<input type="text" id="value" class="form-control" ng-model="value"/>
+    		</div>
+    		<div class="cold-md-2">
+    			<button class="btn btn-default" ng-click="addProperty()" ng-disabled="!(key && value) || group.hasProperty(key)">add property</button>
+    		</div>	
+    	</div>     	 		
+	</div>
+	<div class="col-md-6">
+		<label>Group Members</label>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Member</td>
+					<td>Type</td>
+					<td>Required</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat= "member in group.members">
+					<td ng-switch="member.type">
+						<div ng-switch-when="Role">{{member.name}}</div>
+						<a href="{{url(member)}}" ng-switch-default>{{member.name}}</a>
+					</td>
+					<td>{{member.type}}</td>
+					<td><input type="checkbox" ng-model="member.required"/></td>
+					<td><button class="btn btn-default" ng-click="group.removeMember(member)">remove</button></td>
+				</tr>
+			</tbody>
+		</table>
+		<label>Available Roles</label>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Member</td>
+					<td>Type</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat= "role in roles | filter: canAddMember">
+					<td ng-switch="role.type">
+						<div ng-switch-when="Role">{{role.name}}</div>
+						<a href="{{url(role)}}" ng-switch-default>{{role.name}}</a>
+					</td>
+					<td>{{role.type}}</td>
+					<td><button class="btn btn-default" ng-click="group.addMember(role)">add</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,37 @@
+<div ng-controller="UserDetailCtrl">
+	<label>Properties</label>
+	<table class="table table-bordered">
+ 		<thead>
+	   		<tr>
+	   			<td>key</td>
+	       		<td>value</td>
+	       		<td></td>
+	       	</tr>
+		</thead>
+	    <tbody>
+	    	<tr ng-repeat= "key in user.getPropertyNames()">
+	  			<td>{{key}}</td>
+	  	 		<td><input type="text" class="form-control" ng-model="user.properties[key]"/></td>
+		 	    <td><button ng-click="user.removeProperty(key)">remove</button></td>
+	        </tr>
+	   </tbody>
+	</table>
+	<label>Add Property</label><br/>
+	<div class="row">
+		<div class="col-md-1">
+	   		<label for="key">key:</label>
+	   	</div>
+	   	<div class="col-md-4">
+			<input type="text" id="key" class="form-control" ng-model="key"/>
+		</div>
+		<div class="col-md-1">
+			<label for="value">value:</label>
+		</div>
+		<div class="col-md-4">
+			<input type="text" id="value" class="form-control" ng-model="value"/>
+		</div>		
+		<div class="col-md-2">
+			<button class="btn btn-default" ng-click="addProperty()" ng-disabled="!(key && value) || user.hasProperty(key)">add property</button>
+		</div>
+	</div>
+</div>
