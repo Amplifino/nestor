@@ -1,0 +1,7 @@
+-dsannotations: *
+Private-Package: com.amplifino.nestor.transaction.impl
+Export-Package: com.amplifino.nestor.transaction
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	com.amplifino.nestor.transaction.provider;version=latest,\
+	osgi.annotation;version=6.0
