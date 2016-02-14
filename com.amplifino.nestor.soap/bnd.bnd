@@ -1,0 +1,19 @@
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino Soap Whiteboard
+Bundle-Description: Whiteboard for SOAP Web Services using the JAX-WS Reference Implementation included in Java 8 SE
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: utility
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Include-Resource: LICENSE, README.md, bnd.bnd
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.core;version=6.0,\
+	org.apache.felix.http.servlet-api;version=1.1,\
+	javax.annotation-api;version=1.2,\
+	osgi.annotation;version=6.0
+-dsannotations: *
+Private-Package: com.amplifino.nestor.soap.impl
+Export-Package: com.amplifino.nestor.soap
