@@ -178,25 +178,7 @@ public class UserAdminConsoleCommands {
 				String ha1 = createHa1(realm, name, password);
 				((User) role).getCredentials().put("HA1", ha1);
 			}
-		});
-		String header = "{\"alg\": \"HS256\", \"typ\": \"JWT\"}";
-		String body = "{\"name\": \"admin\"}";
-		String header64 = Base64.getUrlEncoder().withoutPadding().encodeToString(header.getBytes());
-		String body64 = Base64.getUrlEncoder().withoutPadding().encodeToString(body.getBytes());
-		MessageDigest messageDigest = null;
-		try {
-			messageDigest = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		messageDigest.update(header64.getBytes());
-		messageDigest.update(".".getBytes());
-		messageDigest.update(body64.getBytes());		
-		messageDigest.update("admin".getBytes());
-		byte[] hash = messageDigest.digest();
-		String hash64 = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
-		System.out.println(new StringJoiner(".").add(header64).add(body64).add(hash64).toString());
+		});		
 	}
 		
 	private void run(Runnable runnable) {
