@@ -147,7 +147,7 @@ public class TransactionTest {
 		setProperty(".password", "dummy", props, check);
 		setProperty("dataSourceName", "H2", props, check);
 		setProperty("application", new String[] {"test"}, props, check);
-		setProperty("factoryMethod", "CONNECTIONPOOLDATASOURCE", props, check);
+		setProperty("factoryMethod", "XADATASOURCE", props, check);
 		return props;
 	}
 	
