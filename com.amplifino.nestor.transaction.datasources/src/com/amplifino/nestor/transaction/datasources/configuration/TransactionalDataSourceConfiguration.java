@@ -16,8 +16,8 @@ public @interface TransactionalDataSourceConfiguration {
 	@AttributeDefinition(description="maximum idle time in seconds")
 	int maxIdleTime() default 0;
 	String[] application();
-	@AttributeDefinition(name="Use isValid", description="Use isValid() for testing the connection on borrow. Not all drivers support this")
-	boolean useConnectionIsValid() default true;
+	@AttributeDefinition(description="Timeout in seconds to use on connection.isValid() call. Specify -1 to skip isValid() if your JDCB driver does not support isValid")
+	int isValidTimeout() default 0;
 	@AttributeDefinition(description="ldap filter for DataSourceFactory")
 	String dataSourceFactory_target() default "(osgi.jdbc.driver.name=*)";
 	@AttributeDefinition(description="For two phase commit XADATASOURCE is required")

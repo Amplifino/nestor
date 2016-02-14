@@ -42,8 +42,12 @@ public class DataSourceProvider {
 		ConnectionPoolDataSource connectionPoolDataSource = createConnectionPoolDataSource(configuration);
 		PoolDataSource.Builder builder = PoolDataSource.builder(connectionPoolDataSource)
 			.name(configuration.dataSourceName())
-			.useIsValid(configuration.useConnectionIsValid())
 			.initialSize(configuration.initialPoolSize());
+		if (configuration.isValidTimeout() < 0) {
+			builder.skipIsValid();
+		} else {
+			builder.isValidTimeout(configuration.isValidTimeout());
+		}
 		if (configuration.maxPoolSize() > 0) {
 			builder.maxSize(configuration.maxPoolSize());
 		}

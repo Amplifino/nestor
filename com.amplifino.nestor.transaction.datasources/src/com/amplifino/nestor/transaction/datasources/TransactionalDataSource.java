@@ -2,6 +2,7 @@ package com.amplifino.nestor.transaction.datasources;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.OptionalInt;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.ConnectionEvent;
@@ -16,17 +17,19 @@ import javax.transaction.TransactionManager;
 import javax.transaction.TransactionSynchronizationRegistry;
 import javax.transaction.xa.XAResource;
 
+import com.amplifino.counters.Counts;
+import com.amplifino.counters.CountsSupplier;
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.nestor.jdbc.wrappers.ConnectionInJtaTransactionWrapper;
 import com.amplifino.pools.Pool;
 
-public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener {
+public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
 
 	private final XADataSource xaDataSource;
 	private final TransactionManager transactionManager;
 	private final TransactionSynchronizationRegistry synchronization;
 	private Pool<XAConnection> pool;	
-	private boolean useIsValid = true;
+	private OptionalInt isValidTimeout = OptionalInt.of(0);
 	
 	private TransactionalDataSource(XADataSource xaDataSource, TransactionManager transactionManager, TransactionSynchronizationRegistry synchronization) {
 		super(xaDataSource);
@@ -79,7 +82,7 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			if (transaction == null) {
 				XAConnection xaConnection = xaConnection();
 				Connection connection = xaConnection.getConnection();
-				if (useIsValid && !connection.isValid(0)) {
+				if (isValidTimeout.isPresent() && !connection.isValid(isValidTimeout.getAsInt())) {
 					try {
 						connection.close();
 					} catch (SQLException e) {
@@ -97,7 +100,7 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 				XAConnection xaConnection = xaConnection();
 				XAResource xaResource = xaConnection.getXAResource();
 				connection = xaConnection.getConnection();
-				if (useIsValid && !connection.isValid(0)) {
+				if (isValidTimeout.isPresent() && !connection.isValid(isValidTimeout.getAsInt())) {
 					try {
 						connection.close();
 					} catch (SQLException e) {
@@ -130,6 +133,11 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 	@Override
 	public void connectionErrorOccurred(ConnectionEvent event) {
 		pool.evict((XAConnection) event.getSource());
+	}
+	
+	@Override
+	public Counts counts() {
+		return pool.counts();
 	}
 	
 	public void close() {
@@ -174,8 +182,13 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			return this;
 		}
 		
-		public Builder useIsValid(boolean useIsValid) {
-			transactionalDataSource.useIsValid = useIsValid;
+		public Builder isValidTimeout(int isValidTimeout) {
+			transactionalDataSource.isValidTimeout = OptionalInt.of(isValidTimeout);
+			return this;
+		}
+		
+		public Builder skipIsValid() {
+			transactionalDataSource.isValidTimeout = OptionalInt.empty();
 			return this;
 		}
 		

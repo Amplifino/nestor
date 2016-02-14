@@ -3,6 +3,7 @@ package com.amplifino.nestor.jdbc.pools;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.ConnectionEvent;
@@ -21,7 +22,7 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	private Pool<PooledConnection> pool;
-	private boolean useIsValid = true;
+	private OptionalInt isValidTimeout = OptionalInt.of(0);
 	
 	private PoolDataSource(ConnectionPoolDataSource connectionPoolDataSource) {
 		super(connectionPoolDataSource);
@@ -46,7 +47,7 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 		while(true) {
 			PooledConnection pooledConnection = pool.borrow();
 			Connection connection = pooledConnection.getConnection();
-			if (!useIsValid || connection.isValid(0)) {
+			if (!isValidTimeout.isPresent() || connection.isValid(isValidTimeout.getAsInt())) {
 				return connection;
 			} else {
 				pool.evict(pooledConnection);
@@ -137,8 +138,13 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 			return this;
 		}
 		
-		public Builder useIsValid(boolean useIsValid) {
-			poolDataSource.useIsValid = useIsValid;
+		public Builder isValidTimeout(int timeOut) {
+			poolDataSource.isValidTimeout = OptionalInt.of(timeOut);
+			return this;
+		}
+		
+		public Builder skipIsValid() {
+			poolDataSource.isValidTimeout = OptionalInt.empty();
 			return this;
 		}
 		
