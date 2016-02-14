@@ -18,7 +18,7 @@ class PooledConnectionAdapter implements PooledConnection {
 	private final List<ConnectionEventListener> listeners = new CopyOnWriteArrayList<>();
 	private volatile boolean inUse;
 	
-	PooledConnectionAdapter(Connection connection) {
+	private PooledConnectionAdapter(Connection connection) {
 		this.connection = connection;
 		this.inUse = false;
 	}
@@ -28,7 +28,7 @@ class PooledConnectionAdapter implements PooledConnection {
 		if (inUse) {
 			throw new SQLException("Outstanding connection");
 		}
-		Connection handle = new OnCloseConnectionWrapper(connection, this::handleClosed);
+		Connection handle = OnCloseConnectionWrapper.on(connection, this::handleClosed);
 		inUse = true;
 		return handle;
 	}
@@ -50,10 +50,12 @@ class PooledConnectionAdapter implements PooledConnection {
 
 	@Override
 	public void addStatementEventListener(StatementEventListener listener) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void removeStatementEventListener(StatementEventListener listener) {
+		throw new UnsupportedOperationException();
 	}
 	
 	private void handleClosed(Connection connection) {
@@ -66,7 +68,7 @@ class PooledConnectionAdapter implements PooledConnection {
 		}
 	}
 	
-	static PooledConnectionAdapter on(Connection connection) {
+	static PooledConnection on(Connection connection) {
 		return new PooledConnectionAdapter(connection);
 	}
 }

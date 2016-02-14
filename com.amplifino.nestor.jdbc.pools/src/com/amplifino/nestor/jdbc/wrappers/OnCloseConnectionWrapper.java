@@ -9,7 +9,7 @@ public final class OnCloseConnectionWrapper extends ConnectionWrapper {
 
 	private final Consumer<Connection> onClose;
 	
-	public OnCloseConnectionWrapper (Connection connection, Consumer<Connection> onClose) {
+	private OnCloseConnectionWrapper (Connection connection, Consumer<Connection> onClose) {
 		super(connection);
 		this.onClose = Objects.requireNonNull(onClose);
 	}
@@ -17,5 +17,9 @@ public final class OnCloseConnectionWrapper extends ConnectionWrapper {
 	@Override
 	public void close() throws SQLException {
 		onClose.accept(wrapped());
+	}
+	
+	public static Connection on (Connection connection, Consumer<Connection> onClose) {
+		return new OnCloseConnectionWrapper(connection, onClose);
 	}
 }

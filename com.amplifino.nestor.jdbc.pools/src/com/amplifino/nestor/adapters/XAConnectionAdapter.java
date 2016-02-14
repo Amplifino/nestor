@@ -14,14 +14,14 @@ import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
-public class XAConnectionAdapter implements XAConnection , ConnectionEventListener, XAResource {
+class XAConnectionAdapter implements XAConnection , ConnectionEventListener, XAResource {
 
 	private final PooledConnection pooledConnection;
 	private final List<ConnectionEventListener> connectionEventListeners = new ArrayList<>();
 	private Connection connection;
 	private Xid xid;
 	
-	public XAConnectionAdapter(PooledConnection pooledConnection) {
+	private XAConnectionAdapter(PooledConnection pooledConnection) {
 		this.pooledConnection = pooledConnection;
 		pooledConnection.addConnectionEventListener(this);
 	}
@@ -156,5 +156,7 @@ public class XAConnectionAdapter implements XAConnection , ConnectionEventListen
 		this.xid = xid;
 	}
 	
-
+	static XAConnection on(PooledConnection pooledConnection) {
+		return new XAConnectionAdapter(pooledConnection);
+	}
 }

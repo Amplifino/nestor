@@ -8,7 +8,7 @@ import javax.sql.XADataSource;
 
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
-public class XADataSourceAdapter extends CommonDataSourceWrapper implements XADataSource {
+public final class XADataSourceAdapter extends CommonDataSourceWrapper implements XADataSource {
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	
@@ -19,17 +19,16 @@ public class XADataSourceAdapter extends CommonDataSourceWrapper implements XADa
 
 	@Override
 	public XAConnection getXAConnection() throws SQLException {
-		return new XAConnectionAdapter(connectionPoolDataSource.getPooledConnection());
+		return XAConnectionAdapter.on(connectionPoolDataSource.getPooledConnection());
 	}
 
 	@Override
 	public XAConnection getXAConnection(String user, String password) throws SQLException {
-		return new XAConnectionAdapter(connectionPoolDataSource.getPooledConnection(user, password));
+		return XAConnectionAdapter.on(connectionPoolDataSource.getPooledConnection(user, password));
 	}
 	
-	public static XADataSourceAdapter on (ConnectionPoolDataSource connectionPoolDataSource) {
+	public static XADataSource on (ConnectionPoolDataSource connectionPoolDataSource) {
 		return new XADataSourceAdapter(connectionPoolDataSource);
 	}
 
-	
 }

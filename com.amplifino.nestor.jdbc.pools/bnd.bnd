@@ -1,8 +1,19 @@
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino Jdbc Connection Pool
+Bundle-Description: Connection pools
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: persistence
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Include-Resource: LICENSE, README.md, bnd.bnd
 -dsannotations: *
 Export-Package: \
 	com.amplifino.nestor.jdbc.pools,\
 	com.amplifino.nestor.jdbc.wrappers,\
-	com.amplifino.nestor.adapters
+	com.amplifino.nestor.adapters,\
+	org.osgi.service.jdbc
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	osgi.core;version=6.0,\

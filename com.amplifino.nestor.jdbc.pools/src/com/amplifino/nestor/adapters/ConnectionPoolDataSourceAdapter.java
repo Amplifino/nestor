@@ -8,7 +8,7 @@ import javax.sql.PooledConnection;
 
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
-public class ConnectionPoolDataSourceAdapter extends CommonDataSourceWrapper implements ConnectionPoolDataSource {
+public final class ConnectionPoolDataSourceAdapter extends CommonDataSourceWrapper implements ConnectionPoolDataSource {
 
 	private final DataSource dataSource;
 	
@@ -27,7 +27,7 @@ public class ConnectionPoolDataSourceAdapter extends CommonDataSourceWrapper imp
 		throw new UnsupportedOperationException();
 	}
 	
-	static public ConnectionPoolDataSourceAdapter on(DataSource dataSource) {
+	static public ConnectionPoolDataSource on(DataSource dataSource) {
 		return new ConnectionPoolDataSourceAdapter(dataSource);
 	}
 

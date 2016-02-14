@@ -125,7 +125,7 @@ class DefaultCounts<T extends Enum<T>> implements Counts {
 	      case NANOSECONDS:
 	        return "ns";
 	      case MICROSECONDS:
-	        return "\u03bcs"; // μs
+	        return "\u03bcs"; 
 	      case MILLISECONDS:
 	        return "ms";
 	      case SECONDS:

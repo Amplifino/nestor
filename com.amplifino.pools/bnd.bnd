@@ -1,3 +1,13 @@
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino Pools
+Bundle-Description: Amplifino Generic Object Pools   
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: utility
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Include-Resource: LICENSE, README.md, bnd.bnd
 -buildpath: \
 	com.amplifino.counters;version=latest,\
 	osgi.annotation;version=6.0,\

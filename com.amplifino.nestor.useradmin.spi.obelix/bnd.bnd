@@ -1,4 +1,13 @@
 Bundle-Version: 1.0.0
+Bundle-Name: Amplifino User Admin Persistence using Oblelix
+Bundle-Description: Amplifino User Admin Persistence spi implementation using Obelix  
+Bundle-Copyright: Amplifino (c) 2015, 2016
+Bundle-Category: security, persistence
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Include-Resource: LICENSE, README.md, bnd.bnd
 -dsannotations: *
 Private-Package: com.amplifino.nestor.useradmin.spi.obelix
 -buildpath: \

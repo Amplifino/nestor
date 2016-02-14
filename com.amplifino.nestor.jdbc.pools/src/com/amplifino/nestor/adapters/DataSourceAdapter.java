@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-public class DataSourceAdapter implements DataSource {
+public final class DataSourceAdapter implements DataSource {
 	
 	private final Driver driver;
 	private final String url;
@@ -25,7 +25,7 @@ public class DataSourceAdapter implements DataSource {
 		properties.put("password", password);
 	}
 	
-	public static DataSourceAdapter on(Driver driver, String url, String user, String password) {
+	public static DataSource on(Driver driver, String url, String user, String password) {
 		return new DataSourceAdapter(driver, url, user, password);
 	}
 

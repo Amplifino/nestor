@@ -17,7 +17,7 @@ import javax.transaction.TransactionSynchronizationRegistry;
 import javax.transaction.xa.XAResource;
 
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
-import com.amplifino.nestor.jdbc.wrappers.OnCloseConnectionWrapper;
+import com.amplifino.nestor.jdbc.wrappers.ConnectionInJtaTransactionWrapper;
 import com.amplifino.pools.Pool;
 
 public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener {
@@ -91,7 +91,7 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			}
 			Connection connection = (Connection) synchronization.getResource(this);
 			if (connection != null) {
-				return new OnCloseConnectionWrapper(connection, c -> {});
+				return ConnectionInJtaTransactionWrapper.on(connection);
 			}
 			try {
 				XAConnection xaConnection = xaConnection();
@@ -108,7 +108,7 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 				transaction.enlistResource(xaResource);
 				transaction.registerSynchronization(new ConnectionCloser(connection));
 				synchronization.putResource(this, connection);
-				return new OnCloseConnectionWrapper(connection, c -> {});
+				return ConnectionInJtaTransactionWrapper.on(connection);
 			} catch (RollbackException e) {
 				throw new SQLException(e);
 			} 			
