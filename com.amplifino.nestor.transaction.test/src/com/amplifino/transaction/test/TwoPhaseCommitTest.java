@@ -6,9 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,18 +38,23 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 
-public class TransactionTest {
+public class TwoPhaseCommitTest {
 
 	private BundleContext context = FrameworkUtil.getBundle(getClass()).getBundleContext();
-	private DataSource dataSource;
-	private Connection keepAliveConnection;
+	private List<DataSource> dataSources;
+	private List<Connection> keepAliveConnections;
 	private UserTransaction userTransaction;
 	
 	@Test
-	public void test() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+	public void test() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException, InterruptedException {
 		publishH2();
-		dataSource = getService(DataSource.class);
-		keepAliveConnection = dataSource.getConnection();
+		Thread.sleep(1000L);
+		dataSources = getServices(DataSource.class);
+		Assert.assertTrue(dataSources.size() > 1);
+		keepAliveConnections = new ArrayList<>();
+		for (DataSource source : dataSources) {
+			keepAliveConnections.add(source.getConnection());
+		}
 		userTransaction = getService(UserTransaction.class);
 		createTable();
 		testRollback();
@@ -55,8 +62,12 @@ public class TransactionTest {
 	}
 	
 	private void createTable() throws SQLException {
-		try (Statement statement = keepAliveConnection.createStatement()) {
-			statement.execute("create table test (name varchar(256))");
+		int i = 0;
+		for (Connection connection : keepAliveConnections) {
+			try (Statement statement = connection.createStatement()) {
+				i++;
+				statement.execute("create table test" + i + " (name varchar(256))");
+			}
 		}
 	}
 	
@@ -85,28 +96,38 @@ public class TransactionTest {
 				userTransaction.rollback();
 			}
 		}
-		Assert.assertEquals(2, rowCount());
+		Assert.assertEquals( dataSources.size() * 2 , rowCount());
 	}
 	
 	private int rowCount() throws SQLException {
-		try (Connection connection = dataSource.getConnection()) {
-			Assert.assertTrue(connection.getAutoCommit());
-			try (PreparedStatement statement = connection.prepareStatement("select count(*) from test")) {
-				try (ResultSet resultSet = statement.executeQuery()) {
-					resultSet.next();
-					return resultSet.getInt(1);
+		int result = 0;
+		int i = 0;
+		for (DataSource source : dataSources) {
+			i++;
+			try (Connection connection = source.getConnection()) {
+				Assert.assertTrue(connection.getAutoCommit());
+				try (PreparedStatement statement = connection.prepareStatement("select count(*) from test" + i)) {
+					try (ResultSet resultSet = statement.executeQuery()) {
+						resultSet.next();
+						result += resultSet.getInt(1);
+					}
 				}
 			}
 		}	
+		return result;
 	}
 	
 	private void insertRow() throws SQLException {
-		try (Connection connection = dataSource.getConnection()) {
-			Assert.assertFalse(connection.getAutoCommit());
-			try (PreparedStatement statement = connection.prepareStatement("insert into test values(?)")) {
-				statement.setString(1,"Test");
-				int count = statement.executeUpdate();
-				Assert.assertEquals(1, count);
+		int i = 0;
+		for (DataSource source : dataSources) {
+			i++;
+			try (Connection connection = source.getConnection()) {
+				Assert.assertFalse(connection.getAutoCommit());
+				try (PreparedStatement statement = connection.prepareStatement("insert into test" + i + " values(?)")) {
+					statement.setString(1,"Test");
+					int count = statement.executeUpdate();
+					Assert.assertEquals(1, count);
+				}
 			}
 		}
 	}
@@ -121,10 +142,18 @@ public class TransactionTest {
 		}
 	}
 	
+	private <T> List<T> getServices(Class<T> clazz) {
+		ServiceTracker<T,T> st = new ServiceTracker<>(context, clazz, null);
+		st.open();
+		return Arrays.stream(st.getServices()).map(clazz::cast).collect(Collectors.toList());
+	}
+	
 	private void publishH2() {
 		ConfigurationAdmin configurationAdmin = getService(ConfigurationAdmin.class);
 		try {
 			Configuration configuration = configurationAdmin.createFactoryConfiguration("com.amplifino.nestor.transaction.datasources", "?");
+			configuration.update(properties());
+			configuration = configurationAdmin.createFactoryConfiguration("com.amplifino.nestor.transaction.datasources", "?");
 			configuration.update(properties());
 		} catch (IOException e) {
 			throw new RuntimeException(e);

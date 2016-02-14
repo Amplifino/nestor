@@ -84,12 +84,11 @@ class TransactionImpl implements Transaction {
 			}
 		}
 		status = (status == Status.STATUS_COMMITTING) ? Status.STATUS_COMMITTED : Status.STATUS_ROLLEDBACK;
+		boolean rollback = status == Status.STATUS_ROLLEDBACK;
 		afterCompletion();
-		if (status == Status.STATUS_ROLLEDBACK) {
-			throw new RollbackException("Received rollback vote in prepare step");
-		}
-		status = Status.STATUS_COMMITTED;
-		afterCompletion();		
+		if (rollback) {
+			throw new RollbackException("Received rollback vote or exception in prepare step");
+		}				
 	}
 
 	private void logCommitDecision() {
