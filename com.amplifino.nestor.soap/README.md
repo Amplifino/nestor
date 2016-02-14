@@ -1,5 +1,8 @@
-# com.amplifino.nestor.security.http
+# com.amplifino.nestor.soap
 
-Connects Basic and Digest Authentication to OSGI User Admin service
+Whiteboard implementation for soap web services using the spi feature of JAX-WS 2.2.
+Tested with the JAX-WS Reference Implementation included in Java 8 SE.
+Should work with other JAX-WS 2.2 implementations by publishing a Provider service.
+
 
 
