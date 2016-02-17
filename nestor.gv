@@ -1,0 +1,30 @@
+digraph "Bundles" {
+	label="Bundle Dependencies";
+	"counters";
+	"nestor.bundles.rest";
+	"nestor.dot";
+	"nestor.jdbc.pools";
+	"nestor.logging";
+	"nestor.rest";
+	"nestor.security.http";
+	"nestor.soap";
+	"nestor.transaction";
+	"nestor.transaction.datasources";
+	"nestor.transaction.provider";
+	"nestor.useradmin";
+	"nestor.useradmin.rest";
+	"nestor.useradmin.spi.obelix";
+	"pools";
+	"nestor.jdbc.pools" -> "pools";
+	"nestor.security.http" -> "nestor.useradmin" [style=dotted, label="org.osgi.service.useradmin"];
+	"nestor.transaction" -> "nestor.transaction.provider"  [style=dotted, label="javax.transaction"];
+	"nestor.transaction.datasources" -> "nestor.transaction.provider"  [style=dotted, label="javax.transaction"];
+	"nestor.transaction.datasources" -> "nestor.jdbc.pools";
+	"nestor.useradmin.rest" -> "nestor.useradmin"  [style=dotted, label="org.osgi.service.useradmin"];
+	"nestor.useradmin.rest" -> "nestor.rest"  [style=dotted, label="whiteboard"];
+	"nestor.useradmin.spi.obelix" ->  "nestor.useradmin";
+	"pools" -> "counters";
+	"nestor.bundles.rest" -> "nestor.dot";
+	"nestor.bundles.rest" -> "nestor.rest"  [style=dotted, label=whiteboard];
+	"nestor.soap.sample" -> "nestor.soap" [style=dotted, label=whiteboard];
+}
