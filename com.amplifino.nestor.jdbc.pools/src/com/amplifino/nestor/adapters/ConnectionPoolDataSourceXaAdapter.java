@@ -9,6 +9,10 @@ import javax.sql.XADataSource;
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
 
+/**
+ * turns an XADataSource into a ConnectionPoolDataSource
+ *
+ */
 public final class ConnectionPoolDataSourceXaAdapter extends CommonDataSourceWrapper implements ConnectionPoolDataSource {
 	
 	private final XADataSource xaDataSource;

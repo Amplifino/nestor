@@ -10,6 +10,10 @@ import javax.sql.CommonDataSource;
 
 import org.osgi.annotation.versioning.ConsumerType;
 
+/**
+ * Wraps a CommonDataSource forwarding all methods to the wrapped object.
+ *
+ */
 @ConsumerType
 public abstract class CommonDataSourceWrapper implements CommonDataSource {
 

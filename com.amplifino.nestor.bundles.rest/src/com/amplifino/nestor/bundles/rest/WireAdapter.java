@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWire;
 
-public class WireAdapter {
+class WireAdapter {
 	
 	private final BundleWire wire;
 

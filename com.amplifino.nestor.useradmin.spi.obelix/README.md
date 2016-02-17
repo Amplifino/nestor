@@ -1,3 +1,3 @@
 # com.amplifino.useradmin.spi.obelix
 
-user admin persistence using Obelix BTREEs
+user admin persistence using the BTREE implementation of Obelix.

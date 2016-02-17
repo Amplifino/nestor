@@ -4,9 +4,17 @@ import javax.xml.ws.Endpoint;
 
 import org.osgi.annotation.versioning.ProviderType;
 
+/**
+ * Web Service Publisher
+ *
+ */
 @ProviderType
 public interface Publisher {
 
+	/**
+	 * name of the service property to indicate that the service is a web service that must be published.
+	 *   
+	 */
 	public static final String LOCAL_ENDPOINT_ADDRESS = "com.amplifino.soap.endpoint";   
 	
 	/**

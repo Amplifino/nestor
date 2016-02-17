@@ -8,6 +8,10 @@ import javax.sql.PooledConnection;
 
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
+/**
+ * turns a DataSource into a ConnectionPoolDataSource
+ *
+ */
 public final class ConnectionPoolDataSourceAdapter extends CommonDataSourceWrapper implements ConnectionPoolDataSource {
 
 	private final DataSource dataSource;

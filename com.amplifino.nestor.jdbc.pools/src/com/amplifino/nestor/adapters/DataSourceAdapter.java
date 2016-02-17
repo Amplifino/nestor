@@ -11,6 +11,10 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+/**
+ * turns a java.sql.Driver into a DataSource
+ *
+ */
 public final class DataSourceAdapter implements DataSource {
 	
 	private final Driver driver;

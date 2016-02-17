@@ -1,4 +1,5 @@
 # com.amplifino.nestor.useradmin
 
-Implementation of OSGI User Admin Service
+Implementation of OSGI User Admin Service.
+Provides support for a pluggable persistence provider.  
 

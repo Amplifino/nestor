@@ -23,6 +23,13 @@ import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.nestor.jdbc.wrappers.ConnectionInJtaTransactionWrapper;
 import com.amplifino.pools.Pool;
 
+/**
+ * A JDBC Connection Pool that is JTA transaction aware
+ * 
+ * Instances are normally created using Config Admin.
+ * When using the builder API, be sure to close the DataSource before disposing to release the pooled Connections.
+ * 
+ */
 public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
 
 	private final XADataSource xaDataSource;
@@ -59,7 +66,6 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			throw new RuntimeException();
 		}
 	}
-	
 	
 	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
@@ -140,14 +146,27 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		return pool.counts();
 	}
 	
+	/**
+	 * closes the connection pool, releasing all pooled connections 
+	 */
 	public void close() {
 		pool.close();		
 	}
 	
+	/**
+	 * returns a TransactionalDataSource builder
+	 * @param xaDataSource
+	 * @param manager
+	 * @param synchronization
+	 * @return
+	 */
 	public static Builder builder(XADataSource xaDataSource, TransactionManager manager, TransactionSynchronizationRegistry synchronization) {
 		return new Builder(xaDataSource, manager, synchronization);
 	}
 	
+	/**
+	 * a TransactionalDataSource builder
+	 */
 	public static class Builder {
 		private final TransactionalDataSource transactionalDataSource;
 		private final Pool.Builder<XAConnection> poolBuilder;
@@ -157,41 +176,82 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			this.poolBuilder = Pool.builder(transactionalDataSource::supply).destroy(transactionalDataSource::destroy);
 		}
 		
+		/**
+		 * sets the maximum number of connections in the pool
+		 * @param maxSize
+		 * @return this
+		 */
 		public Builder maxSize(int maxSize) {
 			poolBuilder.maxSize(maxSize);
 			return this;
 		}
 		
+		/**
+		 * sets the maximum number of idle connections in the pool
+		 * @param maxIdle
+		 * @return
+		 */
 		public Builder maxIdle(int maxIdle) {
 			poolBuilder.maxIdle(maxIdle);
 			return this;
 		}
 		
+		/**
+		 * sets the amount of time a connection can remain idle
+		 * @param amount
+		 * @param unit
+		 * @return this
+		 */
 		public Builder maxIdleTime(long amount, TimeUnit unit) {
 			poolBuilder.maxIdleTime(amount, unit);
 			return this;
 		}
 		
+		/**
+		 * sets the pool's initial size
+		 * @param initialSize
+		 * @return this
+		 */
 		public Builder initialSize(int initialSize) {
 			poolBuilder.initialSize(initialSize);
 			return this;
 		}
 		
+		/**
+		 * sets the pool's name
+		 * @param name
+		 * @return this
+		 */
 		public Builder name(String name) {
 			poolBuilder.name(name);
 			return this;
 		}
 		
+		/**
+		 * set the timeout in seconds for the connection isValid test
+		 * a value of 0 means the driver's default timeout
+		 * @param isValidTimeout
+		 * @return this
+		 */
 		public Builder isValidTimeout(int isValidTimeout) {
 			transactionalDataSource.isValidTimeout = OptionalInt.of(isValidTimeout);
 			return this;
 		}
 		
+		/**
+		 * instruct the pool to skip the isValid test,
+		 * typically because the driver does not support isValid
+		 * @return this
+		 */
 		public Builder skipIsValid() {
 			transactionalDataSource.isValidTimeout = OptionalInt.empty();
 			return this;
 		}
 		
+		/**
+		 * builds a new TransactionDataSource
+		 * @return the new pool
+		 */
 		public TransactionalDataSource build() {
 			transactionalDataSource.pool = poolBuilder.build();
 			return transactionalDataSource;

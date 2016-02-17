@@ -6,6 +6,10 @@ import java.util.concurrent.Executor;
 
 import org.osgi.annotation.versioning.ConsumerType;
 
+/**
+ * Wraps a Connection forwarding all methods to the wrapped connection
+ *
+ */
 @ConsumerType
 public abstract class ConnectionWrapper implements Connection {
 

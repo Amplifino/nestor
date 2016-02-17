@@ -42,7 +42,7 @@ public interface Counters<T extends Enum<T>> {
 	}
 
 	/**
-	 * return a null implementation when performnance is more imporant than statistics
+	 * return a null implementation when performance is more imporant than statistics
 	 * @param enumClass
 	 * @return
 	 */

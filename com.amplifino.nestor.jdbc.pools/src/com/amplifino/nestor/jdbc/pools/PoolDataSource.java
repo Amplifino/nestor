@@ -14,10 +14,16 @@ import javax.sql.PooledConnection;
 
 import com.amplifino.counters.Counts;
 import com.amplifino.counters.CountsSupplier;
-import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.pools.Pool;
 
+/**
+ * Implements a JDBC Connection pool.
+ * Instances are normally created using OSGI Configuration Admin,
+ * but can also be created by API using PoolDataSource.builder
+ * If using the API it is important to call close before disposing the PoolDataSource to release its pooled connections
+ *
+ */
 public class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
@@ -91,12 +97,13 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 		}
 	}
 	
+	/**
+	 * return a PoolDataSource builder
+	 * @param connectionPoolDataSource factory object for obtaining pooled connections
+	 * @return
+	 */
 	public static Builder builder(ConnectionPoolDataSource connectionPoolDataSource) {
 		return new Builder(connectionPoolDataSource);
-	}
-	
-	public static Builder builder(DataSource dataSource) {
-		return builder(ConnectionPoolDataSourceAdapter.on(dataSource));
 	}
 
 	@Override
@@ -104,6 +111,10 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 		return pool.counts();
 	}
 
+	/**
+	 * PoolDataSource builder
+	 *
+	 */
 	public static class Builder {
 		private final PoolDataSource poolDataSource;
 		private final Pool.Builder<PooledConnection> poolBuilder;
@@ -113,41 +124,82 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 			this.poolBuilder = Pool.builder(poolDataSource::supply).destroy(poolDataSource::destroy);
 		}
 		
+		/**
+		 * sets the maximum number of connections
+		 * @param maxSize
+		 * @return this
+		 */
 		public Builder maxSize(int maxSize) {
 			poolBuilder.maxSize(maxSize);
 			return this;
 		}
 		
+		/**
+		 * sets the maximum number of idle connections
+		 * @param maxIdle
+		 * @return this
+		 */
 		public Builder maxIdle(int maxIdle) {
 			poolBuilder.maxIdle(maxIdle);
 			return this;
 		}
 		
+		/**
+		 * sets the amount of time a connection can remain idle in the pool
+		 * @param amount
+		 * @param unit
+		 * @return this
+		 */
 		public Builder maxIdleTime(long amount, TimeUnit unit) {
 			poolBuilder.maxIdleTime(amount, unit);
 			return this;
 		}
 		
+		/**
+		 * sets the pool's intial size
+		 * @param initialSize
+		 * @return this
+		 */
 		public Builder initialSize(int initialSize) {
 			poolBuilder.initialSize(initialSize);
 			return this;
 		}
 		
+		/**
+		 * sets the pool's name
+		 * @param name
+		 * @return this
+		 */
 		public Builder name(String name) {
 			poolBuilder.name(name);
 			return this;
 		}
 		
+		/**
+		 * sets the pool is valid timeout (in seconds)
+		 * a value of 0 means the driver's default
+		 * @param timeOut
+		 * @return this
+		 */
 		public Builder isValidTimeout(int timeOut) {
 			poolDataSource.isValidTimeout = OptionalInt.of(timeOut);
 			return this;
 		}
 		
+		/**
+		 * configure the pool not to perform isValid testing,
+		 * typically because the drivers does not support it. 
+		 * @return this
+		 */
 		public Builder skipIsValid() {
 			poolDataSource.isValidTimeout = OptionalInt.empty();
 			return this;
 		}
 		
+		/**
+		 * build a PoolDataSource
+		 * @return the new pool
+		 */
 		public PoolDataSource build() {
 			poolDataSource.pool = poolBuilder.build();
 			return poolDataSource;

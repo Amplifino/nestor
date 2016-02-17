@@ -8,6 +8,12 @@ import javax.sql.XADataSource;
 
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 
+/**
+ * turns a ConnectinoPoolDataSource into an XADataSource.
+ * The resulting XADataSource can only participate in JTA transactions involving a single XAResource.
+ * ( Calling prepare on its XAResource will throw UnsupportedOperation)
+ *
+ */
 public final class XADataSourceAdapter extends CommonDataSourceWrapper implements XADataSource {
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
