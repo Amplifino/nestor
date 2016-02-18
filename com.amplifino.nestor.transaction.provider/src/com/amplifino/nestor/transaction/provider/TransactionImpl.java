@@ -32,7 +32,7 @@ class TransactionImpl implements Transaction {
 		status = Status.STATUS_ACTIVE;
 	}
 	
-	@Override
+	@Override 
 	public void commit() throws RollbackException {
 		checkActiveOrMarked();
 		if (status == Status.STATUS_MARKED_ROLLBACK) {
@@ -40,41 +40,67 @@ class TransactionImpl implements Transaction {
 			throw new RollbackException("Transaction was marked for rollback");
 		}
 		beforeCompletion();
-		status = Status.STATUS_COMMITTING;		
-		if (branches.isEmpty()) {
-			status = Status.STATUS_COMMITTED;
+		try {
+			doCommit();
+		} finally {
 			afterCompletion();
-			return;
 		}
-		if (branches.size() == 1) {
-			try {
-				branches.get(0).commitOnePhase();
-			} catch (Throwable e) {
-				report(e);
-				status = Status.STATUS_ROLLEDBACK;
-				afterCompletion();
-				throw (RollbackException) new RollbackException(e.toString()).initCause(e);
-			}
+	}
+	
+	private void doCommit() throws RollbackException {
+		switch (branches.size()) {
+			case 0:
+				status = Status.STATUS_COMMITTED;
+				return;
+			case 1:
+				onePhaseCommit();
+				return;
+			default:
+				twoPhaseCommit();
+		}
+	}
+	
+	private void onePhaseCommit() throws RollbackException {
+		try {
+			status = Status.STATUS_COMMITTING;
+			branches.get(0).commitOnePhase();
 			status = Status.STATUS_COMMITTED;
-			afterCompletion();
-			return;
+		} catch (Throwable e) {
+			report(e);
+			status = Status.STATUS_ROLLEDBACK;				
+			throw (RollbackException) new RollbackException(e.toString()).initCause(e);
 		}
+	}
+	
+	private void twoPhaseCommit() throws RollbackException {
+		Throwable throwable = null;
 		status = Status.STATUS_PREPARING;
 		try {
 			for (TransactionBranch branch : branches) {
 				branch.prepare();									
 			}
-			status = Status.STATUS_COMMITTING;
+			status = Status.STATUS_PREPARED;
 		} catch (Throwable e) {
-			report(e);
+			throwable = report(e);
 			status = Status.STATUS_ROLLING_BACK;
 		}
-		if (status == Status.STATUS_COMMITTING) {
-			logCommitDecision();
+		branches.removeIf(TransactionBranch::isReadOnly);
+		if (throwable == null) {
+			if (branches.size() > 1) {
+				try {
+					logCommitDecision();
+					status = Status.STATUS_COMMITTING;
+				} catch (Throwable e) {
+					throwable = report(e);
+					status = Status.STATUS_ROLLING_BACK;
+				}
+			} else {
+				status = Status.STATUS_COMMITTING;
+			}
 		}
 		for (TransactionBranch branch : branches) {
 			try {
-				if (status == Status.STATUS_COMMITTING) {
+				if (throwable == null) {
 					branch.commitTwoPhase();
 				} else {
 					branch.rollback();
@@ -83,11 +109,9 @@ class TransactionImpl implements Transaction {
 				report(e);
 			}
 		}
-		status = (status == Status.STATUS_COMMITTING) ? Status.STATUS_COMMITTED : Status.STATUS_ROLLEDBACK;
-		boolean rollback = status == Status.STATUS_ROLLEDBACK;
-		afterCompletion();
-		if (rollback) {
-			throw new RollbackException("Received rollback vote or exception in prepare step");
+		status = (throwable == null) ? Status.STATUS_COMMITTED : Status.STATUS_ROLLEDBACK;
+		if (status == Status.STATUS_ROLLEDBACK) {
+			throw (RollbackException) new RollbackException(throwable.toString()).initCause(throwable);
 		}				
 	}
 
@@ -120,8 +144,8 @@ class TransactionImpl implements Transaction {
 	
 	private Optional<TransactionBranch> branch(XAResource resource) {
 		return branches.stream()
-			.filter(branch -> branch.resource()
-			.equals(resource)).findAny();
+			.filter(branch -> branch.resource().equals(resource))
+			.findAny();
 	}
 	
 	@Override
@@ -187,14 +211,14 @@ class TransactionImpl implements Transaction {
 			try {
 				synchronization.beforeCompletion();
 			} catch (Throwable e) {				
-				e.printStackTrace();
+				report(e);
 			}
 		}
 		for (Synchronization synchronization : interposedSynchronizers) {
 			try {
 				synchronization.beforeCompletion();
 			} catch (Throwable e) {				
-				e.printStackTrace();
+				report(e);
 			}
 		}
 	}
@@ -217,9 +241,10 @@ class TransactionImpl implements Transaction {
 		status = Status.STATUS_NO_TRANSACTION;
 	}
 	
-	private void report(Throwable e) {
+	private Throwable report(Throwable e) {
 		Logger.getLogger("com.amplifino.tx")
-			.log(Level.SEVERE, "Exception in state " + status + ": " + e.getMessage() , e);   
+			.log(Level.SEVERE, "Exception in state " + status + ": " + e.getMessage() , e);
+		return e;
 	}
 	
 	Object getResource(Object key) {

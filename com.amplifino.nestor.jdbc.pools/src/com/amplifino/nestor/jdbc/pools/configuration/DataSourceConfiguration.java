@@ -13,6 +13,8 @@ public @interface DataSourceConfiguration {
 	int initialPoolSize() default 0;
 	int maxPoolSize() default 0;
 	int minPoolSize() default 0;
+	@AttributeDefinition(description="Use first in first out scheduling if true, last in first out if false")
+	boolean fifo() default false;
 	@AttributeDefinition(description="maximum idle time in seconds")
 	int maxIdleTime() default 0;
 	String[] application();

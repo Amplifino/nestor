@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -60,19 +63,27 @@ public class BundleResource {
 	@GET
 	@Path("/image")
 	@Produces("image/svg+xml")
-	public String image(@Context DotService dotService) {
+	public String image(@Context DotService dotService, @QueryParam("filter") String filter) {
+		Predicate<Bundle> bundleFilter;
+		if (filter != null && !filter.trim().isEmpty()) {
+			Pattern pattern = Pattern.compile(filter);
+			bundleFilter = bundle -> pattern.matcher(bundle.getSymbolicName()).matches();
+		} else {
+			bundleFilter = bundle -> bundle.getBundleId() != 0;
+		}
 		DigraphBuilder builder = DigraphBuilder.name("Bundles");
 		Arrays.stream(context.getBundles())
-			.filter(bundle -> bundle.getBundleId() != 0)
+			.filter(bundleFilter)
 			.forEach(bundle -> builder.node(name(bundle)).label(label(bundle)).url(url(bundle)).add());
 		Arrays.stream(context.getBundles())
+			.filter(bundleFilter)
 			.map(bundle -> bundle.adapt(BundleWiring.class))
 			.filter(Objects::nonNull)
 			.map(bundleWiring -> bundleWiring.getRequiredWires(BundleRevision.PACKAGE_NAMESPACE))
 			.filter(Objects::nonNull)
 			.flatMap(List::stream)
 			.map(WireAdapter::of)
-			.filter(adapter -> adapter.to().getBundleId() != 0)
+			.filter(adapter -> bundleFilter.test(adapter.to()))
 			.distinct()
 			.forEach( adapter -> {
 				builder.quote(name(adapter.from()));
@@ -83,6 +94,7 @@ public class BundleResource {
 		builder.closeCurly();
 		return new String(dotService.toSvg(builder.build()));
 	}
+	
 	
 	@GET
 	@Path("/image/{id}")

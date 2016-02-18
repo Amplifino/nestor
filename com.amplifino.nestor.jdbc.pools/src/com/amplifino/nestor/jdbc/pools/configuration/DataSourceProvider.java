@@ -57,6 +57,11 @@ public class DataSourceProvider {
 		if (configuration.maxIdleTime() > 0) {
 			builder.maxIdleTime(configuration.maxIdleTime(), TimeUnit.SECONDS);
 		}
+		if (configuration.fifo()) {
+			builder.fifo();
+		} else {
+			builder.lifo();
+		}
 		dataSource = builder.build();
 		Dictionary<String, Object> dictionary = new Hashtable<>();
 		dictionary.put(DataSourceFactory.JDBC_DATABASE_NAME, configuration.dataSourceName());	

@@ -87,6 +87,10 @@ class TransactionBranch {
 		}
 	}
 	
+	boolean isReadOnly() {
+		return prepareResult == PrepareResult.READONLY;
+	}
+	
 	private static enum PrepareResult {
 		NOTPREPARED,
 		OK,

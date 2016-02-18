@@ -249,6 +249,24 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		}
 		
 		/**
+		 * configure the pool to use first in first out scheduling
+		 * @return this
+		 */
+		public Builder fifo() {
+			poolBuilder.fifo();
+			return this;
+		}
+		
+		/**
+		 * configure the pool to use last in first out scheduling
+		 * @return this
+		 */
+		public Builder lifo() {
+			poolBuilder.lifo();
+			return this;
+		}
+		
+		/**
 		 * builds a new TransactionDataSource
 		 * @return the new pool
 		 */

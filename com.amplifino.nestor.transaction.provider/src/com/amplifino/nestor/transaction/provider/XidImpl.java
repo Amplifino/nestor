@@ -6,7 +6,7 @@ import javax.transaction.xa.Xid;
 
 class XidImpl implements Xid {
 	
-	static final int FORMAT = 0x416d706c;
+	private static final int FORMAT = 0x416d706c;
 	private final byte[] globalTransactionId;
 	private final byte[] branchQualifier;
 	
