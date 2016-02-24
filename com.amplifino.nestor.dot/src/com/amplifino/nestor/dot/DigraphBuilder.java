@@ -1,5 +1,7 @@
 package com.amplifino.nestor.dot;
 
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utility class to help building a dot source
@@ -7,6 +9,7 @@ package com.amplifino.nestor.dot;
  */
 public class DigraphBuilder {
 	private final StringBuilder builder;
+	private final Set<String> nodes = new HashSet<>(); 
 	
 	private DigraphBuilder(String name) {
 		this.builder = new StringBuilder("digraph ");
@@ -146,6 +149,13 @@ public class DigraphBuilder {
 		return builder.toString();
 	}
 	
+	public WireBuilder wire(String name) {
+		if (!nodes.contains(name)) {
+			throw new IllegalArgumentException(name);
+		}
+		return new WireBuilder(name);
+	}
+	
 	/**
 	 * returns a node builder for a node with the given name
 	 * @param name
@@ -203,6 +213,11 @@ public class DigraphBuilder {
 		 * adds the node to the source
 		 */
 		public void add() {
+			if (nodes.contains(name)) {
+				return;
+			} else {
+				nodes.add(name);
+			}
 			quote(name);
 			String separator = "";
 			if (hasAttributes()) {
@@ -243,6 +258,27 @@ public class DigraphBuilder {
 		POLYGON,
 		ELLIPSE,
 		OVAL,
-		CIRCE;
+		CIRCLE,
+		TRIANGLE;
+	}
+	
+	public class WireBuilder {
+		
+		private final String from;
+		
+		private WireBuilder(String from) {
+			this.from = from;
+		}
+		
+		public DigraphBuilder to(String name) {
+			if (!nodes.contains(name)) {
+				throw new IllegalArgumentException();
+			}
+			quote(from);
+			append(" -> ");
+			quote(name);
+			newLine();
+			return DigraphBuilder.this;
+		}
 	}
 }

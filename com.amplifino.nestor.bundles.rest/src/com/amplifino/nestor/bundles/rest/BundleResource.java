@@ -2,11 +2,9 @@ package com.amplifino.nestor.bundles.rest;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -85,12 +83,7 @@ public class BundleResource {
 			.map(WireAdapter::of)
 			.filter(adapter -> bundleFilter.test(adapter.to()))
 			.distinct()
-			.forEach( adapter -> {
-				builder.quote(name(adapter.from()));
-				builder.append(" -> ");
-				builder.quote(name(adapter.to()));
-				builder.newLine();
-			});			
+			.forEach( adapter -> builder.wire(name(adapter.from())).to(name(adapter.to())));				
 		builder.closeCurly();
 		return new String(dotService.toSvg(builder.build()));
 	}
@@ -106,49 +99,25 @@ public class BundleResource {
 		if (bundle == null) {
 			throw new NotFoundException();
 		}
-		Set<Long> bundleIds = new HashSet<>();
-		bundleIds.add(bundle.getBundleId());
 		builder.node(name(bundle)).label(label(bundle)).add();
 		BundleWiring wiring = bundle.adapt(BundleWiring.class);
 		List<BundleCapability> capabilities = Optional.ofNullable(wiring.getCapabilities(BundleRevision.PACKAGE_NAMESPACE)).orElse(Collections.emptyList());
 		capabilities.forEach( capability -> builder.node(name(capability)).shape(DigraphBuilder.Shape.BOX).label(label(capability)).add());
-		capabilities.forEach( capability -> {
-				builder.quote(name(capability));
-				builder.append(" -> ");
-				builder.quote(name(bundle));
-				builder.newLine();
-			});
+		capabilities.forEach( capability -> builder.wire(name(capability)).to(name(bundle))); 		
 		List<BundleWire> wires = Optional.ofNullable(wiring.getProvidedWires((BundleRevision.PACKAGE_NAMESPACE))).orElse(Collections.emptyList());
 		for (BundleWire wire : wires) {
 			Bundle importingBundle = wire.getRequirerWiring().getBundle();
-			if (!bundleIds.contains(importingBundle.getBundleId())) {
-				builder.node(name(importingBundle)).label(label(importingBundle)).url(url(importingBundle)).add();
-				bundleIds.add(importingBundle.getBundleId());
-			}
-			builder.quote(name(importingBundle));
-			builder.append(" -> ");
-			builder.quote(name(wire.getCapability()));
-			builder.newLine();
+			builder.node(name(importingBundle)).label(label(importingBundle)).url(url(importingBundle)).add();
+			builder.wire(name(importingBundle)).to(name(wire.getCapability()));		
 		};
 		wires = Optional.ofNullable(wiring.getRequiredWires(BundleRevision.PACKAGE_NAMESPACE)).orElse(Collections.emptyList());
 		capabilities = wires.stream().map(BundleWire::getCapability).distinct().collect(Collectors.toList()); 
 		capabilities.forEach( capability -> builder.node(name(capability)).shape(DigraphBuilder.Shape.BOX).label(label(capability)).add());
-		capabilities.forEach( capability -> {
-				builder.quote(name(bundle));
-				builder.append(" -> ");
-				builder.quote(name(capability));
-				builder.newLine();
-			});	
+		capabilities.forEach( capability -> builder.wire(name(bundle)).to(name(capability)));
 		for (BundleWire wire : wires) {
 			Bundle exportingBundle = wire.getProviderWiring().getBundle();
-			if (!bundleIds.contains(exportingBundle.getBundleId())) {
-				builder.node(name(exportingBundle)).label(label(exportingBundle)).url(url(exportingBundle)).add();
-				bundleIds.add(exportingBundle.getBundleId());
-			}
-			builder.quote(name(wire.getCapability()));
-			builder.append(" -> ");
-			builder.quote(name(exportingBundle));
-			builder.newLine();
+			builder.node(name(exportingBundle)).label(label(exportingBundle)).url(url(exportingBundle)).add();
+			builder.wire(name(wire.getCapability())).to(name(exportingBundle));			
 		};
 		builder.closeCurly();
 		return new String(dotService.toSvg(builder.build()));
