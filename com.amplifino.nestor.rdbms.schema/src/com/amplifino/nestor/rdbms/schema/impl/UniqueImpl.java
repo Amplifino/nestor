@@ -1,7 +1,6 @@
 package com.amplifino.nestor.rdbms.schema.impl;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import com.amplifino.nestor.rdbms.schema.Column;
 import com.amplifino.nestor.rdbms.schema.Unique;
@@ -18,13 +17,8 @@ class UniqueImpl extends TableConstraintImpl implements Unique {
 	}
 	
 	@Override
-	public String ddl() {
-		return 
-			 "CONSTRAINT " +
-			 name() + 
-			 " UNIQUE (" +
-			 String.join(",", columns().stream().map(Column::name).collect(Collectors.toList())) +
-			 ")";
+	String constraintType() {
+		return "UNIQUE";
 	}
 	
 	static class Builder implements Unique.Builder {

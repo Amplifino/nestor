@@ -3,16 +3,16 @@ package com.amplifino.nestor.rdbms.schema;
 import java.util.List;
 import java.util.Optional;
 
-public interface TableBundle {
+public interface Schema {
 	
 	String name();
-	Optional<String> schema();
+	Optional<String> schemaOwner();
 	List<? extends Table> tables();
 	Table table(String name);
 	
 	public interface Builder {
-		Builder schema(String schema);
+		Builder schemaOwner(String schema);
 		Table.Builder builder(String name);
-		TableBundle build();
+		Schema build();
 	}
 }

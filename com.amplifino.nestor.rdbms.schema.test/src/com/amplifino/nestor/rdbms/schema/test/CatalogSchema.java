@@ -5,7 +5,7 @@ import com.amplifino.nestor.rdbms.schema.DeleteRule;
 import com.amplifino.nestor.rdbms.schema.Table;
 import com.amplifino.nestor.rdbms.schema.Table.Builder;
 
-public enum Schema {
+public enum CatalogSchema {
 
 	TABLEBUNDLE {
 		@Override
@@ -48,6 +48,7 @@ public enum Schema {
 			builder.column("referencedBundle").varChar(256).add();
 			builder.column("referencedTable").varChar(256).add();
 			builder.column("deleteRule").varChar(1).add();
+			builder.column("noddl").varChar(1).add();
 			builder.primaryKey("PK_" + name()).on(bundle, table, name).add();
 			builder.foreignKey("FK_" + name()).on(bundle,  table).references(TABLETABLE.name()).onDelete(DeleteRule.CASCADE).add();
 		}		 	

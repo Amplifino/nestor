@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Optional;
 
 import com.amplifino.nestor.rdbms.schema.Table;
-import com.amplifino.nestor.rdbms.schema.TableBundle;
+import com.amplifino.nestor.rdbms.schema.Schema;
 
-class TableBundleImpl implements TableBundle {
+class SchemaImpl implements Schema {
 
 	private final SchemaServiceImpl schemaService;
 	private final String name;
-	private Optional<String> schema = Optional.empty();
+	private Optional<String> schemaOwner = Optional.empty();
 	private final List<TableImpl> tables = new ArrayList<>();
 	
-	TableBundleImpl(SchemaServiceImpl schemaService, String name) {
+	SchemaImpl(SchemaServiceImpl schemaService, String name) {
 		this.schemaService = schemaService;
 		this.name = name;
 	}
@@ -26,8 +26,8 @@ class TableBundleImpl implements TableBundle {
 	}
 	
 	@Override
-	public Optional<String> schema() {
-		return schema;
+	public Optional<String> schemaOwner() {
+		return schemaOwner;
 	}
 	
 	@Override
@@ -48,17 +48,17 @@ class TableBundleImpl implements TableBundle {
 		this.tables.add(table);
 	}
 	
-	static class BuilderImpl implements TableBundle.Builder {
+	static class BuilderImpl implements Schema.Builder {
 		
-		private final TableBundleImpl tableBundle;
+		private final SchemaImpl tableBundle;
 		
 		BuilderImpl(SchemaServiceImpl service, String name) {
-			this.tableBundle = new TableBundleImpl(service, name);
+			this.tableBundle = new SchemaImpl(service, name);
 		}
 		
 		@Override
-		public BuilderImpl schema(String name) {
-			tableBundle.schema =  Optional.of(name);
+		public BuilderImpl schemaOwner(String name) {
+			tableBundle.schemaOwner =  Optional.of(name);
 			return this;
 		}
 		
@@ -68,7 +68,7 @@ class TableBundleImpl implements TableBundle {
 		}
 			
 		@Override
-		public TableBundleImpl build() {
+		public SchemaImpl build() {
 			tableBundle.schemaService.add(tableBundle);
 			return tableBundle;
 		}

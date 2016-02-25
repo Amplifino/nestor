@@ -15,14 +15,14 @@ import com.amplifino.nestor.rdbms.schema.Unique;
 
 class TableImpl implements Table {
 	
-	private final TableBundleImpl bundle;
+	private final SchemaImpl schema;
 	private final String name;
 	private final List<ColumnImpl> columns = new ArrayList<>();
 	private final List<TableConstraintImpl> constraints = new ArrayList<>();
 	private final List<IndexImpl> indexes = new ArrayList<>();
 	
-	TableImpl(TableBundleImpl bundle, String name) {
-		this.bundle = bundle;
+	TableImpl(SchemaImpl bundle, String name) {
+		this.schema = bundle;
 		this.name = name;
 	}
 
@@ -32,8 +32,8 @@ class TableImpl implements Table {
 	}
 
 	@Override
-	public TableBundleImpl bundle() {
-		return bundle;
+	public SchemaImpl schema() {
+		return schema;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ class TableImpl implements Table {
 
 	@Override
 	public String qualifiedName() {
-		return bundle.schema().map(schema -> schema+".").orElse("") + name;
+		return schema.schemaOwner().map(schema -> schema+".").orElse("") + name;
 	}
 
 	@Override
@@ -131,7 +131,7 @@ class TableImpl implements Table {
 	static class BuilderImpl implements Table.Builder {
 		private TableImpl table;
 		
-		BuilderImpl(TableBundleImpl tableBundle, String name) {
+		BuilderImpl(SchemaImpl tableBundle, String name) {
 			this.table = new TableImpl(tableBundle, name);
 		}
 		
@@ -162,7 +162,7 @@ class TableImpl implements Table {
 		
 		@Override
 		public TableImpl build() {
-			table.bundle.add(table);
+			table.schema.add(table);
 			return table;
 		}
 

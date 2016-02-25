@@ -1,7 +1,6 @@
 package com.amplifino.nestor.rdbms.schema.impl;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import com.amplifino.nestor.rdbms.schema.Column;
 import com.amplifino.nestor.rdbms.schema.PrimaryKey;
@@ -18,14 +17,8 @@ class PrimaryKeyImpl extends TableConstraintImpl implements PrimaryKey {
 	}
 	
 	@Override
-	public String ddl() {
-		return 
-		 "CONSTRAINT " +
-		 name() + 
-		 " PRIMARY KEY (" +
-		String.join(",", columns().stream().map(Column::name).collect(Collectors.toList())) +
-		")";
-		 
+	String constraintType() {
+		return "PRIMARY KEY";
 	}
 	
 	static class Builder implements PrimaryKey.Builder {

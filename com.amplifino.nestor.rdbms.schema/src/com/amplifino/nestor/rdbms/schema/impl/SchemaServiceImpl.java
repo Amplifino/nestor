@@ -8,33 +8,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.osgi.service.component.annotations.Component;
 
 import com.amplifino.nestor.rdbms.schema.SchemaService;
-import com.amplifino.nestor.rdbms.schema.TableBundle;
+import com.amplifino.nestor.rdbms.schema.Schema;
 
 @Component
 public class SchemaServiceImpl implements SchemaService {
 
-	private List<TableBundleImpl> bundles = new CopyOnWriteArrayList<>();
+	private List<SchemaImpl> schemas = new CopyOnWriteArrayList<>();
 	
 	public SchemaServiceImpl() {
 	}
 
 	@Override
-	public TableBundleImpl.BuilderImpl builder(String name) {
-		return new TableBundleImpl.BuilderImpl(this, Objects.requireNonNull(name));
+	public SchemaImpl.BuilderImpl builder(String name) {
+		return new SchemaImpl.BuilderImpl(this, Objects.requireNonNull(name));
 	}
 
 	@Override
-	public TableBundle bundle(String name) {
-		return bundles.stream().filter(bundle -> bundle.name().equals(name)).findFirst().orElseThrow(IllegalArgumentException::new);
+	public Schema schema(String name) {
+		return schemas.stream().filter(bundle -> bundle.name().equals(name)).findFirst().orElseThrow(IllegalArgumentException::new);
 	}
 
 	@Override
-	public List<? extends TableBundle> bundles() {
-		return Collections.unmodifiableList(bundles);
+	public List<? extends Schema> schemas() {
+		return Collections.unmodifiableList(schemas);
 	}
 	
-	void add(TableBundleImpl bundle) {
-		bundles.add(bundle);
+	void add(SchemaImpl bundle) {
+		schemas.add(bundle);
 	}
 
 }

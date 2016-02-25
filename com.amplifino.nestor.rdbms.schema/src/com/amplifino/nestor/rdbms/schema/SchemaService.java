@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SchemaService {
 
-	TableBundle.Builder builder(String name);
-	TableBundle bundle(String name);
-	List<? extends TableBundle> bundles();
+	Schema.Builder builder(String name);
+	Schema schema(String name);
+	List<? extends Schema> schemas();
 }

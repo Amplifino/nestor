@@ -13,7 +13,6 @@ class ForeignKeyImpl extends TableConstraintImpl implements ForeignKey {
 
 	private Table referencedTable;
 	private DeleteRule deleteRule = DeleteRule.RESTRICT;
-	private boolean refPartition = false;
 	private boolean noDdl = false;
 	
 	ForeignKeyImpl(TableImpl table, String name) {
@@ -34,26 +33,20 @@ class ForeignKeyImpl extends TableConstraintImpl implements ForeignKey {
 	public DeleteRule deleteRule() {
 		return deleteRule;
 	}
-
+	
 	@Override
-	public boolean isRefPartition() {
-		return refPartition;
+	String constraintType() {
+		return "FOREIGN KEY";
 	}
 
 	@Override
 	public String ddl() {
-		return 
-			"CONSTRAINT " +
-			 name() + 
-			 " FOREIGN KEY (" +
-			String.join(",", columns().stream().map(Column::name).collect(Collectors.toList())) +
-			") REFERENCES " + 
-			referencedTable.qualifiedName() +
-			"(" + 
-			String.join(",", referencedTable.primaryKeyColumns().stream().map(Column::name).collect(Collectors.toList())) +
-			") " + 
-			deleteRule.getDdl();
-		
+		return super.ddl()
+			.concat(
+				referencedTable.primaryKeyColumns().stream()
+					.map(Column::name)
+					.collect(Collectors.joining(", ", " references " + referencedTable().qualifiedName() + " (", ") ")))
+			.concat(deleteRule.getDdl());		
 	}
 	
 	@Override
@@ -91,18 +84,20 @@ class ForeignKeyImpl extends TableConstraintImpl implements ForeignKey {
 
 		@Override
 		public ForeignKey.Builder references(String tableName) {
-			return references(foreignKey.table().bundle().table(tableName));		
+			if (tableName.equals(foreignKey.table().name())) {
+				return references(foreignKey.table());
+			} else {
+				return references(foreignKey.table().schema().table(tableName));
+			}
 		}
 
 		@Override
 		public ForeignKey.Builder references(String bundleName, String tableName) {
-			return references(foreignKey.table().bundle().schemaService().bundle(bundleName).table(tableName));
-		}
-
-		@Override
-		public ForeignKey.Builder refPartition() {
-			foreignKey.refPartition = true;
-			return this;
+			if (bundleName.equals(foreignKey.table().schema().name()) && tableName.equals(foreignKey.table().name())) {
+				return references(foreignKey.table());
+			} else {
+				return references(foreignKey.table().schema().schemaService().schema(bundleName).table(tableName));
+			}
 		}
 
 		@Override

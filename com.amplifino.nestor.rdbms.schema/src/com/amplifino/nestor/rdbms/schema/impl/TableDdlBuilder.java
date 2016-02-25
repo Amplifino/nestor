@@ -23,7 +23,7 @@ class TableDdlBuilder {
         for (IndexImpl index : table.indexes()) {
             ddl.add(getIndexDdl(index));
         }
-        for (TableImpl created : table.bundle().tables()) {
+        for (TableImpl created : table.schema().tables()) {
         	if (created.equals(table)) {
         		break;
         	}
@@ -42,7 +42,7 @@ class TableDdlBuilder {
         sb.append("(");
         doAppendColumns(sb, table.columns(), true, true);
         for (TableConstraintImpl constraint : table.constraints()) {
-        	if (!constraint.delayDdl() && !constraint.noDdl()) {
+        	if (!constraint.noDdl()) {
         		sb.append(", ");
         		sb.append(getConstraintFragment(constraint));
         	}

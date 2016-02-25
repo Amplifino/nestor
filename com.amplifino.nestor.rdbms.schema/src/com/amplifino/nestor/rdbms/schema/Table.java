@@ -9,7 +9,7 @@ public interface Table {
     String insertSql();
     String updateSql();
     String deleteSql();
-    TableBundle bundle();
+    Schema schema();
 
     String name();
     String qualifiedName();

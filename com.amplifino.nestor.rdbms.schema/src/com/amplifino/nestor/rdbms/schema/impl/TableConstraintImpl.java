@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.amplifino.nestor.rdbms.schema.Column;
 import com.amplifino.nestor.rdbms.schema.TableConstraint;
@@ -72,10 +73,15 @@ abstract class TableConstraintImpl implements TableConstraint {
 		columns.add(Objects.requireNonNull(column));
 	}
 	
-	boolean delayDdl() {
-		return false;
+	public String ddl() {
+		return 
+			" constraint " + 
+			name() +
+			" " + 
+			constraintType() +
+			columns.stream().map(Column::name).collect(Collectors.joining(","," (",") "));
 	}
 	
-	abstract String ddl();
+	abstract String constraintType();
 		
 }

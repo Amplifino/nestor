@@ -4,7 +4,6 @@ public interface ForeignKey extends TableConstraint {
 	
 	Table referencedTable();	
 	DeleteRule deleteRule();
-	boolean isRefPartition();
 	
 	interface Builder {
 		Builder on(Column column, Column ... columns);
@@ -12,7 +11,6 @@ public interface ForeignKey extends TableConstraint {
 		Builder references(Table table);
 		Builder references(String tableName);
 		Builder references(String componentName , String tableName);
-		Builder refPartition();
 		Builder noDdl();
 		ForeignKey add();		
 	}
