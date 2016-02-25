@@ -33,6 +33,7 @@ public class SchemaTester {
 		Table.Builder tableBuilder = schemaBuilder.builder("testtable");
 		tableBuilder.column("name").varChar(20).add();
 		tableBuilder.build();
+		schemaBuilder.build();
 		JdbcDataSource dataSource = new JdbcDataSource();
 		dataSource.setUrl("jdbc:h2:mem:db1");
 		Statement statement = dataSource.getConnection().createStatement();

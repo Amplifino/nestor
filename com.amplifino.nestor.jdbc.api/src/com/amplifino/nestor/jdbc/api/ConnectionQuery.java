@@ -3,6 +3,7 @@ package com.amplifino.nestor.jdbc.api;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class ConnectionQuery extends AbstractQuery {
 		
@@ -25,6 +26,15 @@ public class ConnectionQuery extends AbstractQuery {
 		public int executeUpdate() {
 			try {
 				return handler().executeUpdate(connection);
+			} catch (SQLException e) {
+				throw new JdbcException(e);
+			}
+		}
+
+		@Override
+		public <T> Optional<T> findFirst(TupleParser<T> parser) {
+			try {
+				return handler().findFirst(connection, parser);
 			} catch (SQLException e) {
 				throw new JdbcException(e);
 			}

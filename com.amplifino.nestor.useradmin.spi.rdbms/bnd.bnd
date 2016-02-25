@@ -1,0 +1,7 @@
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	com.amplifino.nestor.useradmin;version=latest,\
+	com.amplifino.nestor.jdbc.api;version=latest,\
+	com.amplifino.nestor.rdbms.schema;version=latest,\
+	osgi.core;version=6.0
+Private-Package: com.amplifino.nestor.useradmin.spi.rdbms

@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 class QueryHandler  {
 		
@@ -40,6 +41,19 @@ class QueryHandler  {
 						result.add(parser.parse(resultSet));
 					}
 					return result;
+				}
+			}
+		}
+		
+		<T> Optional<T> findFirst(Connection connection, TupleParser<T> parser) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				bind(statement);
+				try (ResultSet resultSet = statement.executeQuery()) {
+					if (resultSet.next()) {
+						return Optional.of(parser.parse(resultSet));
+					} else {
+						return Optional.empty();
+					}
 				}
 			}
 		}

@@ -39,7 +39,7 @@ public class GroupResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@RolesAllowed("userAdmin")
-	public Response getGroups(@Context SecurityContext securityContext) {		
+	public Response getGroups() {		
 		return toResponse(UserApplication.allRoles(admin).stream()
 			.filter(role -> role.getType() == Role.GROUP)
 			.map(Group.class::cast)
