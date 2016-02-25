@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ConnectionQuery extends AbstractQuery {
+class ConnectionQuery extends AbstractQuery {
 		
 		private final Connection connection;
 		

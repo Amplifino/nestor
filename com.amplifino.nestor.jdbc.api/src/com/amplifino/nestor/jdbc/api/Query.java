@@ -13,6 +13,7 @@ public interface Query {
 	
 	Query text(String sql);
 	Query parameters(Object parameter, Object ... parameters);
+	Query limit(int limit);
 	<T> List<T> select(TupleParser<T> parser);
 	<T> Optional<T> findFirst(TupleParser<T> parser);
 	int executeUpdate();

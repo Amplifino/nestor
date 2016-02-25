@@ -11,9 +11,12 @@ This repo contains the following Bundles (BndTools projects)
 - **com.amplifino.counters**: thread safe counters
 - **com.amplifino.nestor.bundles.rest:** sample rest whiteboard application showing graphical view of bundle wiring
 - **com.amplifino.nestor.dot**: java interface to external GraphViz dot program
+- **com.amplifino.nestor.jdbc.api**: fluent api on top of JDBC
 - **com.amplifino.nestor.jdbc.pools**: JDBC connection pool using OSGI JDBC service (DataSourceFactory)
 - **com.amplifino.nestor.logging**: logging bridge from java.util.logging to OSGI Log Service
 - **com.amplifino.nestor.logging.test**: test bundle for com.amplifino.nestor.logging
+- **com.amplifino.nestor.rdbms.schema**: database schema
+- **com.amplifino.nestor.rdbms.schema.test**: database schema test bundle
 - **com.amplifino.nestor.rest**: rest whiteboard using Jersey and Jackson
 - **com.amplifino.nestor.security.http**: servlet filter using OSGI useradmin service 
 - **com.amplifino.nestor.soap**: soap whiteboard using JAX-WS Reference Implementation included in Java 8
@@ -26,6 +29,7 @@ This repo contains the following Bundles (BndTools projects)
 - **com.amplifino.nestor.useradmin**: implementation of OSGI UserAdmin Service with pluggable persistence provider
 - **com.amplifino.nestor.useradmin.rest**: rest interface on OSGI UserAdmin Service with sample UI using Angular.js
 - **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using Obelix project
+- **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using a relational database 
 - **com.amplifino.nestor.useradmin.test**: test bundle for nestor.useradmin
 - **com.amplifino.pools**: generic object pool
 

@@ -166,11 +166,9 @@ public class RoleRepositoryImpl implements RoleRepository {
 	
 	
 	private Dictionary<String, ?> toDictionary(Map<String, ?> properties) {
-		Dictionary<String, Object> result = new Hashtable<>();
-		for (Map.Entry<String, ?> entry : properties.entrySet()) {
-			result.put(entry.getKey(), entry.getValue());
-		}
-		return result;
+		Hashtable<String, Object> result = new Hashtable<>();
+		result.putAll(properties);
+		return result;		
 	}
 	
 	Map<String, Object> getProperties(String name, boolean credentials) {

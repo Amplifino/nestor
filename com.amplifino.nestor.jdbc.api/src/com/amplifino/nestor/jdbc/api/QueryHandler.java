@@ -20,6 +20,7 @@ class QueryHandler  {
 		
 		private StringBuilder sqlBuilder = new StringBuilder();
 		private final List<Object> parameters = new ArrayList<>();
+		private int limit = Integer.MAX_VALUE;
 		
 		QueryHandler text(String sql) {
 			sqlBuilder.append(sql);
@@ -32,12 +33,17 @@ class QueryHandler  {
 			return this;
 		}
 
+		void limit(int limit) {
+			this.limit = limit;
+		}
+		
 		<T> List<T> select(Connection connection, TupleParser<T> parser) throws SQLException {
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
 				bind(statement);
 				try (ResultSet resultSet = statement.executeQuery()) {
 					List<T> result = new ArrayList<>();
-					while(resultSet.next()) {
+					int i = 0;
+					while(resultSet.next() && i++ < limit) {
 						result.add(parser.parse(resultSet));
 					}
 					return result;

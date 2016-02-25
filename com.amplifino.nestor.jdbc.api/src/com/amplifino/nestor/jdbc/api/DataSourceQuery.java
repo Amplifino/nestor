@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-public class DataSourceQuery extends AbstractQuery  {
+class DataSourceQuery extends AbstractQuery  {
 		
 		private final DataSource dataSource;
 		

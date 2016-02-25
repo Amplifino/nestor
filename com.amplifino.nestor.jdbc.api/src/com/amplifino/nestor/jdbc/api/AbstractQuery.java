@@ -16,6 +16,12 @@ abstract class AbstractQuery implements Query {
 			return this;
 		}
 		
+		@Override
+		public Query limit(int limit) {
+			handler.limit(limit);
+			return this;
+		}
+		
 		QueryHandler handler() {
 			return handler;
 		}
