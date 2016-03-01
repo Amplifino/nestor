@@ -1,9 +1,14 @@
 package com.amplifino.nestor.rdbms.schema.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import javax.sql.DataSource;
 
 import com.amplifino.nestor.rdbms.schema.Table;
 import com.amplifino.nestor.rdbms.schema.Schema;
@@ -38,6 +43,28 @@ class SchemaImpl implements Schema {
 	@Override
 	public TableImpl table(String name) {
 		return tables.stream().filter(table -> table.name().equals(name)).findAny().orElseThrow(IllegalArgumentException::new);
+	}
+	
+	@Override
+	public void create(DataSource dataSource) {
+		try {
+			try(Connection connection = dataSource.getConnection()) {
+				try (Statement statement = connection.createStatement()) {
+					for (Table table : tables()) {
+						for (String sql : table.ddl()) {
+							statement.executeUpdate(sql);
+						}
+					}
+				}
+			} 
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public void unregister() {
+		schemaService.remove(this);
 	}
 	
 	SchemaServiceImpl schemaService() {

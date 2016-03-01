@@ -1,10 +1,14 @@
 package com.amplifino.nestor.rdbms.schema;
 
+import org.osgi.annotation.versioning.ProviderType;
+
+@ProviderType
 public interface ForeignKey extends TableConstraint {
 	
 	Table referencedTable();	
 	DeleteRule deleteRule();
 	
+	@ProviderType
 	interface Builder {
 		Builder on(Column column, Column ... columns);
 		Builder onDelete(DeleteRule rule);

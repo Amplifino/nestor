@@ -17,7 +17,7 @@ public class UserEntityImpl extends RoleEntityImpl implements UserEntity {
 	private Map<String, Object> fetchCredentials() {
 		if (credentials == null) {
 			credentials = new HashMap<>();
-			credentials.putAll(repository().getProperties(name(), true));
+			credentials.putAll(repository().getProperties(this, true));
 		}
 		return credentials;
 	}
@@ -30,9 +30,9 @@ public class UserEntityImpl extends RoleEntityImpl implements UserEntity {
 	public Object putCredential(String key, Object value) {
 		Map<String, Object> props = fetchCredentials();
 		if (props.containsKey(key)) {
-			repository().updateProperty(name(), true, key, value);
+			repository().updateProperty(this, true, key, value);
 		} else {
-			repository().createProperty(name(), true, key, value);
+			repository().createProperty(this, true, key, value);
 		}
 		return props.put(key, value);
 	}
@@ -41,7 +41,7 @@ public class UserEntityImpl extends RoleEntityImpl implements UserEntity {
 	public Object removeCredential(Object key) {
 		Map<String, Object> props = fetchCredentials();
 		if (props.containsKey(key)) {
-			repository().removeProperty(name(), true, (String) key);
+			repository().removeProperty(this, true, (String) key);
 		}
 		return props.remove(key);
 	}

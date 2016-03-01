@@ -3,8 +3,10 @@ package com.amplifino.nestor.rdbms.schema.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.amplifino.nestor.rdbms.schema.AssociationType;
 import com.amplifino.nestor.rdbms.schema.Column;
 import com.amplifino.nestor.rdbms.schema.ForeignKey;
 import com.amplifino.nestor.rdbms.schema.Index;
@@ -63,12 +65,19 @@ class TableImpl implements Table {
 
 	@Override
 	public PrimaryKeyImpl primaryKey() {
-		return constraints.stream().filter(TableConstraint::isPrimaryKey).map(PrimaryKeyImpl.class::cast).findFirst().get();
+		return constraints.stream()
+			.filter(TableConstraint::isPrimaryKey)
+			.map(PrimaryKeyImpl.class::cast)
+			.findFirst()
+			.get();
 	}
 
 	@Override
 	public List<ForeignKeyImpl> foreignKeys() {
-		return constraints.stream().filter(TableConstraint::isForeignKey).map(ForeignKeyImpl.class::cast).collect(Collectors.toList());
+		return constraints.stream()
+			.filter(TableConstraint::isForeignKey)
+			.map(ForeignKeyImpl.class::cast)
+			.collect(Collectors.toList());
 	}
 
 	@Override
@@ -126,6 +135,28 @@ class TableImpl implements Table {
 		return columns.stream()
 			.map(Column::name)
 			.collect(Collectors.joining(", ", "select ", " from " + qualifiedName()));		
+	}
+	
+	@Override
+	public AssociationType associationType(Table other) {
+		Optional<? extends ForeignKey> foreignKey = foreignKeys().stream()
+			.filter(f -> f.referencedTable().equals(other))
+			.findFirst();
+		if (foreignKey.isPresent()) {
+			if (foreignKey.get().isNotNull()) {
+				return AssociationType.EXACTLYONE;
+			} else {
+				return AssociationType.ZEROORONE;
+			}
+		}
+		foreignKey = other.foreignKeys().stream()
+			.filter(f -> f.referencedTable().equals(this))
+			.findFirst();
+		if (foreignKey.isPresent()) {
+			return AssociationType.ZEROORMORE;
+		} else {
+			return AssociationType.NONE;
+		}
 	}
 	
 	static class BuilderImpl implements Table.Builder {

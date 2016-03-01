@@ -2,14 +2,14 @@ package com.amplifino.nestor.jdbc.api;
 
 import java.sql.SQLException;
 
-public class JdbcException extends RuntimeException {
+public class UncheckedSQLException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public JdbcException(SQLException e) {
+	public UncheckedSQLException(SQLException e) {
 		super(e);
 	}
 }

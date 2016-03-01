@@ -76,10 +76,19 @@ class ColumnImpl implements Column {
 		public Column.Builder number() {
 			return type("NUMBER");
 		}
+		
+		@Override
+		public Column.Builder decimal(int precision, int scale) {
+			return type("DECIMAL(" + precision + "," + scale + ")");
+		}
 
 		@Override
+		public Column.Builder character(int length) {
+			return type("CHARACHER(" + length + ")");
+		}
+		@Override
 		public Column.Builder varChar(int length) {
-			return type("VARCHAR2(" + length + ")");
+			return type("VARCHAR(" + length + ")");
 		}
 
 		@Override

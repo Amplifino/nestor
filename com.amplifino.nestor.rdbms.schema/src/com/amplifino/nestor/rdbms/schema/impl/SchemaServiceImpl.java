@@ -38,5 +38,9 @@ public class SchemaServiceImpl implements SchemaService {
 	void add(SchemaImpl schema) {
 		schemas.put(schema.name(), schema);
 	}
+	
+	void remove(SchemaImpl schema) {
+		schemas.remove(schema.name(), schema);
+	}
 
 }

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -15,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 class QueryHandler  {
 		
 		private StringBuilder sqlBuilder = new StringBuilder();
 		private final List<Object> parameters = new ArrayList<>();
-		private int limit = Integer.MAX_VALUE;
+		private long limit = Long.MAX_VALUE;
+		private int fetchSize = 0;
 		
 		QueryHandler text(String sql) {
 			sqlBuilder.append(sql);
@@ -37,18 +40,8 @@ class QueryHandler  {
 			this.limit = limit;
 		}
 		
-		<T> List<T> select(Connection connection, TupleParser<T> parser) throws SQLException {
-			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
-				bind(statement);
-				try (ResultSet resultSet = statement.executeQuery()) {
-					List<T> result = new ArrayList<>();
-					int i = 0;
-					while(resultSet.next() && i++ < limit) {
-						result.add(parser.parse(resultSet));
-					}
-					return result;
-				}
-			}
+		void fetchSize(int fetchSize) {
+			this.fetchSize = fetchSize;
 		}
 		
 		<T> Optional<T> findFirst(Connection connection, TupleParser<T> parser) throws SQLException {
@@ -93,4 +86,41 @@ class QueryHandler  {
 			}
 		}
 
+		<T> long select(Connection connection, TupleParser<T> parser, Consumer<T> consumer) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				if (fetchSize > 0) {
+					statement.setFetchSize(fetchSize);
+				}
+				bind(statement);
+				try (ResultSet resultSet = statement.executeQuery()) {
+					long i = 0;
+					while(resultSet.next() && i++ < limit) {
+						consumer.accept(parser.parse(resultSet));
+					}
+					return i;
+				}
+			}
+		}
+
+		<T> T generatedKey(Connection connection, TupleParser<T> generatedKeyParser) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS)) {
+				bind(statement);
+				statement.executeUpdate();
+				try (ResultSet resultSet = statement.getGeneratedKeys()) {
+					resultSet.next();
+					return generatedKeyParser.parse(resultSet);
+				}
+			}
+		}
+		
+		<T> int[] executeBatch(Connection connection, Iterable<T> values, Binder<? super T> binder) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				for (T value : values) {
+					binder.bind(statement, value);
+					statement.addBatch();
+				}
+				return statement.executeBatch();
+			}
+		}
+		
 }

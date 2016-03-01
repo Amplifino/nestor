@@ -20,7 +20,7 @@ public class RoleEntityImpl implements RoleEntity {
 	private Map<String, Object> fetchProperties() {
 		if (properties == null) {
 			properties = new HashMap<>();
-			properties.putAll(repository.getProperties(name, false));
+			properties.putAll(repository.getProperties(this, false));
 		}
 		return properties;
 	}
@@ -39,9 +39,9 @@ public class RoleEntityImpl implements RoleEntity {
 	public Object putProperty(String key, Object value) {
 		Map<String, Object> props = fetchProperties();
 		if (props.containsKey(key)) {
-			repository.updateProperty(name, false, key, value);
+			repository.updateProperty(this, false, key, value);
 		} else {
-			repository.createProperty(name, false, key, value);
+			repository.createProperty(this, false, key, value);
 		}
 		return props.put(key, value);
 	}
@@ -50,7 +50,7 @@ public class RoleEntityImpl implements RoleEntity {
 	public Object removeProperty(Object key) {
 		Map<String, Object> props = fetchProperties();
 		if (props.containsKey(key)) {
-			repository.removeProperty(name, false, (String) key);
+			repository.removeProperty(this, false, (String) key);
 		}
 		return props.remove(key);
 	}

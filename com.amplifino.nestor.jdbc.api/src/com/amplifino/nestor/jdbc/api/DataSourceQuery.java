@@ -2,8 +2,8 @@ package com.amplifino.nestor.jdbc.api;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.sql.DataSource;
 
@@ -16,13 +16,13 @@ class DataSourceQuery extends AbstractQuery  {
 		}
 		
 		@Override
-		public <T> List<T> select(TupleParser<T> parser) {
+		public <T> long select(TupleParser<T> parser, Consumer<T> consumer) {
 			try {
-				try (Connection connection = dataSource.getConnection()) {
-					return handler().select(connection, parser);
-				}
+				try(Connection connection = dataSource.getConnection()) {
+					return handler().select(connection, parser, consumer);
+				} 
 			} catch (SQLException e) {
-				throw new JdbcException(e);
+				throw new UncheckedSQLException(e);
 			}
 		}
 		
@@ -33,7 +33,7 @@ class DataSourceQuery extends AbstractQuery  {
 					return handler().findFirst(connection, parser);
 				}
 			} catch (SQLException e) {
-				throw new JdbcException(e);
+				throw new UncheckedSQLException(e);
 			}
 		}
 
@@ -44,8 +44,29 @@ class DataSourceQuery extends AbstractQuery  {
 					return handler().executeUpdate(connection);
 				}
 			} catch (SQLException e) {
-				throw new JdbcException(e);
+				throw new UncheckedSQLException(e);
 			}
 		}
 		
+		@Override
+		public <T> T generatedKey(TupleParser<T> generatedKeyParser) {
+			try {
+				try (Connection connection = dataSource.getConnection()) {
+					return handler().generatedKey(connection, generatedKeyParser);
+				}
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
+		
+		@Override
+		public <T> int[] executeBatch(Iterable<? extends T> values, Binder<? super T> binder) {
+			try {
+				try (Connection connection = dataSource.getConnection()) {
+					return handler().executeBatch(connection, values, binder);
+				}
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
 }

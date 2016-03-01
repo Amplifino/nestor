@@ -9,44 +9,44 @@ import com.amplifino.nestor.useradmin.spi.RoleEntity;
 
 public class GroupEntityImpl extends UserEntityImpl implements GroupEntity {
 	
-	private List<MemberEntity> members;
+	private List<Member> allMembers;
 
 	GroupEntityImpl(RoleRepositoryImpl repository, String name) {
 		super(repository, name);
 	}
 	
-	private List<MemberEntity> fetchMembers() {
-		if (members == null) {
-			members = new ArrayList<>(repository().members(this));
+	private List<Member> allMembers() {
+		if (allMembers == null) {
+			allMembers = new ArrayList<>(repository().members(this));
 		}
-		return members;
+		return allMembers;
 	}
 
 	@Override
 	public boolean addRequiredMember(RoleEntity role) {
-		if (fetchMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
+		if (allMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
 			return false;
 		} else {
-			members.add(repository().addMember(this, role , true));
+			allMembers().add(repository().addMember(this, role , true));
 			return true;
 		}
 	}
 
 	@Override
 	public boolean addMember(RoleEntity role) {
-		if (fetchMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
+		if (allMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
 			return false;
 		} else {
-			members.add(repository().addMember(this, role , false));
+			allMembers().add(repository().addMember(this, role , false));
 			return true;
 		}
 	}
 
 	@Override
 	public boolean removeMember(RoleEntity role) {
-		if (fetchMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
+		if (allMembers().stream().anyMatch(member -> member.role().name().equals(role.name()))) {
 			repository().removeMember(this, role);
-			return members.removeIf(member -> member.role().name().equals(role.name()));
+			return allMembers().removeIf(member -> member.role().name().equals(role.name()));
 		} else {
 			return false;
 		}
@@ -54,12 +54,12 @@ public class GroupEntityImpl extends UserEntityImpl implements GroupEntity {
 
 	@Override
 	public List<? extends RoleEntity> members() {
-		return fetchMembers().stream().filter( m -> !m.isRequired()).map(MemberEntity::role).collect(Collectors.toList());
+		return allMembers().stream().filter( m -> !m.isRequired()).map(Member::role).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<? extends RoleEntity> requiredMembers() {
-		return fetchMembers().stream().filter(MemberEntity::isRequired).map(MemberEntity::role).collect(Collectors.toList());
+		return allMembers().stream().filter(Member::isRequired).map(Member::role).collect(Collectors.toList());
 	}
 
 	@Override

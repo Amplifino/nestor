@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.Base64;
 import java.util.Collection;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.useradmin.Role;
 
@@ -51,6 +51,11 @@ public class RoleRepositoryImpl implements RoleRepository {
 			tableBuilder.build();
 		}
 		this.schema = schemaBuilder.build();
+	}
+	
+	@Deactivate
+	public void deactivate() {
+		schema.unregister();
 	}
 	
 	private Table table(UserAdminSchema tableSpec) {
@@ -96,6 +101,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 			return true;
 		}
 	}
+	
 	@Override
 	public synchronized Optional<RoleEntity> removeRole(String name) {
 		Optional<RoleEntity> role = getRole(name);
@@ -141,7 +147,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 		} else {
 			Filter ldapFilter = FrameworkUtil.createFilter(filter);
 			return allRoles.stream()
-				.filter(role -> ldapFilter.matchCase(toDictionary(role.properties())))
+				.filter(role -> ldapFilter.matchCase(new Hashtable<>(role.properties())))
 				.collect(Collectors.toList());
 		}
 	}
@@ -163,19 +169,11 @@ public class RoleRepositoryImpl implements RoleRepository {
 		}
 	}
 	
-	
-	
-	private Dictionary<String, ?> toDictionary(Map<String, ?> properties) {
-		Hashtable<String, Object> result = new Hashtable<>();
-		result.putAll(properties);
-		return result;		
-	}
-	
-	Map<String, Object> getProperties(String name, boolean credentials) {
+	Map<String, Object> getProperties(RoleEntityImpl role, boolean credentials) {
 		return Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_PROPERTIES.name()).selectSql())
+			.text(table(UserAdminSchema.USERADMIN_PROPERTIES).selectSql())
 			.text(" where rolename = ? and credential = ?")
-			.parameters(name, credentials ? "Y" : "N")
+			.parameters(role.name(), credentials ? "Y" : "N")
 			.select(this::parseProperty)
 			.stream()
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -201,46 +199,47 @@ public class RoleRepositoryImpl implements RoleRepository {
 			throw new IllegalArgumentException("" + value);
 		}
 	}
-	void createProperty(String name , boolean credential, String key, Object value) {
+	
+	void createProperty(RoleEntityImpl role , boolean credential, String key, Object value) {
 		String[] typedValue = typedValue(value);
 		Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_PROPERTIES.name()).insertSql())
-			.parameters(credential ? "Y" : "N" , name , key, typedValue[0], typedValue[1])
+			.text(table(UserAdminSchema.USERADMIN_PROPERTIES).insertSql())
+			.parameters(credential ? "Y" : "N" , role.name() , key, typedValue[0], typedValue[1])
 			.executeUpdate();
 	}
 	
-	void updateProperty(String name , boolean credential, String key, Object value) {
+	void updateProperty(RoleEntityImpl role , boolean credential, String key, Object value) {
 		String[] typedValue = typedValue(value);
 		Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_PROPERTIES.name()).updateSql())
+			.text(table(UserAdminSchema.USERADMIN_PROPERTIES).updateSql())
 			.parameters(typedValue[0], typedValue[1])
-			.parameters(credential ? "Y" : "N" , name , key)
+			.parameters(credential ? "Y" : "N" , role.name() , key)
 			.executeUpdate();
 	}
 	
-	void removeProperty(String name, boolean credential, String key) {
+	void removeProperty(RoleEntityImpl role, boolean credential, String key) {
 		Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_PROPERTIES.name()).deleteSql())
-			.parameters(credential ? "Y" : "N" , name , key)
+			.text(table(UserAdminSchema.USERADMIN_PROPERTIES).deleteSql())
+			.parameters(credential ? "Y" : "N" , role.name() , key)
 			.executeUpdate();
 	}
 	
-	MemberEntity addMember(GroupEntityImpl group, RoleEntity role, boolean required) {
+	Member addMember(GroupEntityImpl group, RoleEntity role, boolean required) {
 		Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_MEMBERS.name()).insertSql())
+			.text(table(UserAdminSchema.USERADMIN_MEMBERS).insertSql())
 			.parameters(group.name(), role.name(), required ? "Y" : "N")
 			.executeUpdate();
-		return new MemberEntity(role, required);
+		return new Member(role, required);
 	}
 	
 	void removeMember(GroupEntityImpl group, RoleEntity role) {
 		Query.on(dataSource)
-			.text(schema.table(UserAdminSchema.USERADMIN_MEMBERS.name()).deleteSql())
+			.text(table(UserAdminSchema.USERADMIN_MEMBERS).deleteSql())
 			.parameters(group.name(), role.name())
 			.executeUpdate();
 	}
 	
-	List<MemberEntity> members(GroupEntity group) {
+	List<Member> members(GroupEntity group) {
 		return Query.on(dataSource)
 			.text(memberSql())
 			.parameters(group.name())
@@ -256,23 +255,20 @@ public class RoleRepositoryImpl implements RoleRepository {
 			" b on (a.membername = b.name) where a.groupname = ? ";
 	}
 	
-	private MemberEntity parseMember(ResultSet resultSet) throws SQLException {
-		return new MemberEntity(createRoleEntity(resultSet.getString(1), resultSet.getInt(3)), resultSet.getString(2).equals("Y"));
+	private Member parseMember(ResultSet resultSet) throws SQLException {
+		return new Member(createRoleEntity(resultSet.getString(1), resultSet.getInt(3)), resultSet.getString(2).equals("Y"));
 	}
 	
 	public void createTables() {
 		try {
-			for (Table table : schema.tables()) {
-				for (String ddl : table.ddl()) {
-					Query.on(dataSource).text(ddl).executeUpdate();
-				}
-			}
+			schema.create(dataSource);
 			Query.on(dataSource)
 				.text(table(UserAdminSchema.USERADMIN_ROLES).insertSql())
 				.parameters(Role.USER_ANYONE, Role.ROLE)
 				.executeUpdate();
 		} catch (Throwable e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 }

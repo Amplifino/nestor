@@ -2,6 +2,9 @@ package com.amplifino.nestor.rdbms.schema;
 
 import java.util.List;
 
+import org.osgi.annotation.versioning.ProviderType;
+
+@ProviderType
 public interface Table {
 
     List<String> ddl();
@@ -20,7 +23,10 @@ public interface Table {
     List<? extends ForeignKey> foreignKeys();
     List<? extends Column> primaryKeyColumns();
     List<? extends Index> indexes();
+    
+    AssociationType associationType(Table other);
         
+    @ProviderType
     interface Builder {	
     	Column.Builder column(String name);
         PrimaryKey.Builder primaryKey(String name);
