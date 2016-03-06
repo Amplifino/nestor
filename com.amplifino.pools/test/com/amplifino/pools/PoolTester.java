@@ -148,16 +148,33 @@ public class PoolTester {
 	public void testOnBorrow() {
 		Iterator<Integer> iterator = IntStream.range(0, Integer.MAX_VALUE).iterator();
 		Pool<Integer> pool = Pool.builder(iterator::next)
-			.onBorrow(i -> ((i.intValue() & 1) != 0))
+			.onBorrow(i -> ((i.intValue() % 3) != 0))
 			.build();
 		Assert.assertTrue(IntStream.range(0, 10)
 				.mapToObj( i -> pool.borrow())
-				.allMatch(i -> ((i.intValue() & 1) != 0)));
+				.allMatch(i -> ((i.intValue() % 3) != 0)));
 		Counts counts = pool.counts();
-		Assert.assertEquals(20, counts.get(Pool.Stats.ALLOCATIONS));
+		Assert.assertEquals(15, counts.get(Pool.Stats.ALLOCATIONS));
 		Assert.assertEquals(10, counts.get(Pool.Stats.BORROWS));
-		Assert.assertEquals(10, counts.get(Pool.Stats.DESTROYS));
-		Assert.assertEquals(10, counts.get(Pool.Stats.INVALIDONBORROW));				
+		Assert.assertEquals(5, counts.get(Pool.Stats.DESTROYS));
+		Assert.assertEquals(5, counts.get(Pool.Stats.INVALIDONBORROW));				
+	}
+	
+	@Test
+	public void testMinIdleTime() {
+		Iterator<Integer> iterator = IntStream.range(0, Integer.MAX_VALUE).iterator();
+		Pool<Integer> pool = Pool.builder(iterator::next)
+			.minIdleTime(1L, TimeUnit.SECONDS)
+			.onBorrow(i -> false)
+			.build();
+		IntStream.range(0, 10)
+			.mapToObj( i -> pool.borrow())
+			.collect(Collectors.toList());
+		Counts counts = pool.counts();
+		Assert.assertEquals(10, counts.get(Pool.Stats.ALLOCATIONS));
+		Assert.assertEquals(10, counts.get(Pool.Stats.BORROWS));
+		Assert.assertEquals(0, counts.get(Pool.Stats.DESTROYS));
+		Assert.assertEquals(0, counts.get(Pool.Stats.INVALIDONBORROW));				
 	}
 	
 	@Test

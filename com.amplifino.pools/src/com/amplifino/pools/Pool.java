@@ -75,6 +75,7 @@ public interface Pool<T> extends CountsSupplier {
 	 *
 	 * @param <T>
 	 */
+	@ProviderType
 	interface Builder<T> {
 		/**
 		 * configures the pool's member destroy logic
@@ -149,9 +150,10 @@ public interface Pool<T> extends CountsSupplier {
 		 */
 		Builder<T> name(String name);
 		/**
-		 * builds a new pool
-		 * @return the new pool
+		 * sets the pool minimum idle time for executing onBorrow filter
+		 * @return this
 		 */
+		Builder<T> minIdleTime(long amount, TimeUnit timeUnit);
 		Pool<T> build();
 	}
 	

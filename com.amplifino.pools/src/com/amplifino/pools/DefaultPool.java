@@ -37,6 +37,7 @@ class DefaultPool<T> implements Pool<T> {
 	private TimeUnit maxWaitUnit;
 	
 	private long maxIdleTime = Long.MAX_VALUE;
+	private long minIdleTime = -1L;
 	
 	private Logger logger = Logger.getLogger("com.amplifino.pools");
 	private Counters<Stats> counters = Counters.of(Stats.class);
@@ -155,8 +156,8 @@ class DefaultPool<T> implements Pool<T> {
 			return false;
 		}
 		try {
-			boolean result = onBorrow.test(entry.get());
-			if (result) {
+			boolean result = !entry.older(minIdleTime) || onBorrow.test(entry.get());
+			if (!result) {
 				counters.increment(Stats.INVALIDONBORROW);
 			}
 			return result;
@@ -317,6 +318,12 @@ class DefaultPool<T> implements Pool<T> {
 		@Override
 		public Builder<T> name(String name) {
 			pool.name = name;
+			return this;
+		}
+		
+		@Override
+		public Builder<T> minIdleTime(long amount, TimeUnit timeUnit) {
+			pool.minIdleTime = TimeUnit.MILLISECONDS.convert(amount,  timeUnit);
 			return this;
 		}
 		
