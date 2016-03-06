@@ -24,7 +24,7 @@ import com.amplifino.pools.Pool;
  * If using the API it is important to call close before disposing the PoolDataSource to release its pooled connections
  *
  */
-public class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {
+public final class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	private Pool<PooledConnection> pool;
@@ -115,7 +115,7 @@ public class PoolDataSource extends CommonDataSourceWrapper implements DataSourc
 	 * PoolDataSource builder
 	 *
 	 */
-	public static class Builder {
+	public static final class Builder {
 		private final PoolDataSource poolDataSource;
 		private final Pool.Builder<PooledConnection> poolBuilder;
 		
