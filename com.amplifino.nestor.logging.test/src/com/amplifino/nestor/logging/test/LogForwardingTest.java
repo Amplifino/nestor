@@ -57,7 +57,7 @@ public class LogForwardingTest {
 	@Test
 	public void testConfiguration() throws InterruptedException, IOException {
 		ConfigurationAdmin configurationAdmin = getService(ConfigurationAdmin.class);
-		Configuration configuration = configurationAdmin.getConfiguration("com.amplifino.nestor.logging", "?");
+		Configuration configuration = configurationAdmin.getConfiguration("com.amplifino.nestor.logging", null);
 		Dictionary<String, Object> props = new Hashtable<>();
 		props.put("level", Level.WARNING.getName());
 		configuration.update(props);

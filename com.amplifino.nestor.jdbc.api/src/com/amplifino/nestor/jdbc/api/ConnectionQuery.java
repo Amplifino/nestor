@@ -23,6 +23,15 @@ class ConnectionQuery extends AbstractQuery {
 		}
 		
 		@Override
+		public <T> Optional<T> collect(TupleParser<T> supplier, TupleAccumulator<T> accumulator) {
+			try {
+				return handler().collect(connection, supplier, accumulator);
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
+		
+		@Override
 		public int executeUpdate() {
 			try {
 				return handler().executeUpdate(connection);

@@ -102,6 +102,27 @@ class QueryHandler  {
 			}
 		}
 
+		<T> Optional<T> collect(Connection connection, TupleParser<T> supplier, TupleAccumulator<T> accumulator) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				if (fetchSize > 0) {
+					statement.setFetchSize(fetchSize);
+				}
+				bind(statement);
+				try (ResultSet resultSet = statement.executeQuery()) {
+					boolean isEmpty = !resultSet.next();
+					if (isEmpty) {
+						return Optional.empty();
+					}
+					T t = supplier.parse(resultSet);
+					long i = 1;
+					do {
+						accumulator.accept(t, resultSet);
+					} while (resultSet.next() && i++ < limit);
+					return Optional.of(t);
+				}
+			}
+		}
+		
 		<T> T generatedKey(Connection connection, TupleParser<T> generatedKeyParser) throws SQLException {
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS)) {
 				bind(statement);
@@ -122,5 +143,7 @@ class QueryHandler  {
 				return statement.executeBatch();
 			}
 		}
+
+		
 		
 }

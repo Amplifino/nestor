@@ -27,6 +27,18 @@ class DataSourceQuery extends AbstractQuery  {
 		}
 		
 		@Override
+		public <T> Optional<T> collect(TupleParser<T> supplier, TupleAccumulator<T> accumulator) {
+			try {
+				try(Connection connection = dataSource.getConnection()) {
+					return handler().collect(connection, supplier, accumulator);
+				}
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
+
+		
+		@Override
 		public <T> Optional<T> findFirst(TupleParser<T> parser) {
 			try {
 				try (Connection connection = dataSource.getConnection()) {

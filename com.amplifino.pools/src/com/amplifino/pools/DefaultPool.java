@@ -337,11 +337,13 @@ class DefaultPool<T> implements Pool<T> {
 
 	private static enum Strategy {
 		FIFO {
+			@Override
 			<T> boolean offer(BlockingDeque<T> deque, T element) {
 				return deque.offerFirst(element);
 			}
 		},
 		LIFO {
+			@Override
 			<T> boolean offer(BlockingDeque<T> deque, T element) {
 				return deque.offerLast(element);
 			}

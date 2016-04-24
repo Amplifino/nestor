@@ -144,7 +144,7 @@ public interface Pool<T> extends CountsSupplier {
 		 */
 		Builder<T> logger(Logger logger);
 		/**
-		 * sets the pool name
+		 * sets the pool name. Pool name is used in log messages.
 		 * @param name
 		 * @return this
 		 */
