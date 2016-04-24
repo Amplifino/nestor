@@ -17,6 +17,7 @@ digraph "Bundles" {
 	"nestor.useradmin.rest";
 	"nestor.useradmin.spi.obelix";
 	"nestor.useradmin.spi.rdbms";
+	"nestor.webconsole.security";
 	"pools";
 	"nestor.jdbc.pools" -> "pools";
 	"nestor.security.http" -> "nestor.useradmin" [style=dotted, label="org.osgi.service.useradmin"];

@@ -31,6 +31,7 @@ This repo contains the following Bundles (BndTools projects)
 - **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using Obelix project
 - **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using a relational database 
 - **com.amplifino.nestor.useradmin.test**: test bundle for nestor.useradmin
+- **com.amplifino.nestor.webconsole.security**: secures webconsole password with PBKDF2 hash
 - **com.amplifino.pools**: generic object pool
 
 Internal Bundle dependencies: ( dotted line means either bundle can be replaced with alternative implementation of the whiteboard or standard specification).
