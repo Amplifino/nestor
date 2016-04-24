@@ -1,0 +1,17 @@
+-dsannotations: *
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	org.apache.felix.webconsole;version=4.2,\
+	osgi.annotation;version=6.0
+Private-Package: com.amplifino.nestor.webconsole.security.impl
+Export-Package: com.amplifino.nestor.webconsole.security
+Bundle-Name: Amplifino Web Console Security Provider
+Bundle-Description: Security Provider for the Felix Web Console
+Bundle-Category: security
+Bundle-Copyright: Amplifino (c) 2016
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software \
+	License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Bundle-Version: 1.0
