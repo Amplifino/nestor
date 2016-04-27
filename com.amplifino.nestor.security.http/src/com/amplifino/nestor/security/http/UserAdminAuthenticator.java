@@ -17,11 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ServiceScope;
 import org.osgi.service.http.HttpContext;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.useradmin.UserAdmin;
 
-@Component(name="com.amplifino.nestor.security.http")
+@Component(name="com.amplifino.nestor.security.http", scope=ServiceScope.PROTOTYPE)
 @Designate(ocd = AuthenticatorConfiguration.class)
 public class UserAdminAuthenticator implements Filter {
 
@@ -30,6 +31,15 @@ public class UserAdminAuthenticator implements Filter {
 	private HttpAuthentication authentication;
 	private String realm;
 
+	@Override
+	public void init(FilterConfig config) {		
+	}
+	
+	@Override
+	public void destroy() {
+	}
+
+	
 	@Activate
 	public void activate(AuthenticatorConfiguration configuration) {
 		this.realm = configuration.realm();
@@ -116,13 +126,5 @@ public class UserAdminAuthenticator implements Filter {
 		
 	}
 
-	@Override
-	public void destroy() {
-	}
-
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {		
-	}
-	
 
 }
