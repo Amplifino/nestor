@@ -1,0 +1,17 @@
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino Felix Web Console DataSource Plugin 
+Bundle-Description: Prints statistics information for pooled DataSources
+Bundle-Copyright: Amplifino (c) 2016
+Bundle-Category: utility
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Include-Resource: LICENSE, README.md, bnd.bnd
+Bundle-DocURL: https://github.com/Amplifino/nestor
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	osgi.annotation;version=6.0,\
+	osgi.core;version=6.0,\
+	org.apache.felix.webconsole;version=4.2,\
+	com.amplifino.counters;version=latest
+Private-Package: com.amplifino.nestor.webconsole.jdbc.pools
