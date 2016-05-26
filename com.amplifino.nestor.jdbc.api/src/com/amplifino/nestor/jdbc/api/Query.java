@@ -108,6 +108,23 @@ public interface Query {
 	<T> Optional<T> collect(TupleParser<T> supplier, TupleAccumulator<T> accumulator);
 
 	/**
+	 * @return the sql text
+	 */
+	String text();
+	
+	/**
+	 * @return a list of bind parameters
+	 */
+	List<Object> parameters();
+	
+	/**
+	 * adds a  subquery. Both text and parameters are copied
+	 * @param subQuery
+	 * @return this Query
+	 */
+	Query add(Query subQuery);
+	
+	/**
 	 * creates a new Query instance on the given DataSource
 	 * @param dataSource
 	 * @return 

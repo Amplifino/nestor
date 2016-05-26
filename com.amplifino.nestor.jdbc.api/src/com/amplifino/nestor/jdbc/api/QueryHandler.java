@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-class QueryHandler  {
+final class QueryHandler  {
 		
 		private StringBuilder sqlBuilder = new StringBuilder();
 		private final List<Object> parameters = new ArrayList<>();
@@ -144,6 +144,16 @@ class QueryHandler  {
 			}
 		}
 
+		String text() {
+			return sqlBuilder.toString();
+		}
 		
+		List<Object> parameters() {
+			return new ArrayList<>(parameters);
+		}
+		
+		void addAll(List<Object> parameters) {
+			this.parameters.addAll(parameters);
+		}
 		
 }

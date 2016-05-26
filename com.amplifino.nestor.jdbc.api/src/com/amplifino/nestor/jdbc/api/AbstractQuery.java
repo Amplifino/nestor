@@ -38,6 +38,23 @@ abstract class AbstractQuery implements Query {
 			return result;
 		}
 		
+		@Override
+		public String text() {
+			return handler.text();
+		}
+		
+		@Override
+		public List<Object> parameters() {
+			return handler.parameters();
+		}
+		
+		@Override
+		public Query add(Query subQuery) {
+			this.text(subQuery.text());
+			handler.addAll(subQuery.parameters());
+			return this;
+		}
+		
 		QueryHandler handler() {
 			return handler;
 		}
