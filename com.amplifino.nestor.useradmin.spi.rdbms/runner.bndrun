@@ -20,7 +20,8 @@
 	osgi.identity;filter:='(&(osgi.identity=com.amplifino.nestor.jdbc.pools)(version>=1.0.0))',\
 	osgi.identity;filter:='(&(osgi.identity=org.h2)(version>=1.4.190))',\
 	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.useradmin.rest)',\
-	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.security.http)'
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.security.http)',\
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.webconsole.jdbc.pools)'
 -runbundles: \
 	com.amplifino.counters;version=snapshot,\
 	com.amplifino.nestor.bundles.rest;version=snapshot,\
@@ -34,6 +35,7 @@
 	com.amplifino.nestor.useradmin;version=snapshot,\
 	com.amplifino.nestor.useradmin.rest;version=snapshot,\
 	com.amplifino.nestor.useradmin.spi.rdbms;version=snapshot,\
+	com.amplifino.nestor.webconsole.jdbc.pools;version=snapshot,\
 	com.amplifino.pools;version=snapshot,\
 	com.fasterxml.jackson.core.jackson-annotations;version='[2.5.4,2.5.5)',\
 	com.fasterxml.jackson.core.jackson-core;version='[2.5.4,2.5.5)',\
