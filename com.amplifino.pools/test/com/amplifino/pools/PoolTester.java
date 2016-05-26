@@ -69,7 +69,17 @@ public class PoolTester {
 	public void testMaxSize() {
 		final int maxSize = 10;
 		Pool<Object> pool = Pool.builder(Object::new).maxSize(maxSize).maxWait(1, TimeUnit.MILLISECONDS).build();
-		IntStream.range(0, maxSize  + 1).forEach( i -> pool.borrow());
+		try { 
+			IntStream.range(0, maxSize  + 1).forEach( i -> pool.borrow());
+		} catch (NoSuchElementException e) {
+			Counts counts = pool.counts();
+			Assert.assertEquals(maxSize, counts.get(Pool.Stats.ALLOCATIONS));
+			Assert.assertEquals(maxSize, counts.get(Pool.Stats.BORROWS));
+			Assert.assertEquals(1, counts.get(Pool.Stats.TIMEOUTS));
+			Assert.assertEquals(1, counts.get(Pool.Stats.FAILURES));
+			throw e;
+		}
+		Assert.fail();
 	}
 	
 	@Test
@@ -236,4 +246,33 @@ public class PoolTester {
 		Assert.assertEquals(1, counts.get(Pool.Stats.MAXSIZE));
 		Assert.assertEquals(1, counts.get(Pool.Stats.IDLETIMEEXCEEDED));
 	}
+	
+	@Test
+	public void testEviction() {
+		Pool<Object> pool = Pool.builder(Object::new).build();
+		Object object = pool.borrow();
+		pool.evict(object);
+		Counts counts = pool.counts();
+		Assert.assertEquals(1, counts.get(Pool.Stats.ALLOCATIONS));
+		Assert.assertEquals(1, counts.get(Pool.Stats.DESTROYS));
+		Assert.assertEquals(1, counts.get(Pool.Stats.BORROWS));
+		Assert.assertEquals(1, counts.get(Pool.Stats.RELEASES));
+		Assert.assertEquals(1, counts.get(Pool.Stats.EVICTIONS));
+	}
+	
+	@Test
+	public void testFailureEviction() {
+		Pool<Object> pool = Pool.builder(() -> { throw new RuntimeException(); }).build();
+		try {
+			pool.borrow();
+			Assert.fail();
+		} catch (RuntimeException e) {
+		}
+		Counts counts = pool.counts();
+		Assert.assertEquals(1, counts.get(Pool.Stats.FAILURES));
+		Assert.assertEquals(0, counts.get(Pool.Stats.ALLOCATIONS));
+		Assert.assertEquals(0, counts.get(Pool.Stats.BORROWS));
+		Assert.assertEquals(0, counts.get(Pool.Stats.RELEASES));
+	}
+	
 }

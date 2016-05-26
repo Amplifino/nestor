@@ -56,14 +56,19 @@ class DefaultPool<T> implements Pool<T> {
 	
 	@Override
 	public T borrow() {
-		while(!closed) {
-			PoolEntry<T> candidate = doBorrow();
-			if (activate(candidate)) {
-				counters.increment(Stats.BORROWS);
-				return candidate.get();
-			} else {
-				destroy(candidate.get());
-			}
+		boolean success = false;
+		try {
+			while(!closed) {
+				PoolEntry<T> candidate = doBorrow();
+				if (activate(candidate)) {
+					success = true;
+					return candidate.get();
+				} else {
+					destroy(candidate.get());
+				}
+			} 
+		} finally {
+			counters.increment(success ? Stats.BORROWS : Stats.FAILURES);
 		}	
 		throw new NoSuchElementException("Pool closed");
 	}
@@ -79,7 +84,7 @@ class DefaultPool<T> implements Pool<T> {
 	
 	@Override
 	public void evict(T borrowed) {
-		counters.increment(Stats.RELEASES);
+		counters.increment(Stats.RELEASES).increment(Stats.EVICTIONS);
 		destroy(borrowed);
 		if (closed) {
 			tryClose();
@@ -199,7 +204,7 @@ class DefaultPool<T> implements Pool<T> {
 		try {
 			return doWaitForRelease();
 		} catch (InterruptedException e) {
-			throw new NoSuchElementException();
+			throw new NoSuchElementException(e.toString());
 		}
 	}
 	
@@ -208,8 +213,13 @@ class DefaultPool<T> implements Pool<T> {
 			return idles.takeLast();			
 		} else {
 			return Optional.ofNullable(idles.pollLast(maxWaitAmount, maxWaitUnit))					
-					.orElseThrow(() -> new NoSuchElementException("Time out while waiting on pool"));
+					.orElseThrow(this::timeOutException);
 		}
+	}
+	
+	private NoSuchElementException timeOutException() {
+		counters.increment(Stats.TIMEOUTS);
+		return new NoSuchElementException("Time out while waiting on pool");
 	}
 	
 	private T allocate() {
@@ -217,7 +227,7 @@ class DefaultPool<T> implements Pool<T> {
 		int currentSize = poolSize.incrementAndGet();
 		logger.info(logHeader() + "Pool size increased to " + currentSize);
 		counters.increment(Stats.ALLOCATIONS);
-		counters.max(Stats.MAXSIZE, poolSize.get());
+		counters.max(Stats.MAXSIZE, currentSize);
 		return t;
 	}
 	
