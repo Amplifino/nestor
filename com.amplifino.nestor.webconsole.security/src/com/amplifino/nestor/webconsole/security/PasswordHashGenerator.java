@@ -1,5 +1,8 @@
 package com.amplifino.nestor.webconsole.security;
 
+import org.osgi.annotation.versioning.ProviderType;
+
+@ProviderType
 public interface PasswordHashGenerator {
 
 	/**
