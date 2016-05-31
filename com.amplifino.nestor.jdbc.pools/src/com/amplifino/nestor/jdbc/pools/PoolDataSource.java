@@ -2,8 +2,11 @@ package com.amplifino.nestor.jdbc.pools;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.ConnectionEvent;
@@ -29,6 +32,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	private Pool<PooledConnection> pool;
 	private OptionalInt isValidTimeout = OptionalInt.of(0);
+	private final Set<PooledConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	
 	private PoolDataSource(ConnectionPoolDataSource connectionPoolDataSource) {
 		super(connectionPoolDataSource);
@@ -53,12 +57,16 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		while(true) {
 			PooledConnection pooledConnection = pool.borrow();
 			Connection connection = pooledConnection.getConnection();
-			if (!isValidTimeout.isPresent() || connection.isValid(isValidTimeout.getAsInt())) {
+			if (isValid(connection)) {
 				return connection;
 			} else {
 				pool.evict(pooledConnection);
 			}
 		}
+	}
+	
+	private boolean isValid(Connection connection) throws SQLException {
+		return !connection.isClosed() && (!isValidTimeout.isPresent() || connection.isValid(isValidTimeout.getAsInt()));
 	}
 
 	@Override
@@ -68,11 +76,17 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 
 	@Override
 	public void connectionClosed(ConnectionEvent event) {
-		pool.release((PooledConnection) event.getSource());
+		PooledConnection connection = (PooledConnection) event.getSource();
+		if (failedConnections.remove(connection)) {
+			pool.evict(connection);
+		} else {
+			pool.release(connection);
+		}
 	}
 
 	@Override
 	public void connectionErrorOccurred(ConnectionEvent event) {
+		failedConnections.add((PooledConnection) event.getSource());
 	}
 	
 	public void close() {
