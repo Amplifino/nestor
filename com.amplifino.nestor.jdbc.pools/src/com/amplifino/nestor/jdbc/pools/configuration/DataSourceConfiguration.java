@@ -20,6 +20,8 @@ public @interface DataSourceConfiguration {
 	String[] application();
 	@AttributeDefinition(description="Timeout in seconds to use on connection.isValid() call. Specify -1 to skip isValid() if your JDCB driver does not support isValid")
 	int isValidTimeout() default 0;
+	String validationQuery() default "";
+	int validationIdleTime();
 	@AttributeDefinition(description="ldap filter for DataSourceFactory")
 	String dataSourceFactory_target() default "(osgi.jdbc.driver.name=*)";
 	@AttributeDefinition(description="When using DATASOURCE or DRIVER the configured dataSource will return wrapped Connections")

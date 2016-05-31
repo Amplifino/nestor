@@ -11,12 +11,19 @@ import org.osgi.annotation.versioning.ConsumerType;
  *
  */
 @ConsumerType
-public abstract class ConnectionWrapper implements Connection {
+public class ConnectionWrapper extends WrapperWrapper implements Connection {
 
     private final Connection connection;
+    private final SqlConsumer<Connection> onClose;
 
     protected ConnectionWrapper(Connection connection) {
-        this.connection = Objects.requireNonNull(connection);
+    	this(connection, Connection::close);
+    }
+    
+    public ConnectionWrapper(Connection connection, SqlConsumer<Connection> onClose) {
+    	super(connection);
+    	this.connection = Objects.requireNonNull(connection);
+    	this.onClose = Objects.requireNonNull(onClose);
     }
     
     @Override
@@ -62,17 +69,6 @@ public abstract class ConnectionWrapper implements Connection {
     @Override
     public boolean isReadOnly() throws SQLException {
         return connection.isReadOnly();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return iface.isInstance(this) ? (T) this : connection.unwrap(iface);
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return iface.isInstance(this) || connection.isWrapperFor(iface);
     }
 
     @Override
@@ -289,10 +285,11 @@ public abstract class ConnectionWrapper implements Connection {
 
 	@Override
 	public void close() throws SQLException {
-	    connection.close();
+	    onClose.accept(connection);
 	}
 	
 	protected Connection wrapped() {
 		return connection;
 	}
+	
 }

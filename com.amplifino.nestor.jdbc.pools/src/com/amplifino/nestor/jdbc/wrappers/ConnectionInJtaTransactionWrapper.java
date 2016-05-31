@@ -45,14 +45,11 @@ public final class ConnectionInJtaTransactionWrapper extends ConnectionWrapper {
 		throw new SQLFeatureNotSupportedException("Connection is participating in XA Transaction");
 	};
 	
-	/**
-	 * do nothing, as close will be handled by transactional datasource at end of JTA transaction 
-	 */
 	@Override
 	public void close() {
-		// do nothing
+		// do nothing as connection will be closed when ending tx
 	}
-
+	
 	/**
 	 * returns a Connection wrapper 
 	 * @param connection

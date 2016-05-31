@@ -42,11 +42,15 @@ public class DataSourceProvider {
 		ConnectionPoolDataSource connectionPoolDataSource = createConnectionPoolDataSource(configuration);
 		PoolDataSource.Builder builder = PoolDataSource.builder(connectionPoolDataSource)
 			.name(configuration.dataSourceName())
-			.initialSize(configuration.initialPoolSize());
+			.initialSize(configuration.initialPoolSize())
+			.validationIdleTime(configuration.validationIdleTime(), TimeUnit.SECONDS);
 		if (configuration.isValidTimeout() < 0) {
 			builder.skipIsValid();
 		} else {
 			builder.isValidTimeout(configuration.isValidTimeout());
+		}
+		if (configuration.validationQuery() != null && !configuration.validationQuery().trim().isEmpty()) {
+			builder.validationQuery(configuration.validationQuery().trim());
 		}
 		if (configuration.maxPoolSize() > 0) {
 			builder.maxSize(configuration.maxPoolSize());

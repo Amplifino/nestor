@@ -10,7 +10,7 @@ import javax.sql.ConnectionEventListener;
 import javax.sql.PooledConnection;
 import javax.sql.StatementEventListener;
 
-import com.amplifino.nestor.jdbc.wrappers.OnCloseConnectionWrapper;
+import com.amplifino.nestor.jdbc.wrappers.ConnectionHandle;
 
 class PooledConnectionAdapter implements PooledConnection {
 
@@ -28,7 +28,7 @@ class PooledConnectionAdapter implements PooledConnection {
 		if (inUse) {
 			throw new SQLException("Outstanding connection");
 		}
-		Connection handle = OnCloseConnectionWrapper.on(connection, this::handleClosed);
+		Connection handle = new ConnectionHandle(connection, this::handleClosed);
 		inUse = true;
 		return handle;
 	}
@@ -58,14 +58,11 @@ class PooledConnectionAdapter implements PooledConnection {
 		throw new UnsupportedOperationException();
 	}
 	
-	private void handleClosed(Connection connection) {
+	private void handleClosed(Connection connection) throws SQLException {
 		inUse = false;
 		ConnectionEvent event = new ConnectionEvent(this);
 		listeners.forEach(listener -> listener.connectionClosed(event));
-		try {
-			connection.setAutoCommit(true);			
-		} catch (SQLException e) {			
-		}
+		connection.setAutoCommit(true);			
 	}
 	
 	static PooledConnection on(Connection connection) {

@@ -1,6 +1,7 @@
 package com.amplifino.nestor.jdbc.pools;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import com.amplifino.counters.Counts;
 import com.amplifino.counters.CountsSupplier;
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.pools.Pool;
+import com.amplifino.pools.PoolEntry;
 
 /**
  * Implements a JDBC Connection pool.
@@ -33,6 +35,8 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	private Pool<PooledConnection> pool;
 	private OptionalInt isValidTimeout = OptionalInt.of(0);
 	private final Set<PooledConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private Optional<String> validationQuery = Optional.empty();
+	private long validationIdleTime = 0;
 	
 	private PoolDataSource(ConnectionPoolDataSource connectionPoolDataSource) {
 		super(connectionPoolDataSource);
@@ -55,18 +59,38 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	@Override
 	public Connection getConnection() throws SQLException {
 		while(true) {
-			PooledConnection pooledConnection = pool.borrow();
-			Connection connection = pooledConnection.getConnection();
-			if (isValid(connection)) {
+			PoolEntry<PooledConnection> poolEntry = pool.borrowEntry();
+			Connection connection = poolEntry.get().getConnection();
+			if (isValid(connection, poolEntry.age())) {
 				return connection;
 			} else {
-				pool.evict(pooledConnection);
+				pool.evict(poolEntry.get());				
 			}
 		}
 	}
 	
-	private boolean isValid(Connection connection) throws SQLException {
-		return !connection.isClosed() && (!isValidTimeout.isPresent() || connection.isValid(isValidTimeout.getAsInt()));
+	private boolean isValid(Connection connection, long age) throws SQLException {
+		if (connection.isClosed()) {
+			return false;
+		}
+		if (age < validationIdleTime) {
+			return true;
+		}
+		if (isValidTimeout.isPresent()) {
+			if (!connection.isValid(isValidTimeout.getAsInt())) {
+				return false;
+			}
+		}
+		if (validationQuery.isPresent()) {
+			try {
+				try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
+					statement.execute();
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -207,6 +231,16 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		 */
 		public Builder skipIsValid() {
 			poolDataSource.isValidTimeout = OptionalInt.empty();
+			return this;
+		}
+		
+		public Builder validationQuery(String sql) {
+			poolDataSource.validationQuery = Optional.of(sql);
+			return this;
+		}
+		
+		public Builder validationIdleTime(long timeOut, TimeUnit unit) {
+			poolDataSource.validationIdleTime = unit.toMillis(timeOut);
 			return this;
 		}
 		

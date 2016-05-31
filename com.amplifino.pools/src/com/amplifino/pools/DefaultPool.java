@@ -19,7 +19,7 @@ import com.amplifino.counters.Counts;
 
 class DefaultPool<T> implements Pool<T> {
 	
-	private BlockingDeque<PoolEntry<T>> idles;
+	private BlockingDeque<DefaultPoolEntry<T>> idles;
 	private final AtomicInteger poolSize = new AtomicInteger(0);
 	private volatile boolean closed = false;
 	private CountDownLatch closeComplete = new CountDownLatch(1);
@@ -55,14 +55,14 @@ class DefaultPool<T> implements Pool<T> {
 	}
 	
 	@Override
-	public T borrow() {
+	public PoolEntry<T> borrowEntry() {
 		boolean success = false;
 		try {
 			while(!closed) {
-				PoolEntry<T> candidate = doBorrow();
+				DefaultPoolEntry<T> candidate = doBorrow();
 				if (activate(candidate)) {
 					success = true;
-					return candidate.get();
+					return candidate;
 				} else {
 					destroy(candidate.get());
 				}
@@ -71,6 +71,11 @@ class DefaultPool<T> implements Pool<T> {
 			counters.increment(success ? Stats.BORROWS : Stats.FAILURES);
 		}	
 		throw new NoSuchElementException("Pool closed");
+	}
+	
+	@Override
+	public T borrow() {
+		return borrowEntry().get();
 	}
 
 	@Override
@@ -107,7 +112,7 @@ class DefaultPool<T> implements Pool<T> {
 	
 	private synchronized void tryClose() {
 		if (idles.size() == poolSize.get()) {
-			for ( PoolEntry<T> entry = idles.pollLast() ; entry != null; entry = idles.pollLast()) {
+			for ( DefaultPoolEntry<T> entry = idles.pollLast() ; entry != null; entry = idles.pollLast()) {
 				destroy(entry.get());
 			}
 			closeComplete.countDown();
@@ -145,17 +150,17 @@ class DefaultPool<T> implements Pool<T> {
 		return counters.counts();
 	}
 	
-	private PoolEntry<T> doBorrow() {
+	private DefaultPoolEntry<T> doBorrow() {
 		return Optional.ofNullable(idles.pollLast()).orElseGet(this::allocateOrWait);
 	}
 	
 	private void doRelease(T borrowed) {
-		if (!passivate(borrowed) || !strategy.offer(idles, new PoolEntry<>(borrowed))) {
+		if (!passivate(borrowed) || !strategy.offer(idles, new DefaultPoolEntry<>(borrowed))) {
 			destroy(borrowed);
 		}
 	}
 	
-	private boolean activate(PoolEntry<T> entry) {
+	private boolean activate(DefaultPoolEntry<T> entry) {
 		if (entry.older(maxIdleTime)) {
 			counters.increment(Stats.IDLETIMEEXCEEDED);
 			return false;
@@ -191,15 +196,15 @@ class DefaultPool<T> implements Pool<T> {
 		}
 	}
 	
-	private PoolEntry<T> allocateOrWait() {
+	private DefaultPoolEntry<T> allocateOrWait() {
 		if ( poolSize.get() >= maxSize) {
 			return waitForRelease();
 		} else {
-			return new PoolEntry<>(allocate());
+			return new DefaultPoolEntry<>(allocate());
 		}
 	}
 	
-	private PoolEntry<T> waitForRelease() {
+	private DefaultPoolEntry<T> waitForRelease() {
 		counters.increment(Pool.Stats.SUSPENDS);
 		try {
 			return doWaitForRelease();
@@ -208,7 +213,7 @@ class DefaultPool<T> implements Pool<T> {
 		}
 	}
 	
-	private PoolEntry<T> doWaitForRelease() throws InterruptedException {
+	private DefaultPoolEntry<T> doWaitForRelease() throws InterruptedException {
 		if (maxWaitAmount == -1) {
 			return idles.takeLast();			
 		} else {
@@ -303,7 +308,7 @@ class DefaultPool<T> implements Pool<T> {
 		
 		@Override
 		public Builder<T> maxIdleTime(long amount, TimeUnit timeUnit) {
-			pool.maxIdleTime = TimeUnit.MILLISECONDS.convert(amount,  timeUnit);
+			pool.maxIdleTime = timeUnit.toMillis(amount);
 			return this;
 		}
 		
@@ -333,7 +338,7 @@ class DefaultPool<T> implements Pool<T> {
 		
 		@Override
 		public Builder<T> minIdleTime(long amount, TimeUnit timeUnit) {
-			pool.minIdleTime = TimeUnit.MILLISECONDS.convert(amount,  timeUnit);
+			pool.minIdleTime = timeUnit.toMillis(amount);
 			return this;
 		}
 		

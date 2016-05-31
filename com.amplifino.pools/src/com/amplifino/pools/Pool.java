@@ -24,6 +24,13 @@ public interface Pool<T> extends CountsSupplier {
 	 */
 	T borrow();
 	/**
+	 * borrow a pool member entry.
+	 * To be used for pool users that need to know the time the entry remained idle in the pool
+	 * @return
+	 */
+	PoolEntry<T> borrowEntry();
+	
+	/**
 	 * return a previously borrowed member to the pool 
 	 * @param borrowed
 	 */
