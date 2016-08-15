@@ -5,29 +5,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.amplifino.counters.Counts;
 
 public class PoolTester {
-	
-	@Before
-	public void setup() {
-		Logger logger = Logger.getLogger("com.amplifino.pools");
-		logger.setLevel(Level.FINE);
-		Handler handler = new ConsoleHandler();
-		handler.setLevel(Level.FINE);
-		logger.addHandler(handler);
-	}
 	
 	@Test
 	public void test() {
@@ -128,8 +114,10 @@ public class PoolTester {
 	
 	@Test
 	public void testWait() throws InterruptedException {
-		Pool<Object> pool = Pool.builder(Object::new).build();
+		Pool<Object> pool = Pool.builder(Object::new).destroy( o -> {throw new IllegalArgumentException();}).build();
+		Object lease = pool.borrow();
 		pool.close();
+		new Thread(() -> sleepAndRelease(pool, lease)).start();
 		pool.await();
 	}
 	
@@ -143,8 +131,8 @@ public class PoolTester {
 		Assert.assertTrue(pool.await(1, TimeUnit.MILLISECONDS));
 	}
 	
-	@Test(expected=NoSuchElementException.class)
-	public void testClose() throws InterruptedException {
+	@Test(expected=IllegalStateException.class)
+	public void testClose()  {
 		Pool<Object> pool = Pool.builder(Object::new).build();
 		List<Object> leases = IntStream.range(0, 10)
 			.mapToObj(i -> pool.borrow())

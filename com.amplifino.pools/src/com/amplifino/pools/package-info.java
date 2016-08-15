@@ -6,7 +6,7 @@
  * It also defaults to a LIFO (Last in, First Out) allocation strategy.
  * This typically results in better cache hits   
  */
-@Version("1.1.0")
+@Version("1.2.0")
 package com.amplifino.pools;
 
 import org.osgi.annotation.versioning.Version;

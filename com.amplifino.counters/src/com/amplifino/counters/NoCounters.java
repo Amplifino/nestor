@@ -5,7 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-class NoCounters<T extends Enum<T>> implements Counters<T> {
+final class NoCounters<T extends Enum<T>> implements Counters<T> {
 	
 	private final Class<T> enumClass;
 	

@@ -1,6 +1,6 @@
 package com.amplifino.pools;
 
-class DefaultPoolEntry<T> implements PoolEntry<T>{
+final class DefaultPoolEntry<T> implements PoolEntry<T>{
 	
 	private final T pooled;
 	private long poolTime;

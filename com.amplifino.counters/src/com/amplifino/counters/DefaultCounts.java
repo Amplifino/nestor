@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-class DefaultCounts<T extends Enum<T>> implements Counts {
+final class DefaultCounts<T extends Enum<T>> implements Counts {
 	
 	private final Class<T> enumClass;
 	private final Map<T, Long> map;

@@ -1,0 +1,19 @@
+<div>
+	<h3>Ad Hoc Sql</h3>
+	<form class="form-horizontal" name="sqlForm" ng-submit="submitQuery()">
+		<div class="form-group">
+			<label for="dataSource" class="col-sm-2">DataSource</label>
+			<div class="col-sm-10">
+			<select name="dataSource" id="dataSource" ng-options="dataSource.name for dataSource in dataSources" ng-model="dataSource" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sqlText" class="col-sm-2">SQL text</label>
+			<div class="col-sm-10">
+				<input type="text" id="sqlText" class="form-control" ng-model="sqlText" />
+			</div>
+		</div>
+	</form> 
+	<p>{{message}}</p>
+	<div ng-if="show" ui-grid="gridOptions" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns class="order-grid"  />
+</div>

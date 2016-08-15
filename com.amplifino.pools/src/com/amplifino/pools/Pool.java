@@ -1,5 +1,6 @@
 package com.amplifino.pools;
 
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -63,6 +64,17 @@ public interface Pool<T> extends CountsSupplier {
 	 */
 	String name();
 	
+	/**
+	 * perform a pool maintenance cycle 
+	 */
+	void cycle();
+	
+	/**
+	 * returns the current pool size. For monitoring purpose only.
+	 * 
+	 * @return
+	 */
+	int size();
 	/**
 	 * return a new pool builder
 	 * @param supplier for creating pool members
@@ -157,10 +169,29 @@ public interface Pool<T> extends CountsSupplier {
 		 */
 		Builder<T> name(String name);
 		/**
-		 * sets the pool minimum idle time for executing onBorrow filter
-		 * @return this
+		 * sets the minimum idle time in order to test the pool member with onBorrow
+		 * @param amount
+		 * @param timeUnit
+		 * @return
 		 */
 		Builder<T> minIdleTime(long amount, TimeUnit timeUnit);
+		/**
+		 * sets the cycle time (interval between scans for idle pool members that are older than maxIdle)
+		 * @param amount
+		 * @param timeUnit
+		 * @return this
+		 */
+		Builder<T> cycleTime(long amount, TimeUnit timeUnit);
+		/**
+		 * sets the executor service to use for the cycle task
+		 * @param executorService
+		 * @return
+		 */
+		Builder<T> scheduleExecutorService(ScheduledExecutorService executorService);
+		/**
+		 * build and start the pool
+		 * @return the pool
+		 */
 		Pool<T> build();
 	}
 	

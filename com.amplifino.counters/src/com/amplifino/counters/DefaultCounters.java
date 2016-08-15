@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
-class DefaultCounters<T extends Enum<T>> implements Counters<T> {
+final class DefaultCounters<T extends Enum<T>> implements Counters<T> {
 	
 	private final Class<T> enumClass;
 	private final AtomicLong[] values;
@@ -18,7 +18,7 @@ class DefaultCounters<T extends Enum<T>> implements Counters<T> {
 	}
 	
 	private static AtomicLong[] allocate(int length) {
-		return Stream.generate(() -> new AtomicLong(0))
+		return Stream.generate(AtomicLong::new)
 			.limit(length)
 			.toArray(AtomicLong[]::new);
 	}
@@ -46,7 +46,7 @@ class DefaultCounters<T extends Enum<T>> implements Counters<T> {
 	
 	@Override
 	public DefaultCounters<T> max(T key, long challenge) {
-		values[key.ordinal()].getAndUpdate(current -> Long.max(current, challenge));
+		values[key.ordinal()].accumulateAndGet(challenge, Long::max);
 		return this;
 	}
 	
