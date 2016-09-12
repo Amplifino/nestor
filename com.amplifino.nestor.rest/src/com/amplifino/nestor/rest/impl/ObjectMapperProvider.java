@@ -1,4 +1,4 @@
-package com.amplifino.nestor.rest;
+package com.amplifino.nestor.rest.impl;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;

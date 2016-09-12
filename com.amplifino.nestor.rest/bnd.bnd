@@ -1,4 +1,4 @@
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Bundle-Name: Amplifino Rest Whiteboard using Jersey
 Bundle-Description: Whiteboard for JAX RS Applications
 Bundle-Copyright: Amplifino (c) 2015, 2016
@@ -8,7 +8,7 @@ Bundle-Vendor: Amplifino bvba
 Bundle-ContactAddress: http://www.amplifino.be
 Include-Resource: LICENSE, README.md, bnd.bnd
 -dsannotations: *
-Private-Package: com.amplifino.nestor.rest
+Private-Package: com.amplifino.nestor.rest.impl
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	org.apache.felix.http.servlet-api;version=1.1,\
@@ -23,5 +23,7 @@ Private-Package: com.amplifino.nestor.rest
 	org.glassfish.jersey.core.jersey-common;version=2.22,\
 	org.glassfish.jersey.media.jersey-media-json-jackson;version=2.22,\
 	org.glassfish.jersey.containers.jersey-container-servlet-core;version=2.22,\
-	org.glassfish.hk2.osgi-resource-locator;version=1.0
+	org.glassfish.hk2.osgi-resource-locator;version=1.0,\
+	osgi.annotation;version=6.0
 Bundle-DocURL: https://github.com/Amplifino/nestor
+Export-Package: com.amplifino.nestor.rest

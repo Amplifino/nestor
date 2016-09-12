@@ -1,4 +1,4 @@
-package com.amplifino.nestor.rest;
+package com.amplifino.nestor.rest.impl;
 
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;

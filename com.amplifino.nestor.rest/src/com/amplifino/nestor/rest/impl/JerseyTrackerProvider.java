@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Amplifino (2015). All Rights Reserved.
+ * Copyright (c) Amplifino (2015, 2016). All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.amplifino.nestor.rest;
+package com.amplifino.nestor.rest.impl;
 
 import org.glassfish.hk2.osgiresourcelocator.ServiceLoader;
 import org.osgi.framework.Bundle;
@@ -29,35 +29,32 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
+import com.amplifino.nestor.rest.JerseyTracker;
+
 /*
- * This component has two functions:
+ * This component waits for Jersey initialization.
  * 
- * 1) Wait for hk2 (Jersey's injector) to become initialized
+ * Wait for hk2 (Jersey's injector) to become initialized
  * to avoid starting applications while HK2 is still in the resolved state
  * 
- * 2) Live up to its name and provide a configuration for the Whiteboard implementation.
- * The configuration is only registered after HK2 is fully initialized
- *
  */
-@Component(name="com.amplifino.nestor.rest")
-@Designate(ocd = WhiteboardConfiguration.class)
-public class WhiteboardConfigurationProvider {
+@Component
+public class JerseyTrackerProvider {
+	
 	private static final int stateMask =
             Bundle.INSTALLED | Bundle.RESOLVED | Bundle.START_TRANSIENT | Bundle.STARTING | Bundle.ACTIVE |
             Bundle.STOP_TRANSIENT | Bundle.STOPPING;
     
 	private volatile BundleTracker<Bundle> tracker;
     private volatile BundleContext context;
-	private volatile WhiteboardConfiguration configuration;
-	private volatile ServiceRegistration<WhiteboardConfiguration> registration;
+	private volatile ServiceRegistration<JerseyTracker> registration;
 
-	public WhiteboardConfigurationProvider() {
+	public JerseyTrackerProvider() {
 	}
 
 	@Activate
-	public void activate(BundleContext context, WhiteboardConfiguration configuration) {		
+	public void activate(BundleContext context) {		
 		this.context = context;
-		this.configuration = configuration;
 		// find the hk2 osgi resource locator bundle, and wait for it to become active
     	// if hk2 is still in resolved state , we risk running HK2 initialization before activator has run
     	// but loading ServiceLoader looks safe (abstract class without static blocks).
@@ -78,7 +75,7 @@ public class WhiteboardConfigurationProvider {
 
 	private void start() {
 		tracker.close();
-		registration = context.registerService(WhiteboardConfiguration.class,  configuration, null);
+		registration = context.registerService(JerseyTracker.class, new JerseyTrackerImpl(), null);
 	}
 	
     private class BundleWaiter implements BundleTrackerCustomizer<Bundle> {

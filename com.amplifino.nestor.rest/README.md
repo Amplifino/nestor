@@ -24,4 +24,7 @@ and add its filters, features and providers to the getClasses and getSingletons 
 ## Version history 
 
 - 0.0.0: Work in Progress 
+- 1.1.0: Added JerseyTracker service that is published when Jersey initialization is complete.
+Usefull for Jersey client application bundles to avoid race condition with Jersey initialization.
+Not needed for Jersey server applications, as whiteboard only starts after Jersey initialization.
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.amplifino.nestor.rest;
+package com.amplifino.nestor.rest.impl;
 
 import java.util.Map;
 import java.util.Objects;
@@ -46,7 +46,7 @@ public class Whiteboard {
 	@Reference
 	private HttpService httpService;
 	@Reference
-	private WhiteboardConfiguration configuration;
+	private WhiteboardConfigurationProvider configurationProvider;
 	
 	// use name sequence to ensure static references are set first
 	// only server Applications with alias property starting with a slash, and not ending with a slash
@@ -83,7 +83,7 @@ public class Whiteboard {
     
     
     private String getAlias(Map<String,Object> properties) {
-    	String webMountPoint = configuration.webMountPoint();
+    	String webMountPoint = configurationProvider.configuration().webMountPoint();
     	return ("/".equals(webMountPoint) ? "" : webMountPoint) + properties.get(ALIAS);
     }
     
