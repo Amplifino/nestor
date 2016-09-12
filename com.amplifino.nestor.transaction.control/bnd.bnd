@@ -1,0 +1,4 @@
+-buildpath: \
+	osgi.annotation;version=6.0,\
+	tx-control-api;version=0.0,\
+	com.amplifino.nestor.transaction.provider;version=latest
