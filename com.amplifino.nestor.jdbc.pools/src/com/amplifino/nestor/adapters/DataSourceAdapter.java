@@ -21,16 +21,21 @@ public final class DataSourceAdapter implements DataSource {
 	private final String url;
 	private final Properties properties;
 	
-	private DataSourceAdapter(Driver driver, String url, String user, String password) {
+	private DataSourceAdapter(Driver driver, String url, Properties properties) {
 		this.driver = driver;
 		this.url = url;
-		properties = new Properties();
-		properties.put("user", user);
-		properties.put("password", password);
+		this.properties = properties;
 	}
 	
 	public static DataSource on(Driver driver, String url, String user, String password) {
-		return new DataSourceAdapter(driver, url, user, password);
+		Properties properties = new Properties();
+		properties.put("user", user);
+		properties.put("password", password);
+		return DataSourceAdapter.on(driver, url, properties);
+	}
+	
+	public static DataSource on(Driver driver, String url, Properties properties) {
+		return new DataSourceAdapter(driver, url, properties);
 	}
 
 	@Override
@@ -69,7 +74,12 @@ public final class DataSourceAdapter implements DataSource {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		return driver.connect(url, properties);
+		Connection connection = driver.connect(url, properties);
+		if (connection == null) {
+			throw new SQLException("Driver connect returned null");
+		} else {
+			return connection;
+		}
 	}
 
 	@Override

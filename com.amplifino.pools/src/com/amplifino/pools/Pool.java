@@ -181,7 +181,7 @@ public interface Pool<T> extends CountsSupplier {
 		 * @param timeUnit
 		 * @return this
 		 */
-		Builder<T> cycleTime(long amount, TimeUnit timeUnit);
+		Builder<T> propertyCycle(long amount, TimeUnit timeUnit);
 		/**
 		 * sets the executor service to use for the cycle task
 		 * @param executorService

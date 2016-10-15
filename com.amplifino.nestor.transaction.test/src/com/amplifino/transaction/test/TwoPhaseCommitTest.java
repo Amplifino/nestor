@@ -62,11 +62,9 @@ public class TwoPhaseCommitTest {
 	}
 	
 	private void createTable() throws SQLException {
-		int i = 0;
 		for (Connection connection : keepAliveConnections) {
-			try (Statement statement = connection.createStatement()) {
-				i++;
-				statement.execute("create table test" + i + " (name varchar(256))");
+			try (Statement statement = connection.createStatement()) {			
+				statement.execute("create table test (name varchar(256))");
 			}
 		}
 	}
@@ -101,12 +99,10 @@ public class TwoPhaseCommitTest {
 	
 	private int rowCount() throws SQLException {
 		int result = 0;
-		int i = 0;
 		for (DataSource source : dataSources) {
-			i++;
 			try (Connection connection = source.getConnection()) {
 				Assert.assertTrue(connection.getAutoCommit());
-				try (PreparedStatement statement = connection.prepareStatement("select count(*) from test" + i)) {
+				try (PreparedStatement statement = connection.prepareStatement("select count(*) from test")) {
 					try (ResultSet resultSet = statement.executeQuery()) {
 						resultSet.next();
 						result += resultSet.getInt(1);
@@ -118,12 +114,10 @@ public class TwoPhaseCommitTest {
 	}
 	
 	private void insertRow() throws SQLException {
-		int i = 0;
-		for (DataSource source : dataSources) {
-			i++;
+		for (DataSource source : dataSources) {	
 			try (Connection connection = source.getConnection()) {
 				Assert.assertFalse(connection.getAutoCommit());
-				try (PreparedStatement statement = connection.prepareStatement("insert into test" + i + " values(?)")) {
+				try (PreparedStatement statement = connection.prepareStatement("insert into test values(?)")) {
 					statement.setString(1,"Test");
 					int count = statement.executeUpdate();
 					Assert.assertEquals(1, count);
@@ -151,16 +145,17 @@ public class TwoPhaseCommitTest {
 	private void publishH2() {
 		ConfigurationAdmin configurationAdmin = getService(ConfigurationAdmin.class);
 		try {
+			int databaseId  = 1;
 			Configuration configuration = configurationAdmin.createFactoryConfiguration("com.amplifino.nestor.transaction.datasources", "?");
-			configuration.update(properties());
+			configuration.update(properties(databaseId++));
 			configuration = configurationAdmin.createFactoryConfiguration("com.amplifino.nestor.transaction.datasources", "?");
-			configuration.update(properties());
+			configuration.update(properties(databaseId++));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private Dictionary<String, Object> properties() {
+	private Dictionary<String, Object> properties(int databaseId) {
 		Bundle txBundle = Arrays.stream(context.getBundles())
 			.filter(bundle -> "com.amplifino.nestor.transaction.datasources".equals(bundle.getSymbolicName()))
 			.findFirst().get();
@@ -171,7 +166,7 @@ public class TwoPhaseCommitTest {
 			.collect(Collectors.toSet());
 		Dictionary<String, Object> props = new Hashtable<>();
 		setProperty("dataSourceFactory.target", "(osgi.jdbc.driver.name=*)", props, check);
-		setProperty("url","jdbc:h2:mem:db1", props, check);
+		setProperty("url","jdbc:h2:mem:db" + databaseId, props, check);
 		setProperty("user","user", props, check);
 		setProperty(".password", "dummy", props, check);
 		setProperty("dataSourceName", "H2", props, check);

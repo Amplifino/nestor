@@ -440,7 +440,7 @@ final class DefaultPool<T> implements Pool<T> {
 		}
 		
 		@Override
-		public Builder<T> cycleTime(long amount, TimeUnit timeUnit) {
+		public Builder<T> propertyCycle(long amount, TimeUnit timeUnit) {
 			if (amount <= 0) {
 				throw new IllegalArgumentException();
 			}

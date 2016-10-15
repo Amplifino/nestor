@@ -20,7 +20,13 @@ public @interface TransactionalDataSourceConfiguration {
 	String[] application();
 	@AttributeDefinition(description="Timeout in seconds to use on connection.isValid() call. Specify -1 to skip isValid() if your JDCB driver does not support isValid")
 	int isValidTimeout() default 0;
-	@AttributeDefinition(description="ldap filter for DataSourceFactory")
+	@AttributeDefinition(description="Query to validate connection. Use if driver does not support isValid()")
+	String validationQuery() default "";
+	@AttributeDefinition(description="Minimum idle time in seconds to perform validation on connection ")
+	int validationIdleTime();
+	@AttributeDefinition(description="Time in seconds between scans for expired connections")
+	int propertyCycle();
+	@AttributeDefinition(description="Ldap filter for DataSourceFactory")
 	String dataSourceFactory_target() default "(osgi.jdbc.driver.name=*)";
 	@AttributeDefinition(description="For two phase commit XADATASOURCE is required")
 	FactoryMethod factoryMethod() default FactoryMethod.XADATASOURCE;

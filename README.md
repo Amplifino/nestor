@@ -29,7 +29,7 @@ This repo contains the following Bundles (BndTools projects)
 - **com.amplifino.nestor.useradmin**: implementation of OSGI UserAdmin Service with pluggable persistence provider
 - **com.amplifino.nestor.useradmin.rest**: rest interface on OSGI UserAdmin Service with sample UI using Angular.js
 - **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using Obelix project
-- **com.amplifino.nestor.useradmin.spi.obelix**: persistence provider for nestor.useradmin using a relational database 
+- **com.amplifino.nestor.useradmin.spi.rdbms**: persistence provider for nestor.useradmin using a relational database 
 - **com.amplifino.nestor.useradmin.test**: test bundle for nestor.useradmin
 - **com.amplifino.nestor.webconsole.security**: secures webconsole password with PBKDF2 hash
 - **com.amplifino.pools**: generic object pool
