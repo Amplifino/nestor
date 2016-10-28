@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.ws.rs.GET;
@@ -130,6 +129,7 @@ public class DataSourceResource {
 		return result;
 	}
 	
+	/*
 	private List<Map<String, Object>> parse(ResultSetMetaData metaData) throws SQLException {
 		List<Map<String, Object>> result = new ArrayList<>();
 		for (int i = 1 ; i <= metaData.getColumnCount(); i++) {
@@ -143,6 +143,7 @@ public class DataSourceResource {
 		}
 		return result;
 	}
+	*/
 	
 	@GET
 	@Path("{name}/tables")

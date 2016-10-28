@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -16,6 +15,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,19 +35,11 @@ import org.osgi.service.metatype.MetaTypeService;
 import org.osgi.service.metatype.ObjectClassDefinition;
 import org.osgi.util.tracker.ServiceTracker;
 
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
-
 
 public class TwoPhaseCommitTest {
 
 	private BundleContext context = FrameworkUtil.getBundle(getClass()).getBundleContext();
 	private List<DataSource> dataSources;
-	private List<Connection> keepAliveConnections;
 	private UserTransaction userTransaction;
 	
 	@Test
