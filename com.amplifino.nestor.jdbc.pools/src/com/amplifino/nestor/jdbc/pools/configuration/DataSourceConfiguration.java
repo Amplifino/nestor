@@ -11,16 +11,16 @@ public @interface DataSourceConfiguration {
 	String user();
 	String _password();
 	@AttributeDefinition(description="Use key=value syntax to add driver properties. Note that most drivers allow you to specify properties on the url")
-	String[] additionalProperties() default {};
+	String[] additionalProperties() default "";
 	int initialPoolSize() default 0;
 	int maxPoolSize() default 0;
 	int minPoolSize() default 0;
-	@AttributeDefinition(description="Use first in first out scheduling if true, last in first out if false")
-	boolean fifo() default false;
 	@AttributeDefinition(description="Maximum connection idle time in seconds")
 	int maxIdleTime() default 0;
+	@AttributeDefinition(description="Use first in first out scheduling if true, last in first out if false")
+	boolean fifo() default false;
 	String[] application();
-	@AttributeDefinition(description="Timeout in seconds to use on connection.isValid() call. Specify -1 to skip isValid() if your JDCB driver does not support isValid")
+	@AttributeDefinition(description="Timeout in seconds to use on connection.isValid() call. Specify -1 to skip isValid() if your JDBC driver does not support isValid")
 	int isValidTimeout() default 0;
 	@AttributeDefinition(description="Query to validate connection. Use if driver does not support isValid()")
 	String validationQuery() default "";

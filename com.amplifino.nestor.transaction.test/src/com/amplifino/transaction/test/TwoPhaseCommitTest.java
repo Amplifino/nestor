@@ -51,21 +51,19 @@ public class TwoPhaseCommitTest {
 		Thread.sleep(1000L);
 		dataSources = getServices(DataSource.class);
 		Assert.assertTrue(dataSources.size() > 1);
-		keepAliveConnections = new ArrayList<>();
 		for (DataSource source : dataSources) {
-			keepAliveConnections.add(source.getConnection());
+			try (Connection connection = source.getConnection()) {
+				createTable(connection);
+			}
 		}
 		userTransaction = getService(UserTransaction.class);
-		createTable();
 		testRollback();
 		testCommit();
 	}
 	
-	private void createTable() throws SQLException {
-		for (Connection connection : keepAliveConnections) {
-			try (Statement statement = connection.createStatement()) {			
-				statement.execute("create table test (name varchar(256))");
-			}
+	private void createTable(Connection connection) throws SQLException {
+		try (Statement statement = connection.createStatement()) {			
+			statement.execute("create table test (name varchar(256))");
 		}
 	}
 	
