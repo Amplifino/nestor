@@ -1,0 +1,8 @@
+-buildpath: \
+	tx-control-api,\
+	osgi.cmpn;version=6.0,\
+	com.amplifino.nestor.transaction.datasources;version=latest,\
+	com.amplifino.nestor.transaction.provider;version=latest,\
+	com.amplifino.pools;version=latest,\
+	com.amplifino.counters;version=latest,\
+	com.amplifino.nestor.jdbc.pools;version=latest

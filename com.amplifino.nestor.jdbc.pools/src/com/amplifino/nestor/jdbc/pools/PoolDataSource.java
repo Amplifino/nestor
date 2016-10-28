@@ -193,6 +193,11 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 			return this;
 		}
 		
+		public Builder maxWait(long amount, TimeUnit unit) {
+			poolBuilder.maxWait(amount, unit);
+			return this;
+		}
+		
 		/**
 		 * sets the pool's intial size
 		 * @param initialSize

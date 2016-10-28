@@ -196,6 +196,11 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 			return this;
 		}
 		
+		public Builder maxWait(long amount, TimeUnit unit) {
+			poolBuilder.maxWait(amount, unit);
+			return this;
+		}
+		
 		/**
 		 * sets the amount of time a connection can remain idle
 		 * @param amount

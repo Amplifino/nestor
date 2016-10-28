@@ -7,7 +7,7 @@ import javax.transaction.xa.XAResource;
 import org.osgi.service.transaction.control.LocalResource;
 import org.osgi.service.transaction.control.TransactionStatus;
 
-public class NoTransactionContext extends ActiveTransactionContext {
+class NoTransactionContext extends ActiveTransactionContext {
 
 	@Override
 	public boolean getRollbackOnly() throws IllegalStateException {
