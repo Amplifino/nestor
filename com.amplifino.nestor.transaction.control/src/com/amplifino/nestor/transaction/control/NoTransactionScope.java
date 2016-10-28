@@ -2,25 +2,30 @@ package com.amplifino.nestor.transaction.control;
 
 import java.util.concurrent.Callable;
 
-public class NoTransactionScope implements TransactionScope {
+import org.osgi.service.transaction.control.TransactionContext;
+
+class NoTransactionScope extends ActiveTransactionScope {
 	
-	private final TransactionScope parent;
-
-	public NoTransactionScope(TransactionScope parent) {
-		this.parent = parent;
-	}
+	private final TransactionContext context;
 	
-	@Override
-	public void suspend() {
+	NoTransactionScope(TransactionScope parent) {
+		super(parent);
+		context = new NoTransactionContext();
 	}
 
 	@Override
-	public void resume() throws Exception {		
+	public TransactionContext getContext() {
+		return context;
 	}
 
 	@Override
-	public TransactionScope parent() {
-		return parent;
+	public TransactionScope required() {
+		return new RootTransactionScope(this);
+	}
+
+	@Override
+	public TransactionScope supports() {
+		return new NoTransactionScope(this);
 	}
 
 	@Override
@@ -28,4 +33,14 @@ public class NoTransactionScope implements TransactionScope {
 		return callable.call();
 	}
 
+	@Override
+	public boolean isTransaction() {
+		return false;
+	}
+
+	@Override
+	public void ignoreException(Throwable throwable) {
+		throw new IllegalStateException();
+	}
+		
 }
