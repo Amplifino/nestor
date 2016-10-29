@@ -40,22 +40,22 @@ public class TransactionTest {
 
 	private BundleContext context = FrameworkUtil.getBundle(getClass()).getBundleContext();
 	private DataSource dataSource;
-	private Connection keepAliveConnection;
 	private UserTransaction userTransaction;
 	
 	@Test
 	public void test() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-		publishH2();
+		publishH2();		
 		dataSource = getService(DataSource.class);
-		keepAliveConnection = dataSource.getConnection();
 		userTransaction = getService(UserTransaction.class);
-		createTable();
+		try (Connection connection = dataSource.getConnection()) {
+			createTable(connection);
+		}
 		testRollback();
 		testCommit();
 	}
 	
-	private void createTable() throws SQLException {
-		try (Statement statement = keepAliveConnection.createStatement()) {
+	private void createTable(Connection connection) throws SQLException {
+		try (Statement statement = connection.createStatement()) {
 			statement.execute("create table test (name varchar(256))");
 		}
 	}

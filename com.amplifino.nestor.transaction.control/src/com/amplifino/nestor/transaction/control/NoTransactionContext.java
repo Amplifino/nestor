@@ -8,7 +8,13 @@ import org.osgi.service.transaction.control.LocalResource;
 import org.osgi.service.transaction.control.TransactionStatus;
 
 class NoTransactionContext extends ActiveTransactionContext {
-
+	
+	private final NoTransactionScope scope;
+	
+	public NoTransactionContext(NoTransactionScope scope) {
+		this.scope = scope;
+	}
+	
 	@Override
 	public boolean getRollbackOnly() throws IllegalStateException {
 		throw new IllegalStateException();
@@ -26,13 +32,12 @@ class NoTransactionContext extends ActiveTransactionContext {
 
 	@Override
 	public void postCompletion(Consumer<TransactionStatus> consumer) throws IllegalStateException {
-		throw new IllegalStateException();
-
+		scope.postCompletion(consumer);
 	}
 
 	@Override
 	public void preCompletion(Runnable runnable) throws IllegalStateException {
-		throw new IllegalStateException();
+		scope.preCompletion(runnable);
 	}
 
 	@Override

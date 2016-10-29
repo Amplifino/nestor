@@ -56,8 +56,8 @@ public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProvider
 	}
 
 	@Override
-	public JDBCConnectionProvider getProviderFor(Driver arg0, Properties pros, Map<String, Object> map) {
-		return getProviderFor(XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(DataSourceAdapter.on(driver, props))
+	public JDBCConnectionProvider getProviderFor(Driver driver, Properties props, Map<String, Object> map) {
+		return getProviderFor(XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(DataSourceAdapter.on(driver, props))), map);
 	}
 
 }

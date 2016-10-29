@@ -35,10 +35,6 @@ public class DataSourceProvider {
 	
 	@Activate
 	public void activate(BundleContext context, DataSourceConfiguration configuration) throws SQLException {
-		Properties props = new Properties();
-		props.put(DataSourceFactory.JDBC_URL, configuration.url());
-		props.put(DataSourceFactory.JDBC_USER, configuration.user());
-		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
 		ConnectionPoolDataSource connectionPoolDataSource = createConnectionPoolDataSource(configuration);
 		PoolDataSource.Builder builder = PoolDataSource.builder(connectionPoolDataSource)
 			.name(configuration.dataSourceName())
@@ -61,7 +57,10 @@ public class DataSourceProvider {
 		if (configuration.maxIdleTime() > 0) {
 			builder.maxIdleTime(configuration.maxIdleTime(), TimeUnit.SECONDS);
 		}
-		if (configuration.fifo()) {
+		if (configuration.propertyCycle() > 0) {
+			builder.cycleTime(configuration.propertyCycle(), TimeUnit.SECONDS);
+		}
+ 		if (configuration.fifo()) {
 			builder.fifo();
 		} else {
 			builder.lifo();
@@ -78,6 +77,12 @@ public class DataSourceProvider {
 		props.put(DataSourceFactory.JDBC_URL, configuration.url());
 		props.put(DataSourceFactory.JDBC_USER, configuration.user());
 		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
+		for (String extraProperty : configuration.additionalProperties()) {
+			if (extraProperty != null && !extraProperty.trim().isEmpty()) {
+				String[] entry = parseProperty(extraProperty);
+				props.put(entry[0], entry[1]);
+			}
+		}
 		switch(configuration.factoryMethod()) {
 			case DATASOURCE:
 				return ConnectionPoolDataSourceAdapter.on(dataSourceFactory.createDataSource(props));
@@ -86,12 +91,20 @@ public class DataSourceProvider {
 			case XADATASOURCE:
 				return ConnectionPoolDataSourceXaAdapter.on(dataSourceFactory.createXADataSource(props));
 			case DRIVER:
-				DataSource dataSource = DataSourceAdapter.on(dataSourceFactory.createDriver(new Properties()), 
-					configuration.url(), configuration.user(), configuration._password());
-				return ConnectionPoolDataSourceAdapter.on(dataSource);
+				props.remove(DataSourceFactory.JDBC_URL);
+				return ConnectionPoolDataSourceAdapter.on(DataSourceAdapter.on(dataSourceFactory.createDriver(new Properties()), 
+					configuration.url(), props));
 			default:
 				throw new IllegalArgumentException();
 		}
+	}
+	
+	private String[] parseProperty(String property) {
+		String[] parts = property.split("=", 2);
+		if (parts.length != 2) {
+			throw new IllegalArgumentException(property);
+		}
+		return parts;
 	}
 	
 	@Deactivate 

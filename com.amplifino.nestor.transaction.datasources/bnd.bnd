@@ -1,4 +1,4 @@
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Name: Amplifino Jta Transaction aware Database Connection Pool
 Bundle-Description: Data base connection pool
 Bundle-Copyright: Amplifino (c) 2015, 2016

@@ -41,10 +41,6 @@ public class TransactionalDataSourceProvider {
 	
 	@Activate
 	public void activate(BundleContext context, TransactionalDataSourceConfiguration configuration) throws SQLException {
-		Properties props = new Properties();
-		props.put(DataSourceFactory.JDBC_URL, configuration.url());
-		props.put(DataSourceFactory.JDBC_USER, configuration.user());
-		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
 		XADataSource xaDataSource = createXADataSource(configuration);
 		TransactionalDataSource.Builder builder = TransactionalDataSource.builder(xaDataSource, transactionManager, synchronization)
 			.name(configuration.dataSourceName())
@@ -86,6 +82,12 @@ public class TransactionalDataSourceProvider {
 		props.put(DataSourceFactory.JDBC_URL, configuration.url());
 		props.put(DataSourceFactory.JDBC_USER, configuration.user());
 		props.put(DataSourceFactory.JDBC_PASSWORD, configuration._password());
+		for (String extraProperty : configuration.additionalProperties()) {
+				if (extraProperty != null && !extraProperty.trim().isEmpty()) {
+					String[] entry = parseProperty(extraProperty);
+					props.put(entry[0], entry[1]);
+				}
+			}
 		switch (configuration.factoryMethod()) {
 			case DATASOURCE:
 				return XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(dataSourceFactory.createDataSource(props)));
@@ -94,10 +96,22 @@ public class TransactionalDataSourceProvider {
 			case XADATASOURCE:
 				return dataSourceFactory.createXADataSource(props);
 			case DRIVER:
-				DataSource dataSource = DataSourceAdapter.on(dataSourceFactory.createDriver(new Properties()), configuration.url(), configuration.user(), configuration._password());
-				return XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(dataSource));
+				props.remove(DataSourceFactory.JDBC_URL);
+				return XADataSourceAdapter.on(
+						ConnectionPoolDataSourceAdapter.on(
+								DataSourceAdapter.on(
+										dataSourceFactory.createDriver(new Properties()), configuration.url(), props)));				
 			default:
 				throw new IllegalArgumentException();
 		}
 	}
+	
+	private String[] parseProperty(String property) {
+		String[] parts = property.split("=", 2);
+		if (parts.length != 2) {
+			throw new IllegalArgumentException(property);
+		}
+		return parts;
+	}
+	
 }

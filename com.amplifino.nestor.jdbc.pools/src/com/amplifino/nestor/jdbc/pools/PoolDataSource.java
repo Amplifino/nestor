@@ -27,6 +27,8 @@ import com.amplifino.pools.PoolEntry;
  * Instances are normally created using OSGI Configuration Admin,
  * but can also be created by API using PoolDataSource.builder
  * If using the API it is important to call close before disposing the PoolDataSource to release its pooled connections
+ * 
+ * This is a type 2 DataSource implementation according to the DataSource javadoc.
  *
  */
 public final class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {
@@ -246,6 +248,11 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		public Builder validationIdleTime(long timeOut, TimeUnit unit) {
 			poolDataSource.validationIdleTime = unit.toMillis(timeOut);
+			return this;
+		}
+		
+		public Builder cycleTime(long amount, TimeUnit unit) {
+			poolBuilder.propertyCycle(amount, unit);
 			return this;
 		}
 		

@@ -20,7 +20,7 @@ class ConnectionCloser implements Synchronization {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			Logger.getLogger("com.amplifino.tx").log(
+			Logger.getLogger("com.amplifino.nestor.transaction.datasources").log(
 				Level.WARNING, 
 				"Unexpected exception in close: " + e.getMessage(),
 				e);

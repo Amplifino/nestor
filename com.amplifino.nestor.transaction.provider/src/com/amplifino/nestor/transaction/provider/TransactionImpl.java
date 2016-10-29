@@ -39,7 +39,14 @@ class TransactionImpl implements Transaction {
 			rollback();
 			throw new RollbackException("Transaction was marked for rollback");
 		}
-		beforeCompletion();
+		List<Throwable> exceptions = beforeCompletion();
+		if (!exceptions.isEmpty()) {
+			rollback();
+			RollbackException e = new RollbackException("Exception in before completion");
+			e.initCause(exceptions.get(0));
+			exceptions.stream().skip(1).forEach(t -> e.addSuppressed(t));
+			throw e;
+		}
 		try {
 			doCommit();
 		} finally {
@@ -206,21 +213,25 @@ class TransactionImpl implements Transaction {
 		return new XidImpl(globalTransactionId, ("" + lastBranch).getBytes());
 	}
 	
-	private void beforeCompletion() {
+	private List<Throwable> beforeCompletion() {
+		List<Throwable> exceptions = new ArrayList<>();
 		for (Synchronization synchronization : synchronizers) {
 			try {
 				synchronization.beforeCompletion();
-			} catch (Throwable e) {				
+			} catch (Throwable e) {		
+				exceptions.add(e);
 				report(e);
 			}
 		}
 		for (Synchronization synchronization : interposedSynchronizers) {
 			try {
 				synchronization.beforeCompletion();
-			} catch (Throwable e) {				
+			} catch (Throwable e) {
+				exceptions.add(e);
 				report(e);
 			}
 		}
+		return exceptions;
 	}
 	
 	private void afterCompletion() {		

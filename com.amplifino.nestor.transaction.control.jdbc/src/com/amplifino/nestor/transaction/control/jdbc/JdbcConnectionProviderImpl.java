@@ -8,7 +8,6 @@ import org.osgi.service.transaction.control.TransactionControl;
 import org.osgi.service.transaction.control.TransactionException;
 import org.osgi.service.transaction.control.jdbc.JDBCConnectionProvider;
 
-
 public class JdbcConnectionProviderImpl implements JDBCConnectionProvider {
 	
 	private final DataSource dataSource;

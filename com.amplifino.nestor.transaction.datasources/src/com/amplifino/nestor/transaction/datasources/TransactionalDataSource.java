@@ -1,8 +1,13 @@
 package com.amplifino.nestor.transaction.datasources;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.ConnectionEvent;
@@ -22,12 +27,15 @@ import com.amplifino.counters.CountsSupplier;
 import com.amplifino.nestor.jdbc.wrappers.CommonDataSourceWrapper;
 import com.amplifino.nestor.jdbc.wrappers.ConnectionInJtaTransactionWrapper;
 import com.amplifino.pools.Pool;
+import com.amplifino.pools.PoolEntry;
 
 /**
  * A JDBC Connection Pool that is JTA transaction aware
  * 
  * Instances are normally created using Config Admin.
  * When using the builder API, be sure to close the DataSource before disposing to release the pooled Connections.
+ * 
+ * This is a type 3 DataSpource implementation according to the DataSource javadoc. 
  * 
  */
 public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
@@ -37,6 +45,9 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 	private final TransactionSynchronizationRegistry synchronization;
 	private Pool<XAConnection> pool;	
 	private OptionalInt isValidTimeout = OptionalInt.of(0);
+	private final Set<XAConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private Optional<String> validationQuery = Optional.empty();
+	private long validationIdleTime = 0;
 	
 	private TransactionalDataSource(XADataSource xaDataSource, TransactionManager transactionManager, TransactionSynchronizationRegistry synchronization) {
 		super(xaDataSource);
@@ -45,8 +56,8 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		this.synchronization = synchronization;
 	}
 	
-	private XAConnection xaConnection() {
-		return pool.borrow();
+	private PoolEntry<XAConnection> xaConnection() {
+		return pool.borrowEntry();
 	}
 	
 	private XAConnection supply() {
@@ -86,44 +97,74 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		try {
 			Transaction transaction = transactionManager.getTransaction();
 			if (transaction == null) {
-				XAConnection xaConnection = xaConnection();
-				Connection connection = xaConnection.getConnection();
-				if (isValidTimeout.isPresent() && !connection.isValid(isValidTimeout.getAsInt())) {
-					try {
-						connection.close();
-					} catch (SQLException e) {
-					}
-					pool.evict(xaConnection);
-					return getConnection();
-				}
-				return connection;
+				return getLocalConnection();
+			} else {
+				return getConnection(transaction);
 			}
-			Connection connection = (Connection) synchronization.getResource(this);
-			if (connection != null) {
-				return ConnectionInJtaTransactionWrapper.on(connection);
-			}
+		} catch (SystemException | RollbackException e) {
+			throw  new SQLException(e);
+		}
+	}
+	
+	private Connection getLocalConnection() throws SQLException {
+		PoolEntry<XAConnection> poolEntry = xaConnection();
+		Connection connection = poolEntry.get().getConnection();
+		if (!isValid(connection, poolEntry.age())) {
 			try {
-				XAConnection xaConnection = xaConnection();
-				XAResource xaResource = xaConnection.getXAResource();
-				connection = xaConnection.getConnection();
-				if (isValidTimeout.isPresent() && !connection.isValid(isValidTimeout.getAsInt())) {
-					try {
-						connection.close();
-					} catch (SQLException e) {
-					}
-					pool.evict(xaConnection);
-					return getConnection();
+				connection.close();
+			} catch (SQLException e) {
+			}
+			pool.evict(poolEntry.get());
+			return getLocalConnection();
+		} else {
+			return connection;
+		}
+	}
+	
+	private Connection getConnection(Transaction transaction) throws SQLException, SystemException, RollbackException {		
+		Connection connection = (Connection) synchronization.getResource(this);
+		if (connection != null) {
+			return ConnectionInJtaTransactionWrapper.on(connection);
+		}
+		PoolEntry<XAConnection> poolEntry = xaConnection();
+		XAResource xaResource = poolEntry.get().getXAResource();
+		connection = poolEntry.get().getConnection();
+		if (!isValid(connection, poolEntry.age())) {
+			try {
+				connection.close();					
+			} catch (SQLException e) {
+			}
+			pool.evict(poolEntry.get());
+			return getConnection(transaction);
+		}
+		transaction.enlistResource(xaResource);
+		transaction.registerSynchronization(new ConnectionCloser(connection));
+		synchronization.putResource(this, connection);
+		return ConnectionInJtaTransactionWrapper.on(connection);
+	}
+	
+	private boolean isValid(Connection connection, long age) throws SQLException {
+		if (connection.isClosed()) {
+			return false;
+		}
+		if (age < validationIdleTime) {
+			return true;
+		}
+		if (isValidTimeout.isPresent()) {
+			if (!connection.isValid(isValidTimeout.getAsInt())) {
+				return false;
+			}
+		}
+		if (validationQuery.isPresent()) {
+			try {
+				try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
+					statement.execute();
 				}
-				transaction.enlistResource(xaResource);
-				transaction.registerSynchronization(new ConnectionCloser(connection));
-				synchronization.putResource(this, connection);
-				return ConnectionInJtaTransactionWrapper.on(connection);
-			} catch (RollbackException e) {
-				throw new SQLException(e);
-			} 			
-		} catch (SystemException e) {
-			throw new SQLException(e);
-		}		
+			} catch (SQLException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -133,12 +174,17 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 
 	@Override
 	public void connectionClosed(ConnectionEvent event) {
-		pool.release((XAConnection) event.getSource());
+		XAConnection connection = (XAConnection) event.getSource();
+		if (failedConnections.remove(connection)) {
+			pool.evict(connection);
+		} else {
+			pool.release(connection);
+		}
 	}
 
 	@Override
 	public void connectionErrorOccurred(ConnectionEvent event) {
-		pool.evict((XAConnection) event.getSource());
+		failedConnections.add((XAConnection) event.getSource());
 	}
 	
 	@Override
@@ -250,6 +296,16 @@ public class TransactionalDataSource extends CommonDataSourceWrapper implements 
 		 */
 		public Builder skipIsValid() {
 			transactionalDataSource.isValidTimeout = OptionalInt.empty();
+			return this;
+		}
+		
+		public Builder validationQuery(String sql) {
+			transactionalDataSource.validationQuery = Optional.of(sql);
+			return this;
+		}
+		
+		public Builder propertyCycle(long amount, TimeUnit unit) {
+			poolBuilder.propertyCycle(amount, unit);
 			return this;
 		}
 		
