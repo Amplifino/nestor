@@ -4,7 +4,10 @@
 	org.h2;version=1.4,\
 	osgi.core;version=6.0,\
 	com.amplifino.nestor.transaction.provider;version=latest
--runrequires: osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.transaction.control.jdbc.test)'
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.transaction.control.jdbc.test)',\
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.transaction.spi)',\
+	osgi.identity;filter:='(&(osgi.identity=biz.aQute.junit)(version>=3.0.0.201509101327))'
 -runfw: org.apache.felix.framework;version='[5.4.0,5.4.0]'
 -runee: JavaSE-1.8
 -runblacklist: \
@@ -17,10 +20,11 @@
 	com.amplifino.nestor.transaction.control.jdbc.test;version=snapshot,\
 	com.amplifino.nestor.transaction.provider;version=snapshot,\
 	org.apache.felix.scr;version='[2.0.0,2.0.1)',\
-	org.apache.servicemix.bundles.junit;version='[4.11.0,4.11.1)',\
 	com.amplifino.counters;version=snapshot,\
 	com.amplifino.nestor.jdbc.pools;version=snapshot,\
 	com.amplifino.nestor.transaction.control.jdbc;version=snapshot,\
 	com.amplifino.nestor.transaction.datasources;version=snapshot,\
 	com.amplifino.pools;version=snapshot,\
-	org.h2;version='[1.4.190,1.4.191)'
+	org.h2;version='[1.4.190,1.4.191)',\
+	com.amplifino.nestor.transaction.spi;version=snapshot,\
+	biz.aQute.junit;version='[3.0.0,3.0.1)'

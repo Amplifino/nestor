@@ -11,8 +11,11 @@ Include-Resource: LICENSE, README.md, bnd.bnd
 -buildpath: \
 	osgi.cmpn;version=6.0,\
 	osgi.core;version=6.0,\
-	jta-1.1.jar;version=file
+	osgi.annotation;version=6.0,\
+	jta;version=1.1
 Private-Package: com.amplifino.nestor.transaction.provider
 Bundle-Version: 1.0.0
 -dsannotations: *
-Export-Package: javax.transaction;version=1.1
+Export-Package: \
+	javax.transaction;version=1.1,\
+	com.amplifino.nestor.transaction.provider.spi

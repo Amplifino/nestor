@@ -1,0 +1,4 @@
+-buildpath: \
+	com.amplifino.nestor.transaction.provider;version=latest,\
+	osgi.cmpn;version=6.0
+Private-Package: com.amplifino.nestor.transaction.spi

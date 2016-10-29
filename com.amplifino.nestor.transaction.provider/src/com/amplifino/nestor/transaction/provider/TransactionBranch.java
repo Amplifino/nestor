@@ -4,6 +4,8 @@ import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
+import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
+
 class TransactionBranch {
 	
 	private final XAResource xaResource;
@@ -50,11 +52,14 @@ class TransactionBranch {
 		}
 	}
 	
-	void prepare() throws XAException {
+	void prepare(TransactionLog log) throws XAException {
 		if (started) {
 			end();
 		}
 		prepareResult = PrepareResult.of(xaResource.prepare(xid));
+		if (prepareResult == PrepareResult.OK) {
+			log.prepared(xid);
+		}
 	}
 	
 	void commitOnePhase() throws XAException {

@@ -11,16 +11,21 @@ import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
 
 @Component
 public class TransactionManagerImpl implements TransactionManager {
 	
+	@Reference
+	private TransactionLog log;
 	private final ThreadLocal<TransactionImpl> transactionHolder = new ThreadLocal<>();
 
 	@Override
 	public void begin() throws NotSupportedException, SystemException {
 		if (getTransaction() == null) {
-			transactionHolder.set(new TransactionImpl());
+			transactionHolder.set(new TransactionImpl(log));
 		} else {
 			throw new NotSupportedException("Nested Transactions not supported");
 		}					
@@ -109,6 +114,10 @@ public class TransactionManagerImpl implements TransactionManager {
 			transactionHolder.remove();
 		}
 		return transaction;
+	}
+	
+	TransactionLog log() {
+		return log;
 	}
 	
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.transaction.HeuristicMixedException;
 import javax.transaction.RollbackException;
 import javax.transaction.Status;
 import javax.transaction.Synchronization;
@@ -17,8 +18,11 @@ import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
+import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
+
 class TransactionImpl implements Transaction {
 	
+	private final TransactionLog log;
 	private final byte[] globalTransactionId;
 	private int lastBranch = 0;
 	private int status;
@@ -27,13 +31,14 @@ class TransactionImpl implements Transaction {
 	private final List<Synchronization> interposedSynchronizers = new ArrayList<>();
 	private final Map<Object, Object> resources = new HashMap<>();
 	
-	TransactionImpl() {
+	TransactionImpl(TransactionLog log) {
+		this.log = log;
 		globalTransactionId = XidImpl.newGlobalTransactionId();
 		status = Status.STATUS_ACTIVE;
 	}
 	
 	@Override 
-	public void commit() throws RollbackException {
+	public void commit() throws RollbackException, HeuristicMixedException {
 		checkActiveOrMarked();
 		if (status == Status.STATUS_MARKED_ROLLBACK) {
 			rollback();
@@ -54,7 +59,7 @@ class TransactionImpl implements Transaction {
 		}
 	}
 	
-	private void doCommit() throws RollbackException {
+	private void doCommit() throws RollbackException, HeuristicMixedException {
 		switch (branches.size()) {
 			case 0:
 				status = Status.STATUS_COMMITTED;
@@ -67,15 +72,19 @@ class TransactionImpl implements Transaction {
 		}
 	}
 	
-	private void onePhaseCommit() throws RollbackException {
+	private void onePhaseCommit() throws RollbackException, HeuristicMixedException {
 		try {
 			status = Status.STATUS_COMMITTING;
 			branches.get(0).commitOnePhase();
 			status = Status.STATUS_COMMITTED;
-		} catch (Throwable e) {
+		} catch (XAException e) {
 			report(e);
 			status = Status.STATUS_ROLLEDBACK;				
 			throw (RollbackException) new RollbackException(e.toString()).initCause(e);
+		} catch (Throwable e) {
+			report(e);
+			status = Status.STATUS_UNKNOWN;			
+			throw (HeuristicMixedException) new HeuristicMixedException(e.toString()).initCause(e);
 		}
 	}
 	
@@ -83,8 +92,8 @@ class TransactionImpl implements Transaction {
 		Throwable throwable = null;
 		status = Status.STATUS_PREPARING;
 		try {
-			for (TransactionBranch branch : branches) {
-				branch.prepare();									
+			for (TransactionBranch branch : branches) {				
+				branch.prepare(log);							
 			}
 			status = Status.STATUS_PREPARED;
 		} catch (Throwable e) {
@@ -108,26 +117,25 @@ class TransactionImpl implements Transaction {
 		for (TransactionBranch branch : branches) {
 			try {
 				if (throwable == null) {
-					branch.commitTwoPhase();
+					branch.commitTwoPhase();	
+					log.committed(branch.xid());
 				} else {
 					branch.rollback();
 				}
-			} catch (Throwable e) {				
+			} catch (Throwable e) {		
 				report(e);
 			}
 		}
 		status = (throwable == null) ? Status.STATUS_COMMITTED : Status.STATUS_ROLLEDBACK;
 		if (status == Status.STATUS_ROLLEDBACK) {
 			throw (RollbackException) new RollbackException(throwable.toString()).initCause(throwable);
-		}				
+		} else {
+			log.forget(globalTransactionId);
+		}
 	}
 
 	private void logCommitDecision() {
-		// TODO
-		// log commit decision and flush log
-		// when recovering from failure we need log record to decide if we
-		// need to commit or rollback in doubt transactions
-		//
+		log.remember(globalTransactionId);
 	}
 	
 	@Override
