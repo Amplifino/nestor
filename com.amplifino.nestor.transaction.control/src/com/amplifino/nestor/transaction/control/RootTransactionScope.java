@@ -18,32 +18,22 @@ class RootTransactionScope extends RealTransactionScope {
 	@Override
 	public <T> T execute(Callable<T> callable) throws Exception {
 		TransactionManager txManager = getTransactionControl().transactionManager();
-		boolean inJtaTransaction = txManager.getTransaction() != null;
-		if (!inJtaTransaction) {
-			txManager.begin();
-		}
+		txManager.begin();
+		T result = null;
 		try {
-			T result = callable.call();
-			if (!inJtaTransaction) {
-				txManager.commit();
-			}
-			return result;
+			result = callable.call();
 		} catch (Throwable e) {
 			if (ignore(e)) {
-				if (!inJtaTransaction) {
-					txManager.commit();
-				}
+				txManager.commit();
 			} else {
-				if (inJtaTransaction) {
-					txManager.setRollbackOnly();
-				} else {
-					txManager.rollback();
-				}
+				txManager.rollback();
 			}
 			throw e;
 		}
+		txManager.commit();
+		return result;		
 	}
-
+	
 	@Override
 	public TransactionContext getContext() {
 		return context;

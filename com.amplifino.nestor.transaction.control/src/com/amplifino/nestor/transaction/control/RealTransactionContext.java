@@ -18,12 +18,22 @@ import org.osgi.service.transaction.control.TransactionStatus;
 
 class RealTransactionContext extends ActiveTransactionContext {
 	
-	private final RootTransactionScope scope;
+	private final RealTransactionScope scope;
 	
-	RealTransactionContext(RootTransactionScope scope) {
+	RealTransactionContext(RealTransactionScope scope) {
 		this.scope = scope;
 	}
 
+	@Override
+	public final Object getScopedValue(Object key) {
+		return scope.getTransactionControl().synchronizationRegistry().getResource(key);
+	}
+
+	@Override
+	public final void putScopedValue(Object key, Object value) {
+		scope.getTransactionControl().synchronizationRegistry().putResource(key, value);		
+	}
+	
 	@Override
 	public boolean getRollbackOnly() throws IllegalStateException {
 		return getTransactionStatus() == TransactionStatus.MARKED_ROLLBACK;
@@ -31,7 +41,7 @@ class RealTransactionContext extends ActiveTransactionContext {
 
 	@Override
 	public Object getTransactionKey() {
-		return transaction();
+		return scope.getTransactionControl().synchronizationRegistry().getTransactionKey();
 	}
 
 	@Override
@@ -44,7 +54,7 @@ class RealTransactionContext extends ActiveTransactionContext {
 	}
 
 	@Override
-	public void postCompletion(Consumer<TransactionStatus> consumer) throws IllegalStateException {
+	public void postCompletion(Consumer<TransactionStatus> consumer)  {
 		try {
 			transaction().registerSynchronization(new PostAction(consumer));
 		} catch (RollbackException | SystemException e) {
@@ -53,7 +63,7 @@ class RealTransactionContext extends ActiveTransactionContext {
 	}
 
 	@Override
-	public void preCompletion(Runnable runnable) throws IllegalStateException {
+	public void preCompletion(Runnable runnable) {
 		try {
 			transaction().registerSynchronization(new PreAction(runnable));
 		} catch (RollbackException | SystemException e) {
@@ -62,12 +72,12 @@ class RealTransactionContext extends ActiveTransactionContext {
 	}
 
 	@Override
-	public void registerLocalResource(LocalResource resource) throws IllegalStateException {
-		registerXAResource(new XAResourceAdapter(resource));
+	public void registerLocalResource(LocalResource resource)  {
+		registerXAResource(new XAResourceAdapter(resource), null);
 	}
 
 	@Override
-	public void registerXAResource(XAResource resource) throws IllegalStateException {
+	public void registerXAResource(XAResource resource, String resourceId)  {
 		try {
 			transaction().enlistResource(resource);
 		} catch (RollbackException | SystemException e) {	
@@ -230,5 +240,7 @@ class RealTransactionContext extends ActiveTransactionContext {
 		}	
 		
 	}
+
+	
 	
 }

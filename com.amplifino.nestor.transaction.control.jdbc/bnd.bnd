@@ -6,3 +6,5 @@
 	com.amplifino.pools;version=latest,\
 	com.amplifino.counters;version=latest,\
 	com.amplifino.nestor.jdbc.pools;version=latest
+Private-Package: com.amplifino.nestor.transaction.control.jdbc
+Export-Package: org.osgi.service.transaction.control.jdbc

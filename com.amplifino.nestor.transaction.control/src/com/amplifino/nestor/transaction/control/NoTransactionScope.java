@@ -25,16 +25,6 @@ class NoTransactionScope extends ActiveTransactionScope {
 	}
 
 	@Override
-	public TransactionScope required() {
-		return new RootTransactionScope(this);
-	}
-
-	@Override
-	public TransactionScope supports() {
-		return new NoTransactionScope(this);
-	}
-
-	@Override
 	public <T> T execute(Callable<T> callable) throws Exception {
 		try {
 			T result = callable.call();
@@ -66,6 +56,7 @@ class NoTransactionScope extends ActiveTransactionScope {
 		} catch (Throwable e) {			
 		}
 	}
+	
 	@Override
 	public boolean isTransaction() {
 		return false;

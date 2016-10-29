@@ -2,6 +2,7 @@ package com.amplifino.nestor.transaction.provider;
 
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
+import javax.transaction.InvalidTransactionException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.Status;
@@ -49,8 +50,8 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
 
 	@Override
-	public Transaction getTransaction() throws SystemException {
-		Transaction transaction = transactionHolder.get();
+	public Transaction getTransaction() {
+		TransactionImpl transaction = transactionHolder.get();
 		if (transaction == null) {
 			return transaction;
 		}
@@ -63,9 +64,14 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
 
 	@Override
-	public void resume(Transaction transaction) {
-		throw new UnsupportedOperationException();
-		
+	public void resume(Transaction transaction) throws InvalidTransactionException {
+		if (!(transaction instanceof TransactionImpl)) {
+			throw new InvalidTransactionException("Invalid transaction: " + transaction);
+		}
+		if (getTransaction() != null) {
+			throw new IllegalStateException("Already in transaction");
+		}
+		transactionHolder.set((TransactionImpl) transaction);
 	}
 
 	@Override
@@ -92,13 +98,17 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
 
 	@Override
-	public void setTransactionTimeout(int arg0) throws SystemException {
+	public void setTransactionTimeout(int timeout) {
 		throw new UnsupportedOperationException();		
 	}
 
 	@Override
-	public Transaction suspend() throws SystemException {
-		throw new UnsupportedOperationException();
+	public Transaction suspend() {
+		Transaction transaction = getTransaction();
+		if (transaction != null) {
+			transactionHolder.remove();
+		}
+		return transaction;
 	}
 	
 

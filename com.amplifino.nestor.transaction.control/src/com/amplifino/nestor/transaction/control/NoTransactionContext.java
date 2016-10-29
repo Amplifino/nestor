@@ -1,5 +1,7 @@
 package com.amplifino.nestor.transaction.control;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.transaction.xa.XAResource;
@@ -10,9 +12,20 @@ import org.osgi.service.transaction.control.TransactionStatus;
 class NoTransactionContext extends ActiveTransactionContext {
 	
 	private final NoTransactionScope scope;
+	private final Map<Object, Object> scopedObjects = new HashMap<>();
 	
 	public NoTransactionContext(NoTransactionScope scope) {
 		this.scope = scope;
+	}
+	
+	@Override
+	public final Object getScopedValue(Object key) {
+		return scopedObjects.get(key);
+	}
+
+	@Override
+	public final void putScopedValue(Object key, Object value) {
+		scopedObjects.put(key, value);
 	}
 	
 	@Override
@@ -47,7 +60,7 @@ class NoTransactionContext extends ActiveTransactionContext {
 	}
 
 	@Override
-	public void registerXAResource(XAResource resource) throws IllegalStateException {
+	public void registerXAResource(XAResource resource, String resourceId) throws IllegalStateException {
 		throw new IllegalStateException();
 	}
 

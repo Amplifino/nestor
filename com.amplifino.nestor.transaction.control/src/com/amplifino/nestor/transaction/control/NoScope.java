@@ -14,16 +14,6 @@ class NoScope extends AbstractTransactionScope {
 	}
 
 	@Override
-	public TransactionScope required() {
-		return new RootTransactionScope(this);
-	}
-
-	@Override
-	public TransactionScope supports() {
-		return new NoTransactionScope(this);
-	}
-
-	@Override
 	public <T> T execute(Callable<T> callable) throws Exception {
 		throw new IllegalStateException();
 	}

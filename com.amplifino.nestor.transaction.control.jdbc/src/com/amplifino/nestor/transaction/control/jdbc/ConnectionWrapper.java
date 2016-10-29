@@ -6,10 +6,12 @@ import java.util.concurrent.Executor;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
+import org.osgi.service.transaction.control.TransactionException;
 
 /**
- * Wraps a Connection forwarding all methods to the wrapped connection
+ * Provides transparant access to connection registered with transactioncontext
  *
  */
 class ConnectionWrapper implements Connection {
@@ -23,7 +25,11 @@ class ConnectionWrapper implements Connection {
 	}
 	
     private Connection getConnection() throws SQLException {
-    	Connection connection = (Connection) transactionControl.getCurrentContext().getScopedValue(this);
+    	TransactionContext context = transactionControl.getCurrentContext();
+    	if (context == null) {
+    		throw new TransactionException("No active scope");
+    	}
+    	Connection connection = (Connection) context.getScopedValue(this);
     	return connection == null ? newConnection() : connection;
     }
     
@@ -314,11 +320,10 @@ class ConnectionWrapper implements Connection {
 	public void close() throws SQLException {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
 		if (iface.isInstance(this)) {
-			return (T) this;
+			return iface.cast(this);
 		} else {
 			return getConnection().unwrap(iface);
 		}

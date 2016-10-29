@@ -173,7 +173,7 @@ class TransactionImpl implements Transaction {
 	}
 
 	@Override
-	public int getStatus() throws SystemException {
+	public int getStatus() {
 		return status;
 	}
 

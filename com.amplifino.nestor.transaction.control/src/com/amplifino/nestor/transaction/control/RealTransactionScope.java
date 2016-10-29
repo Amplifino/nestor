@@ -12,16 +12,6 @@ abstract class RealTransactionScope extends ActiveTransactionScope {
 	}
 
 	@Override
-	public final TransactionScope required() {
-		return new NestedTransactionScope(this);
-	}
-
-	@Override
-	public final TransactionScope supports() {
-		return new NestedTransactionScope(this);
-	}
-
-	@Override
 	public final boolean isTransaction() {
 		return true;
 	}

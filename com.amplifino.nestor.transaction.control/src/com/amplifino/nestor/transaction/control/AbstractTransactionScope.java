@@ -3,6 +3,7 @@ package com.amplifino.nestor.transaction.control;
 import java.util.Optional;
 
 import javax.transaction.InvalidTransactionException;
+import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 
@@ -43,6 +44,16 @@ abstract class AbstractTransactionScope implements TransactionScope {
 		return new RootTransactionScope(this);
 	}
 	
+	@Override
+	public final TransactionScope required() {
+		return inTransaction() ? new NestedTransactionScope(this) : new RootTransactionScope(this);
+	}
+	
+	@Override
+	public final TransactionScope supports() {
+		return inTransaction() ? new NestedTransactionScope(this) : new NoTransactionScope(this);
+	}
+	
 	void suspend() {
 		try {
 			suspendedTransaction = getTransactionControl().transactionManager().suspend();
@@ -61,6 +72,14 @@ abstract class AbstractTransactionScope implements TransactionScope {
 			} finally {
 				suspendedTransaction = null;
 			}
+		}
+	}
+	
+	boolean inTransaction() {
+		try {
+			return getTransactionControl().transactionManager().getStatus() != Status.STATUS_NO_TRANSACTION;
+		} catch (SystemException e) {
+			throw new TransactionException(e.toString(), e);
 		}
 	}
 }

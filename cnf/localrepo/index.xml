@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1477684104556" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1477757637435" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.obelix"/>
@@ -3954,61 +3954,60 @@
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="tx-control-api"/>
       <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" type="Version" value="0.0.1"/>
+      <attribute name="version" type="Version" value="0.0.2"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="osgi.content" value="1553148b6f4f061b87df657436e9be4c9bca2033a2d1ecdac4534ecbeb08831b"/>
-      <attribute name="url" value="tx-control-api/tx-control-api-0.0.1.jar"/>
-      <attribute name="size" type="Long" value="20464"/>
+      <attribute name="osgi.content" value="35625015959b45dbd4128580a58b7942324c8b3d3197fa370f9a1f308adce28c"/>
+      <attribute name="url" value="tx-control-api/tx-control-api-0.0.2.jar"/>
+      <attribute name="size" type="Long" value="19035"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
     </capability>
     <capability namespace="osgi.wiring.bundle">
       <attribute name="osgi.wiring.bundle" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
     </capability>
     <capability namespace="osgi.wiring.host">
       <attribute name="osgi.wiring.host" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
     </capability>
     <capability namespace="osgi.wiring.package">
       <attribute name="osgi.wiring.package" value="org.osgi.service.transaction.control"/>
       <attribute name="version" type="Version" value="1.0.0"/>
       <attribute name="api.status" value="aries.prerelease"/>
-      <attribute name="mandatory" value="api.status"/>
       <attribute name="bundle-symbolic-name" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
+      <directive name="mandatory" value="api.status"/>
       <directive name="uses" value="javax.transaction.xa"/>
     </capability>
     <capability namespace="osgi.wiring.package">
       <attribute name="osgi.wiring.package" value="org.osgi.service.transaction.control.jdbc"/>
       <attribute name="version" type="Version" value="1.0.0"/>
       <attribute name="api.status" value="aries.prerelease"/>
-      <attribute name="mandatory" value="api.status"/>
       <attribute name="bundle-symbolic-name" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
+      <directive name="mandatory" value="api.status"/>
       <directive name="uses" value="javax.sql,org.osgi.service.jdbc,org.osgi.service.transaction.control"/>
     </capability>
     <capability namespace="osgi.wiring.package">
       <attribute name="osgi.wiring.package" value="org.osgi.service.transaction.control.jpa"/>
       <attribute name="version" type="Version" value="1.0.0"/>
       <attribute name="api.status" value="aries.prerelease"/>
-      <attribute name="mandatory" value="api.status"/>
       <attribute name="bundle-symbolic-name" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
+      <directive name="mandatory" value="api.status"/>
       <directive name="uses" value="javax.persistence,org.osgi.service.jpa,org.osgi.service.transaction.control"/>
     </capability>
     <capability namespace="osgi.wiring.package">
       <attribute name="osgi.wiring.package" value="org.osgi.service.transaction.control.recovery"/>
       <attribute name="version" type="Version" value="1.0.0"/>
+      <attribute name="api.status" value="aries.prerelease"/>
       <attribute name="bundle-symbolic-name" value="tx-control-api"/>
-      <attribute name="bundle-version" type="Version" value="0.0.1"/>
+      <attribute name="bundle-version" type="Version" value="0.0.2"/>
+      <directive name="mandatory" value="api.status"/>
       <directive name="uses" value="javax.transaction.xa"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.transaction.control)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.persistence)(version&gt;=1.1.0)(!(version&gt;=2.0.0)))"/>
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.persistence)(version&gt;=1.2.0)(!(version&gt;=2.0.0)))"/>
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(osgi.wiring.package=javax.sql)"/>
@@ -4023,13 +4022,8 @@
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.jpa)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
     </requirement>
     <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.transaction.control.jdbc)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.transaction.control.jpa)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.transaction.control.recovery)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+      <attribute name="api.status" value="aries.prerelease"/>
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.service.transaction.control)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
     </requirement>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>

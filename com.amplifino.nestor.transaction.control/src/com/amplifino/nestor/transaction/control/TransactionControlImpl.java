@@ -2,7 +2,10 @@ package com.amplifino.nestor.transaction.control;
 
 import java.util.concurrent.Callable;
 
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.TransactionManager;
+import javax.transaction.TransactionSynchronizationRegistry;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -19,6 +22,8 @@ public class TransactionControlImpl implements TransactionControl {
 	private final ThreadLocal<TransactionScope> scopeHolder = ThreadLocal.withInitial(this::initialScope);
 	@Reference
 	private TransactionManager transactionManager;
+	@Reference
+	private TransactionSynchronizationRegistry synchronizationRegistry;
 	
 	private TransactionScope getScope() {
 		return scopeHolder.get();
@@ -35,33 +40,46 @@ public class TransactionControlImpl implements TransactionControl {
 	}
 	
 	@Override
-	public <T> T notSupported(Callable<T> callable) throws TransactionException, ScopedWorkException {
+	public <T> T notSupported(Callable<T> callable) {
 		return execute(getScope().notSupported(), callable);			
 	}
 
 	@Override
-	public <T> T required(Callable<T> callable) throws TransactionException, TransactionRolledBackException, ScopedWorkException {
+	public <T> T required(Callable<T> callable) {
 		return execute(getScope().required(), callable);
 	}
 
 	@Override
-	public <T> T requiresNew(Callable<T> callable) throws TransactionException, TransactionRolledBackException, ScopedWorkException {
+	public <T> T requiresNew(Callable<T> callable) {
 		return execute(getScope().requiresNew(), callable);
 	}
 
 	@Override
-	public <T> T supports(Callable<T> callable) throws TransactionException, ScopedWorkException {
+	public <T> T supports(Callable<T> callable)  {
 		return execute(getScope().supports(), callable);
 	}
 
 	private  <T> T execute(TransactionScope scope, Callable<T> callable) {
 		try {
 			return pushScope(scope).execute(callable);
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (RollbackException | SystemException e) {
+			throw new TransactionException(e.toString(), e);
+		} catch (javax.transaction.TransactionRolledbackException e) {
+			throw new TransactionRolledBackException(e.toString(), e);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw wrap(e);
 		} catch (Exception e) {
-			throw new ScopedWorkException(e.toString(), e, getScope().getContext());
+			throw wrap(e);
 		} finally {
 			popScope();
 		}
+	}
+	
+	private ScopedWorkException wrap(Exception e) {
+		return new ScopedWorkException(e.toString(), e, getScope().getContext());
 	}
 	
 	@Override
@@ -85,17 +103,17 @@ public class TransactionControlImpl implements TransactionControl {
 	}
 
 	@Override
-	public boolean getRollbackOnly() throws IllegalStateException {
+	public boolean getRollbackOnly() {
 		return getScope().getRollbackOnly();
 	}
 
 	@Override
-	public void ignoreException(Throwable throwable) throws IllegalStateException {
+	public void ignoreException(Throwable throwable) {
 		getScope().ignoreException(throwable);
 	}
 
 	@Override
-	public void setRollbackOnly() throws IllegalStateException {
+	public void setRollbackOnly() {
 		getScope().setRollbackOnly();
 	}
 
@@ -105,5 +123,9 @@ public class TransactionControlImpl implements TransactionControl {
 	
 	TransactionManager transactionManager() {
 		return transactionManager;
+	}
+	
+	TransactionSynchronizationRegistry synchronizationRegistry() {
+		return synchronizationRegistry;
 	}
 }

@@ -6,8 +6,11 @@ import org.osgi.service.transaction.control.TransactionContext;
 
 class NestedTransactionScope extends RealTransactionScope {
 	
+	private TransactionContext context;
+	
 	NestedTransactionScope(TransactionScope parent) {
 		super(parent);
+		this.context = new RealTransactionContext(this);
 	}
 	
 	
@@ -25,7 +28,7 @@ class NestedTransactionScope extends RealTransactionScope {
 
 	@Override
 	public TransactionContext getContext() {
-		return parent().getContext();
+		return context;
 	}
 
 }
