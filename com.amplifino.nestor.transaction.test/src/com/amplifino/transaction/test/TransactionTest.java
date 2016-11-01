@@ -43,8 +43,8 @@ public class TransactionTest {
 	private UserTransaction userTransaction;
 	
 	@Test
-	public void test() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
-		publishH2();		
+	public void test() throws SQLException, NotSupportedException, SystemException, SecurityException, RollbackException, HeuristicMixedException, HeuristicRollbackException, IOException {
+		Configuration config = publishH2();		
 		dataSource = getService(DataSource.class);
 		userTransaction = getService(UserTransaction.class);
 		try (Connection connection = dataSource.getConnection()) {
@@ -52,6 +52,7 @@ public class TransactionTest {
 		}
 		testRollback();
 		testCommit();
+		config.delete();
 	}
 	
 	private void createTable(Connection connection) throws SQLException {
@@ -121,11 +122,12 @@ public class TransactionTest {
 		}
 	}
 	
-	private void publishH2() {
+	private Configuration publishH2() {
 		ConfigurationAdmin configurationAdmin = getService(ConfigurationAdmin.class);
 		try {
 			Configuration configuration = configurationAdmin.createFactoryConfiguration("com.amplifino.nestor.transaction.datasources", "?");
 			configuration.update(properties());
+			return configuration;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

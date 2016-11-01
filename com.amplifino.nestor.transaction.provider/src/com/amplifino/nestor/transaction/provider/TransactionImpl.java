@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.RollbackException;
@@ -18,12 +19,15 @@ import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
+import com.amplifino.nestor.transaction.provider.spi.AbortException;
+import com.amplifino.nestor.transaction.provider.spi.GlobalTransaction;
 import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
 
 class TransactionImpl implements Transaction {
 	
+	private final Logger logger = Logger.getLogger("com.amplifino.nestor.transaction.provider");
 	private final TransactionLog log;
-	private final byte[] globalTransactionId;
+	private final GlobalTransaction globalTransaction;
 	private int lastBranch = 0;
 	private int status;
 	private final List<TransactionBranch> branches = new ArrayList<>(); 
@@ -33,7 +37,7 @@ class TransactionImpl implements Transaction {
 	
 	TransactionImpl(TransactionLog log) {
 		this.log = log;
-		globalTransactionId = XidImpl.newGlobalTransactionId();
+		globalTransaction = GlobalTransaction.random();
 		status = Status.STATUS_ACTIVE;
 	}
 	
@@ -41,16 +45,12 @@ class TransactionImpl implements Transaction {
 	public void commit() throws RollbackException, HeuristicMixedException {
 		checkActiveOrMarked();
 		if (status == Status.STATUS_MARKED_ROLLBACK) {
-			rollback();
-			throw new RollbackException("Transaction was marked for rollback");
+			rollbackAndThrow("Transaction was marked for rollback");
 		}
-		List<Throwable> exceptions = beforeCompletion();
-		if (!exceptions.isEmpty()) {
-			rollback();
-			RollbackException e = new RollbackException("Exception in before completion");
-			e.initCause(exceptions.get(0));
-			exceptions.stream().skip(1).forEach(t -> e.addSuppressed(t));
-			throw e;
+		CompositeException<?> beforeExceptions = beforeCompletion();
+		beforeExceptions.exceptions().forEach(this::report);
+		if (!beforeExceptions.isEmpty()) {
+			rollbackAndThrow("Exception in before completion" , beforeExceptions);
 		}
 		try {
 			doCommit();
@@ -72,71 +72,77 @@ class TransactionImpl implements Transaction {
 		}
 	}
 	
-	private void onePhaseCommit() throws RollbackException, HeuristicMixedException {
+	private void onePhaseCommit() throws RollbackException {
 		try {
 			status = Status.STATUS_COMMITTING;
 			branches.get(0).commitOnePhase();
 			status = Status.STATUS_COMMITTED;
-		} catch (XAException e) {
+		} catch (Throwable e) {
 			report(e);
 			status = Status.STATUS_ROLLEDBACK;				
 			throw (RollbackException) new RollbackException(e.toString()).initCause(e);
-		} catch (Throwable e) {
-			report(e);
-			status = Status.STATUS_UNKNOWN;			
-			throw (HeuristicMixedException) new HeuristicMixedException(e.toString()).initCause(e);
 		}
 	}
 	
-	private void twoPhaseCommit() throws RollbackException {
-		Throwable throwable = null;
-		status = Status.STATUS_PREPARING;
+	private void twoPhaseCommit() throws RollbackException, HeuristicMixedException {
 		try {
-			for (TransactionBranch branch : branches) {				
-				branch.prepare(log);							
-			}
-			status = Status.STATUS_PREPARED;
-		} catch (Throwable e) {
-			throwable = report(e);
-			status = Status.STATUS_ROLLING_BACK;
-		}
-		branches.removeIf(TransactionBranch::isReadOnly);
-		if (throwable == null) {
-			if (branches.size() > 1) {
-				try {
-					logCommitDecision();
-					status = Status.STATUS_COMMITTING;
-				} catch (Throwable e) {
-					throwable = report(e);
-					status = Status.STATUS_ROLLING_BACK;
-				}
-			} else {
-				status = Status.STATUS_COMMITTING;
-			}
-		}
-		for (TransactionBranch branch : branches) {
 			try {
-				if (throwable == null) {
-					branch.commitTwoPhase();	
-					log.committed(branch.xid());
-				} else {
-					branch.rollback();
-				}
-			} catch (Throwable e) {		
-				report(e);
+				phaseOne();
+			} finally {
+				branches.removeIf(TransactionBranch::isReadOnly);
 			}
+			log.committing(globalTransaction, xids());
+		} catch (AbortException e) {
+			throw (HeuristicMixedException) new HeuristicMixedException("Failure in transaction log").initCause(e);
+		} catch (Throwable e) {
+			twoPhaseRollback("Exception in phase one: " + e, e);			
 		}
-		status = (throwable == null) ? Status.STATUS_COMMITTED : Status.STATUS_ROLLEDBACK;
-		if (status == Status.STATUS_ROLLEDBACK) {
-			throw (RollbackException) new RollbackException(throwable.toString()).initCause(throwable);
+		phaseTwo();
+	}
+	
+	private void phaseOne() throws XAException {
+		status = Status.STATUS_PREPARING;
+		log.preparing(globalTransaction, xids());
+		for (TransactionBranch branch : branches) {				
+			branch.prepare(log);							
+		}
+		status = Status.STATUS_PREPARED;
+	}
+	
+	private void phaseTwo() throws HeuristicMixedException {
+		status = Status.STATUS_COMMITTING;
+		CompositeException<TransactionBranch> exceptions = commit(branches);
+		exceptions.exceptions().forEach(this::report);
+		status = Status.STATUS_COMMITTED;
+		if (exceptions.isEmpty()) {
+			log.commitComplete(globalTransaction);
 		} else {
-			log.forget(globalTransactionId);
+			log.commitInComplete(globalTransaction, exceptions.failed().map(Map.Entry::getKey).map(TransactionBranch::xid));
 		}
+	}
+	
+	private void twoPhaseRollback(String message, Throwable cause) throws RollbackException {
+		report(cause);
+		log.rollingback(globalTransaction, xids());
+		CompositeException<TransactionBranch>  exceptions = rollback(branches);
+		exceptions.exceptions().forEach(this::report);
+		if (exceptions.isEmpty()) {
+			log.rollbackComplete(globalTransaction);
+		} else {
+			log.rollbackInComplete(globalTransaction, exceptions.failed().map(Map.Entry::getKey).map(TransactionBranch::xid));
+		}
+		throw (RollbackException) new RollbackException(message).initCause(cause);
+	}
+		
+	private Stream<Xid> xids() {
+		return branches.stream().map(TransactionBranch::xid);
+	}
+	
+	private CompositeException<TransactionBranch> commit(List<TransactionBranch> branches) {
+		return branches.stream()
+			.collect(() -> CompositeException.of(branch -> branch.commitTwoPhase(log)), CompositeException::add, CompositeException::addAll);
 	}
 
-	private void logCommitDecision() {
-		log.remember(globalTransactionId);
-	}
 	
 	@Override
 	public boolean delistResource(XAResource resource, int flags) throws SystemException {
@@ -195,21 +201,32 @@ class TransactionImpl implements Transaction {
 		interposedSynchronizers.add(synchronizer);
 	}
 	
+	private void rollbackAndThrow(String message) throws RollbackException {
+		rollback();
+		throw new RollbackException(message);
+	}
+	
+	private void rollbackAndThrow(String message, CompositeException<?> exceptions) throws RollbackException {
+		rollback();
+		exceptions.ifNotEmptyThrow(() -> new RollbackException(message));
+		throw new RollbackException(message);
+	}
+	
 	@Override
 	public void rollback()  {
 		checkActiveOrMarked();
-		status = Status.STATUS_ROLLING_BACK;
-		for( TransactionBranch branch : branches) {
-			try {
-				branch.rollback();
-			} catch (Throwable e) {			
-				report(e);
-			}
-		}
-		status = Status.STATUS_ROLLEDBACK;
+		rollback(branches);
 		afterCompletion();
 	}
 
+	private CompositeException<TransactionBranch> rollback(List<TransactionBranch> branches) {
+		status = Status.STATUS_ROLLING_BACK;
+		CompositeException<TransactionBranch> result = branches.stream()
+			.collect(() -> CompositeException.of(branch -> branch.rollback(log)), CompositeException::add, CompositeException::addAll);
+		status = Status.STATUS_ROLLEDBACK;
+		return result;
+	}
+	
 	@Override
 	public void setRollbackOnly() throws IllegalStateException, SystemException {
 		checkActiveOrMarked();
@@ -218,51 +235,24 @@ class TransactionImpl implements Transaction {
 
 	private Xid branch() {
 		lastBranch++;
-		return new XidImpl(globalTransactionId, ("" + lastBranch).getBytes());
+		return new XidImpl(log.getFormatId(), globalTransaction, ("" + lastBranch).getBytes());
 	}
 	
-	private List<Throwable> beforeCompletion() {
-		List<Throwable> exceptions = new ArrayList<>();
-		for (Synchronization synchronization : synchronizers) {
-			try {
-				synchronization.beforeCompletion();
-			} catch (Throwable e) {		
-				exceptions.add(e);
-				report(e);
-			}
-		}
-		for (Synchronization synchronization : interposedSynchronizers) {
-			try {
-				synchronization.beforeCompletion();
-			} catch (Throwable e) {
-				exceptions.add(e);
-				report(e);
-			}
-		}
-		return exceptions;
+	private CompositeException<Synchronization> beforeCompletion() {
+		return Stream.concat(synchronizers.stream(), interposedSynchronizers.stream())
+			.collect(() -> CompositeException.of(Synchronization::beforeCompletion), CompositeException::add, CompositeException::addAll);
 	}
 	
 	private void afterCompletion() {		
-		for (Synchronization synchronization : interposedSynchronizers) {
-			try {
-				synchronization.afterCompletion(status);
-			} catch (Throwable e) {
-				report(e);
-			}
-		}
-		for (Synchronization synchronization : synchronizers) {
-			try {
-				synchronization.afterCompletion(status);
-			} catch (Throwable e) {			
-				report(e);
-			}
-		}
+		Stream.concat(interposedSynchronizers.stream(), synchronizers.stream())
+			.collect(() -> CompositeException.<Synchronization>of(s -> s.afterCompletion(status)), CompositeException::add, CompositeException::addAll)
+			.exceptions()
+			.forEach(this::report);
 		status = Status.STATUS_NO_TRANSACTION;
 	}
 	
 	private Throwable report(Throwable e) {
-		Logger.getLogger("com.amplifino.tx")
-			.log(Level.SEVERE, "Exception in state " + status + ": " + e.getMessage() , e);
+		logger.log(Level.SEVERE, "Exception in state " + status + ": " + e.getMessage() , e);
 		return e;
 	}
 	

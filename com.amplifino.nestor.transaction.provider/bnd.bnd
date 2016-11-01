@@ -13,7 +13,9 @@ Include-Resource: LICENSE, README.md, bnd.bnd
 	osgi.core;version=6.0,\
 	osgi.annotation;version=6.0,\
 	jta;version=1.1
-Private-Package: com.amplifino.nestor.transaction.provider
+Private-Package: \
+	com.amplifino.nestor.transaction.provider,\
+	com.amplifino.nestor.transaction.provider.recovery
 Bundle-Version: 1.0.0
 -dsannotations: *
 Export-Package: \

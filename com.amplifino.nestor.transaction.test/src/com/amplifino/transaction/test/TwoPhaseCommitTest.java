@@ -60,7 +60,7 @@ public class TwoPhaseCommitTest {
 	
 	private void createTable(Connection connection) throws SQLException {
 		try (Statement statement = connection.createStatement()) {			
-			statement.execute("create table test (name varchar(256))");
+			statement.execute("create table testing (name varchar(256))");
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class TwoPhaseCommitTest {
 		for (DataSource source : dataSources) {
 			try (Connection connection = source.getConnection()) {
 				Assert.assertTrue(connection.getAutoCommit());
-				try (PreparedStatement statement = connection.prepareStatement("select count(*) from test")) {
+				try (PreparedStatement statement = connection.prepareStatement("select count(*) from testing")) {
 					try (ResultSet resultSet = statement.executeQuery()) {
 						resultSet.next();
 						result += resultSet.getInt(1);
@@ -112,7 +112,7 @@ public class TwoPhaseCommitTest {
 		for (DataSource source : dataSources) {	
 			try (Connection connection = source.getConnection()) {
 				Assert.assertFalse(connection.getAutoCommit());
-				try (PreparedStatement statement = connection.prepareStatement("insert into test values(?)")) {
+				try (PreparedStatement statement = connection.prepareStatement("insert into testing values(?)")) {
 					statement.setString(1,"Test");
 					int count = statement.executeUpdate();
 					Assert.assertEquals(1, count);
@@ -161,7 +161,7 @@ public class TwoPhaseCommitTest {
 			.collect(Collectors.toSet());
 		Dictionary<String, Object> props = new Hashtable<>();
 		setProperty("dataSourceFactory.target", "(osgi.jdbc.driver.name=*)", props, check);
-		setProperty("url","jdbc:h2:mem:db" + databaseId, props, check);
+		setProperty("url","jdbc:h2:mem:dbx" + databaseId, props, check);
 		setProperty("user","user", props, check);
 		setProperty(".password", "dummy", props, check);
 		setProperty("dataSourceName", "H2", props, check);

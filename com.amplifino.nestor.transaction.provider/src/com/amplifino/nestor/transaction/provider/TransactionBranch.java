@@ -72,23 +72,27 @@ class TransactionBranch {
 		xaResource.commit(xid, true);
 	}
 	
-	void commitTwoPhase() throws XAException {
+	void commitTwoPhase(TransactionLog log) throws XAException {
 		switch (prepareResult) {
 			case NOTPREPARED:
 				throw new IllegalStateException();
 			case OK:
 				xaResource.commit(xid, false);
+				log.committed(xid);
 				break;
 			case READONLY:				
 		}
 	}
 	
-	void rollback() throws XAException {
-		if (prepareResult != PrepareResult.READONLY) {
+	void rollback(TransactionLog log) throws XAException {
+		if (!isReadOnly()) {
 			if (started) {
 				end();
 			}
 			xaResource.rollback(xid);
+			if (prepareResult == PrepareResult.OK) {
+				log.rollbacked(xid);
+			}
 		}
 	}
 	

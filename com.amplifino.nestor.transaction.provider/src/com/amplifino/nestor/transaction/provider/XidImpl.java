@@ -1,23 +1,25 @@
 package com.amplifino.nestor.transaction.provider;
 
-import java.util.UUID;
-
 import javax.transaction.xa.Xid;
+import javax.xml.bind.DatatypeConverter;
+
+import com.amplifino.nestor.transaction.provider.spi.GlobalTransaction;
 
 class XidImpl implements Xid {
 	
-	private static final int FORMAT = 0x416d706c;
-	private final byte[] globalTransactionId;
+	private final int format;
+	private final GlobalTransaction globalTransaction;
 	private final byte[] branchQualifier;
 	
-	XidImpl(byte[] globalTransactionId, byte[] branchQualifier) {
-		if (globalTransactionId.length > Xid.MAXGTRIDSIZE) {
+	XidImpl(int format, GlobalTransaction globalTransaction, byte[] branchQualifier) {
+		if (globalTransaction.id().length > Xid.MAXGTRIDSIZE) {
 			throw new IllegalArgumentException();
 		}
 		if (branchQualifier.length > Xid.MAXBQUALSIZE) {
 			throw new IllegalArgumentException();
 		}
-		this.globalTransactionId = globalTransactionId;
+		this.format = format;
+		this.globalTransaction = globalTransaction;
 		this.branchQualifier = branchQualifier;
 	}
 
@@ -28,21 +30,23 @@ class XidImpl implements Xid {
 
 	@Override
 	public int getFormatId() {
-		return XidImpl.FORMAT;
+		return format;
 	}
 
 	@Override
 	public byte[] getGlobalTransactionId() {
-		return copy(globalTransactionId);
+		return copy(globalTransaction.id());
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Xid: format %d, branch %s in %s", 
+			format, DatatypeConverter.printHexBinary(branchQualifier), globalTransaction);
 	}
 	
 	private byte[] copy(byte[] in ) {
 		byte[] result = new byte[in.length];
 		System.arraycopy(in,  0 , result, 0, in.length);
 		return result;
-	}
-
-	static byte[] newGlobalTransactionId() {
-		return UUID.randomUUID().toString().getBytes();
 	}
 }
