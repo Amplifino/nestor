@@ -68,7 +68,7 @@ public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProvider
 				return getProviderFor(dataSourceFactory.createXADataSource(props), map);
 			}
 		} catch (SQLException e) {
-			throw new TransactionException(e.toString(), e);
+			throw new RuntimeException(e);
 		}
 	}
 

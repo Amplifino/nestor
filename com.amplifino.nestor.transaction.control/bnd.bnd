@@ -4,7 +4,9 @@
 	tx-control-api;version=0.0,\
 	jta;version=1.1
 Private-Package: com.amplifino.nestor.transaction.control
-Export-Package: org.osgi.service.transaction.control
+Export-Package: \
+	org.osgi.service.transaction.control,\
+	org.osgi.service.transaction.control.recovery
 Import-Package: \
 	javax.transaction;version='[1.1,2)',\
 	*
