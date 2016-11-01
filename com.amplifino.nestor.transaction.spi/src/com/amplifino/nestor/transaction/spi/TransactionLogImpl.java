@@ -10,6 +10,7 @@ import javax.transaction.xa.Xid;
 
 import org.osgi.service.component.annotations.Component;
 
+import com.amplifino.nestor.transaction.provider.spi.AbortException;
 import com.amplifino.nestor.transaction.provider.spi.GlobalTransaction;
 import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
 
@@ -31,7 +32,7 @@ public class TransactionLogImpl implements TransactionLog {
 	}
 	
 	@Override
-	public void committing(GlobalTransaction globalTransaction, Stream<Xid> xids) {
+	public void committing(GlobalTransaction globalTransaction, Stream<Xid> xids) throws AbortException {
 		logger.info(String.format("Commiting %s with %d participants", globalTransaction, xids.count()));
 		transactions.put(globalTransaction, GlobalTransactionState.COMITTING);
 	}

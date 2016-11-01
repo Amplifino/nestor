@@ -2,8 +2,6 @@ package com.amplifino.nestor.transaction.control;
 
 import java.util.concurrent.Callable;
 
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import javax.transaction.TransactionManager;
 import javax.transaction.TransactionSynchronizationRegistry;
 
@@ -13,8 +11,6 @@ import org.osgi.service.transaction.control.ScopedWorkException;
 import org.osgi.service.transaction.control.TransactionBuilder;
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
-import org.osgi.service.transaction.control.TransactionException;
-import org.osgi.service.transaction.control.TransactionRolledBackException;
 
 @Component
 public class TransactionControlImpl implements TransactionControl {
@@ -61,24 +57,20 @@ public class TransactionControlImpl implements TransactionControl {
 
 	private  <T> T execute(TransactionScope scope, Callable<T> callable) {
 		try {
-			return pushScope(scope).execute(callable);
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (RollbackException | SystemException e) {
-			throw new TransactionException(e.toString(), e);
-		} catch (javax.transaction.TransactionRolledbackException e) {
-			throw new TransactionRolledBackException(e.toString(), e);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			throw wrap(e);
-		} catch (Exception e) {
-			throw wrap(e);
+			return pushScope(scope).execute(callable).orElseThrow(e -> wrap(e));
 		} finally {
 			popScope();
 		}
 	}
 	
-	private ScopedWorkException wrap(Exception e) {
+	private ScopedWorkException wrap(Throwable e) {
+		if (e instanceof InterruptedException) {
+			Thread.currentThread().interrupt();
+		}
+		if (e instanceof ScopedWorkException) {
+			Throwable cause = ((ScopedWorkException) e).getCause();
+			return new ScopedWorkException(cause.toString(), cause, getScope().getContext());
+		}
 		return new ScopedWorkException(e.toString(), e, getScope().getContext());
 	}
 	

@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionStatus;
 
 class NoTransactionScope extends ActiveTransactionScope {
 	
+	private final Logger logger = Logger.getLogger("com.amplifino.nestor.transaction.control");
 	private final TransactionContext context;
 	private final List<Runnable> preActions = new ArrayList<>();
 	private final List<Consumer<TransactionStatus>> postActions = new ArrayList<>();
@@ -25,16 +28,17 @@ class NoTransactionScope extends ActiveTransactionScope {
 	}
 
 	@Override
-	public <T> T execute(Callable<T> callable) throws Exception {
-		try {
-			T result = callable.call();
-			preActions();
-			return result;
-		} finally {
-			postActions();
-		}
+	public <T> Try<T> execute(Callable<T> callable) {
+		return Try.of(callable).handle(this::handle); 
 	}
 
+	private <T> void handle(T t, Throwable e) {
+		if (e == null) {
+			preActions();
+		}
+		postActions();
+	}
+	
 	private void preActions() {
 		preActions.forEach(this::preAction);
 	}
@@ -43,6 +47,7 @@ class NoTransactionScope extends ActiveTransactionScope {
 		try {
 			runnable.run();
 		} catch (Throwable e) {			
+			logger.log(Level.WARNING, "Exception in precommit action ", e);
 		}
 	}
 	
@@ -54,6 +59,7 @@ class NoTransactionScope extends ActiveTransactionScope {
 		try {
 			consumer.accept(TransactionStatus.NO_TRANSACTION);
 		} catch (Throwable e) {			
+			logger.log(Level.WARNING, "Exception in postcommit action ", e);
 		}
 	}
 	

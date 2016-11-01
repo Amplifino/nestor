@@ -15,14 +15,13 @@ class NestedTransactionScope extends RealTransactionScope {
 	
 	
 	@Override
-	public <T> T execute(Callable<T> callable) throws Exception {
-		try {
-			return callable.call();
-		} catch (Throwable e) {
-			if (!ignore(e)) {
-				getContext().setRollbackOnly();
-			}
-			throw e;
+	public <T> Try<T> execute(Callable<T> callable) {
+		return Try.of(callable).handle(this::handle);
+	}
+
+	private <T> void handle(T t, Throwable e) {
+		if (e != null && !ignore(e)) {
+			getContext().setRollbackOnly();
 		}
 	}
 

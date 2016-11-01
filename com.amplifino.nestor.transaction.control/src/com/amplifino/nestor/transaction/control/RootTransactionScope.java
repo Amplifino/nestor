@@ -2,9 +2,15 @@ package com.amplifino.nestor.transaction.control;
 
 import java.util.concurrent.Callable;
 
-import javax.transaction.TransactionManager;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 
 import org.osgi.service.transaction.control.TransactionContext;
+import org.osgi.service.transaction.control.TransactionException;
+
 
 class RootTransactionScope extends RealTransactionScope {
 	
@@ -16,24 +22,42 @@ class RootTransactionScope extends RealTransactionScope {
 	}
 
 	@Override
-	public <T> T execute(Callable<T> callable) throws Exception {
-		TransactionManager txManager = getTransactionControl().transactionManager();
-		txManager.begin();
-		T result = null;
-		try {
-			result = callable.call();
-		} catch (Throwable e) {
-			if (ignore(e)) {
-				txManager.commit();
-			} else {
-				txManager.rollback();
-			}
-			throw e;
-		}
-		txManager.commit();
-		return result;		
+	public <T> Try<T> execute(Callable<T> callable) {
+		begin();
+		return Try.of(callable).handle(this::handle);		
 	}
 	
+	private <T> void handle(T t, Throwable e) {
+		if (e == null || ignore(e)) {
+			commit();
+		} else {
+			rollback();
+		}		
+	}
+	
+	private void begin() {
+		try {
+			getTransactionControl().transactionManager().begin();
+		} catch (SystemException | NotSupportedException e) {
+			throw new TransactionException(e.toString(), e);
+		}
+	}
+	
+	private void commit() {
+		try {
+			getTransactionControl().transactionManager().commit();
+		} catch (SystemException | RollbackException | HeuristicRollbackException | HeuristicMixedException e) {
+			throw new TransactionException(e.toString(), e);
+		}
+	}
+	
+	private void rollback() {
+		try {
+			getTransactionControl().transactionManager().rollback();
+		} catch (SystemException e) {
+			throw new TransactionException(e.toString(), e);
+		}
+	}
 	@Override
 	public TransactionContext getContext() {
 		return context;

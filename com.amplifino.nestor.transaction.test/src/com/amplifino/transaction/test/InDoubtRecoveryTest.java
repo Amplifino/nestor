@@ -49,7 +49,19 @@ public class InDoubtRecoveryTest {
 			createTable(ds);
 		}
 		transactionManager = getService(TransactionManager.class);
-		testCommit();
+		boolean rollback = false;
+		try {
+			testRollbackFailure();
+		} catch (RollbackException e) {
+			rollback = true;
+		}
+		Assert.assertTrue(rollback);
+		recover(0);
+		testCommitFailure();
+		recover(2);
+	}
+	
+	public void recover(int expectedCount) throws SQLException, XAException {
 		Assert.assertEquals(0, rowCount());
 		for (XADataSource ds : dataSources) {
 			XAResource resource = ds.getXAConnection().getXAResource();
@@ -58,7 +70,7 @@ public class InDoubtRecoveryTest {
 			agent.recover(resource);
 			Assert.assertTrue(resource.recover(XAResource.TMSTARTRSCAN | XAResource.TMENDRSCAN).length == 0);
 		}
-		Assert.assertEquals(2, rowCount());
+		Assert.assertEquals(expectedCount, rowCount());
 	}
 	
 	private void createTable(XADataSource xaDataSource) throws SQLException {
@@ -75,11 +87,17 @@ public class InDoubtRecoveryTest {
 		return props;
 	}
 	
-	private void testCommit() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+	private void testCommitFailure() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
 		transactionManager.begin();
 		boolean commit = false;
 		try {
-			doWork();
+			List<XAConnection> xaConnections = new ArrayList<>();
+			for (XADataSource dataSource : dataSources) {
+				XAConnection xaConnection = dataSource.getXAConnection();
+				xaConnections.add(xaConnection);
+				transactionManager.getTransaction().enlistResource(commitFailureWrap(xaConnection.getXAResource()));
+			}
+			insertRow(xaConnections);
 			commit = true;
 		} finally {
 			if (commit) {
@@ -90,14 +108,27 @@ public class InDoubtRecoveryTest {
 		}
 	}
 	
-	private void doWork() throws SQLException, IllegalStateException, RollbackException, SystemException {
-		List<XAConnection> xaConnections = new ArrayList<>();
-		for (XADataSource dataSource : dataSources) {
-			XAConnection xaConnection = dataSource.getXAConnection();
-			xaConnections.add(xaConnection);
-			transactionManager.getTransaction().enlistResource(wrap(xaConnection.getXAResource()));
+	private void testRollbackFailure() throws SQLException, NotSupportedException, SystemException, SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException {
+		transactionManager.begin();
+		boolean commit = false;
+		try {
+			List<XAConnection> xaConnections = new ArrayList<>();
+			boolean failPrepare = false;
+			for (XADataSource dataSource : dataSources) {
+				XAConnection xaConnection = dataSource.getXAConnection();
+				xaConnections.add(xaConnection);
+				transactionManager.getTransaction().enlistResource(rollbackFailureWrap(xaConnection.getXAResource(), failPrepare));
+				failPrepare = true;
+			}
+			insertRow(xaConnections);
+			commit = true;
+		} finally {
+			if (commit) {
+				transactionManager.commit();
+			} else {
+				transactionManager.rollback();
+			}
 		}
-		insertRow(xaConnections);
 	}
 	
 	private int rowCount() throws SQLException {
@@ -143,7 +174,7 @@ public class InDoubtRecoveryTest {
 		}
 	}
 	
-	private XAResource wrap(XAResource resource) {
+	private XAResource commitFailureWrap(XAResource resource) {
 		return new XaResourceWrapper(resource) {
 			@Override
 			public void commit(Xid xid, boolean onePhase) {
@@ -154,4 +185,21 @@ public class InDoubtRecoveryTest {
 		};
 	}
 	
+	private XAResource rollbackFailureWrap(XAResource resource, boolean failPrepare) {
+		return new XaResourceWrapper(resource) {
+			@Override
+			public int prepare(Xid xid) throws XAException {
+				int result = super.prepare(xid);
+				if (failPrepare) {
+					throw new RuntimeException("Prepare failed");
+				}
+				return result;
+			}
+			
+			@Override
+			public void rollback(Xid xid) {
+				throw new RuntimeException("Rollback failed");
+			}
+		};
+	}
 }

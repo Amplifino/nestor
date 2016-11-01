@@ -14,7 +14,7 @@ class NoScope extends AbstractTransactionScope {
 	}
 
 	@Override
-	public <T> T execute(Callable<T> callable) throws Exception {
+	public <T> Try<T> execute(Callable<T> callable) {
 		throw new IllegalStateException();
 	}
 

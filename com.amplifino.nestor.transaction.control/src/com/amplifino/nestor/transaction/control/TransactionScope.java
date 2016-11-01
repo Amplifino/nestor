@@ -12,8 +12,7 @@ interface TransactionScope {
 	TransactionScope requiresNew();
 	TransactionScope supports();
 	void resume();
-	<T> T execute(Callable<T> callable) throws Exception;
-	
+	<T> Try<T> execute(Callable<T> callable);
 	boolean isActive();
 	boolean isTransaction();
 	TransactionContext getContext();
