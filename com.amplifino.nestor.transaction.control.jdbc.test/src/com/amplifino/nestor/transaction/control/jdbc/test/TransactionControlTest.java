@@ -7,16 +7,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Properties;
 
 import javax.sql.XADataSource;
 
-import org.h2.jdbcx.JdbcDataSource;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.transaction.control.ScopedWorkException;
 import org.osgi.service.transaction.control.TransactionControl;
 import org.osgi.service.transaction.control.TransactionException;
@@ -31,18 +32,21 @@ public class TransactionControlTest {
 	private JDBCConnectionProviderFactory factory;
 	private Connection connection;
 	private Connection keepAliveConnection;
+	private DataSourceFactory dataSourceFactory;
 	
 	@Before
 	public void setup() throws SQLException {
 		transactionControl = getService(TransactionControl.class);
 		factory = getService(JDBCConnectionProviderFactory.class);
-		JdbcDataSource ds = new JdbcDataSource();
-		ds.setURL("jdbc:h2:mem:db1");
-		keepAliveConnection = ds.getConnection();
+		dataSourceFactory = getService(DataSourceFactory.class);
+		Properties props = new Properties();
+		props.put(DataSourceFactory.JDBC_URL, "jdbc:h2:mem:db1");
+		XADataSource xaDataSource = dataSourceFactory.createXADataSource(props);
+		keepAliveConnection = xaDataSource.getXAConnection().getConnection();
 		try (Statement statement = keepAliveConnection.createStatement()) {
 			statement.execute("create table test (name varchar(80))");
 		}
-		JDBCConnectionProvider provider = factory.getProviderFor((XADataSource) ds, Collections.emptyMap());
+		JDBCConnectionProvider provider = factory.getProviderFor(xaDataSource, Collections.emptyMap());
 		connection = provider.getResource(transactionControl);
 	}
 	

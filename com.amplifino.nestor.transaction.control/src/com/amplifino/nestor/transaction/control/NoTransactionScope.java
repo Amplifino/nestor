@@ -77,7 +77,7 @@ class NoTransactionScope extends ActiveTransactionScope {
 		postActions.add(consumer);
 	}
 
-	void preCompletion(Runnable runnable) throws IllegalStateException {
+	void preCompletion(Runnable runnable) {
 		preActions.add(runnable);
 	}
 		

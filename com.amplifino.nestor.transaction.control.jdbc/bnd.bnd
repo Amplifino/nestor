@@ -5,6 +5,10 @@
 	com.amplifino.pools;version=latest,\
 	com.amplifino.counters;version=latest,\
 	com.amplifino.nestor.jdbc.pools;version=latest,\
-	jta;version=1.1
+	jta;version=1.1,\
+	osgi.core;version=6.0
 Private-Package: com.amplifino.nestor.transaction.control.jdbc
 Export-Package: org.osgi.service.transaction.control.jdbc
+Import-Package: \
+	javax.transaction;version='[1.1,2)',\
+	*

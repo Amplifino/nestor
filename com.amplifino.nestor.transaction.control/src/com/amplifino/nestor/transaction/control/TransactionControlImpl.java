@@ -12,7 +12,7 @@ import org.osgi.service.transaction.control.TransactionBuilder;
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
 
-@Component
+@Component(property={"osgi.xa.enabled:Boolean=true"})
 public class TransactionControlImpl implements TransactionControl {
 	
 	private final ThreadLocal<TransactionScope> scopeHolder = ThreadLocal.withInitial(this::initialScope);
@@ -57,7 +57,7 @@ public class TransactionControlImpl implements TransactionControl {
 
 	private  <T> T execute(TransactionScope scope, Callable<T> callable) {
 		try {
-			return pushScope(scope).execute(callable).orElseThrow(e -> wrap(e));
+			return pushScope(scope).execute(callable).orElseThrow(this::wrap);
 		} finally {
 			popScope();
 		}
@@ -68,8 +68,10 @@ public class TransactionControlImpl implements TransactionControl {
 			Thread.currentThread().interrupt();
 		}
 		if (e instanceof ScopedWorkException) {
-			Throwable cause = ((ScopedWorkException) e).getCause();
-			return new ScopedWorkException(cause.toString(), cause, getScope().getContext());
+			Throwable cause = e.getCause();
+			ScopedWorkException result = new ScopedWorkException(e.getMessage(), cause, getScope().getContext());
+			result.addSuppressed(e);
+			return result;
 		}
 		return new ScopedWorkException(e.toString(), e, getScope().getContext());
 	}

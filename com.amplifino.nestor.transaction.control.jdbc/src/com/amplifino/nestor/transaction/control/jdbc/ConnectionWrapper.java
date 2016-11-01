@@ -1,14 +1,31 @@
 package com.amplifino.nestor.transaction.control.jdbc;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.Statement;
+import java.sql.Struct;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 
-import javax.sql.DataSource;
+import javax.sql.XAConnection;
 
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
 import org.osgi.service.transaction.control.TransactionException;
+
+import com.amplifino.pools.Pool;
 
 /**
  * Provides transparant access to connection registered with transactioncontext
@@ -16,12 +33,12 @@ import org.osgi.service.transaction.control.TransactionException;
  */
 class ConnectionWrapper implements Connection {
 	
-	private final DataSource dataSource;
+	private final Pool<XAConnection> pool;
 	private final TransactionControl transactionControl;
 	
-	ConnectionWrapper(TransactionControl transactionControl, DataSource dataSource) {
+	ConnectionWrapper(TransactionControl transactionControl, Pool<XAConnection> pool) {
 		this.transactionControl = transactionControl;
-		this.dataSource = dataSource;
+		this.pool = pool;
 	}
 	
     private Connection getConnection() throws SQLException {
@@ -34,17 +51,22 @@ class ConnectionWrapper implements Connection {
     }
     
     private Connection newConnection() throws SQLException {
-    	Connection connection = dataSource.getConnection();
+    	XAConnection xaConnection = pool.borrow();
+    	Connection connection = xaConnection.getConnection();
+    	transactionControl.getCurrentContext().postCompletion(status -> this.close(connection, xaConnection));
     	transactionControl.getCurrentContext().putScopedValue(this, connection);
-    	transactionControl.getCurrentContext().postCompletion(status -> this.close(connection));
+    	if (transactionControl.activeTransaction()) {
+    		transactionControl.getCurrentContext().registerXAResource(xaConnection.getXAResource(), null);
+    	}
     	return connection;
     }
     
-    private void close(Connection connection) {
+    private void close(Connection connection, XAConnection xaConnection) {
     	try {
     		connection.close();
     	} catch (SQLException e) {
     	}    	
+    	pool.release(xaConnection);
     }
     
     @Override
@@ -288,7 +310,7 @@ class ConnectionWrapper implements Connection {
 
     @Override
     public void abort(Executor executor) throws SQLException {
-        getConnection().abort(executor);
+    	// no operation
     }
 
     @Override

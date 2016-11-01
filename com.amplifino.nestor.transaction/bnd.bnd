@@ -14,5 +14,8 @@ Private-Package: com.amplifino.nestor.transaction.impl
 Export-Package: com.amplifino.nestor.transaction
 -buildpath: \
 	osgi.cmpn;version=6.0,\
-	com.amplifino.nestor.transaction.provider;version=latest,\
-	osgi.annotation;version=6.0
+	osgi.annotation;version=6.0,\
+	jta;version=1.1
+Import-Package: \
+	javax.transaction;version='[1.1,2)',\
+	*

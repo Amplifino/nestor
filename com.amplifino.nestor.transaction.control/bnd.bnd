@@ -1,7 +1,10 @@
 -buildpath: \
 	osgi.annotation;version=6.0,\
-	com.amplifino.nestor.transaction.provider;version=latest,\
 	osgi.cmpn;version=6.0,\
-	tx-control-api;version=0.0
+	tx-control-api;version=0.0,\
+	jta;version=1.1
 Private-Package: com.amplifino.nestor.transaction.control
 Export-Package: org.osgi.service.transaction.control
+Import-Package: \
+	javax.transaction;version='[1.1,2)',\
+	*
