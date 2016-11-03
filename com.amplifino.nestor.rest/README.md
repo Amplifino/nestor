@@ -1,4 +1,4 @@
-# com.amplifino.jersey.whiteboard
+# com.amplifino.nestor.rest.whiteboard
 
 
 OSGI Whiteboard for JAX-RS applications using Jersey as a provider and Jackson for JSON handling.  
@@ -18,13 +18,13 @@ By default the Whiteboard performs the following configuration on the Applicatio
 	- map dates to milliseconds since epoch
 	- supports the java 8 java.time classes aka JSR310
 
-If the applications can overrules this by adding a **raw=true** OSGI service property,
-and add its filters, features and providers to the getClasses and getSingletons Sets.
+An applications can overrule this default behaviour by adding a **raw=true** OSGI service property,
+and configure Jersey by adding its filters, features and providers to the getClasses and getSingletons Sets.
 
 ## Version history 
 
 - 0.0.0: Work in Progress 
 - 1.1.0: Added JerseyTracker service that is published when Jersey initialization is complete.
-Usefull for Jersey client application bundles to avoid race condition with Jersey initialization.
+Useful for Jersey client application bundles to avoid race condition with Jersey initialization.
 Not needed for Jersey server applications, as whiteboard only starts after Jersey initialization.
 
