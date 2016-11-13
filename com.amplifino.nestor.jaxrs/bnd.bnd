@@ -9,4 +9,19 @@
 	org.glassfish.jersey.containers.jersey-container-servlet-core;version=2.22,\
 	org.apache.felix.http.servlet-api;version=1.1,\
 	org.glassfish.hk2.osgi-resource-locator;version=1.0,\
-	org.glassfish.jersey.media.jersey-media-json-jackson
+	org.glassfish.jersey.media.jersey-media-json-jackson,\
+	osgi.annotation;version=6.0
+Private-Package: com.amplifino.nestor.jaxrs.impl
+Export-Package: \
+	org.osgi.service.jaxrs.whiteboard,\
+	com.amplifino.nestor.jaxrs
+Bundle-Version: 1.0.0
+Bundle-Name: Amplifino jaxrs whiteboard
+Bundle-Description: RFC 217 implementation using Jersey
+Bundle-Category: communication
+Bundle-Copyright: Amplifino (c) 2016
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software \
+	License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor

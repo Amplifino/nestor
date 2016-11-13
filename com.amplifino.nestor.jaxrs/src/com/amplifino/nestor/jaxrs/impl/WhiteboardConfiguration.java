@@ -1,4 +1,4 @@
-package com.amplifino.nestor.jaxrs;
+package com.amplifino.nestor.jaxrs.impl;
 
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 

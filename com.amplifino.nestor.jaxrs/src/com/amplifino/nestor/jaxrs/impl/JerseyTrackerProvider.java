@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.amplifino.nestor.jaxrs;
+package com.amplifino.nestor.jaxrs.impl;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -33,6 +33,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
+
+import com.amplifino.nestor.jaxrs.JerseyTracker;
 
 /*
  * This component waits for Jersey initialization.
@@ -77,7 +79,7 @@ public class JerseyTrackerProvider {
 		// find the hk2 osgi resource locator bundle, in order to wait for it to become active
     	// if hk2 is still in resolved state , we risk running HK2 initialization before activator has run
     	// but loading ServiceLoader looks safe (abstract class without static blocks).
-		// as we have loaded a class from the HK2 bundle, this will cause the bundle, which has the lazy activation option,
+		// as we have loaded a class from the HK2 bundle, this will cause the bundle, which has the lazy activation option, to start
 		return Stream.of(FrameworkUtil.getBundle(ServiceLoader.class));
 	}
 	

@@ -1,9 +1,11 @@
-package com.amplifino.nestor.jaxrs;
+package com.amplifino.nestor.jaxrs.impl;
 
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,54 +18,79 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.process.internal.RequestScoped;
 import org.osgi.framework.ServiceObjects;
 
-public class DynamicApplication extends Application {
+class DynamicApplication extends Application {
 	
 	private final Set<Object> singletons = new HashSet<>();
 	private final Map<Object, ServiceObjects<?>> prototypes = new IdentityHashMap<>();
-	private final Whiteboard whiteboard;
+	private final ManagedResource managedResource;
+	private Optional<Application> application = Optional.empty();
 	
-	public DynamicApplication(Whiteboard whiteboard) {
-		this.whiteboard = whiteboard;
+	DynamicApplication(ManagedResource managedResource) {
+		this.managedResource = managedResource;
 	}
 	
-	public void add(Object service) {
+	void add(Object service) {
 		singletons.add(service);
 	}
 
-	public void add(Object service, ServiceObjects<?> serviceObjects) {
+	void add(Object service, ServiceObjects<?> serviceObjects) {
 		prototypes.put(service, serviceObjects);
 	}
 	
-	public void remove(Object service) {
+	void remove(Object service) {
 		if (!singletons.remove(service)) {
 			prototypes.remove(service);
 		}
 	}
 
+	void application(Application application) {
+		this.application = Optional.of(application);
+	}
+	
+	void removeApplication() {
+		this.application = Optional.empty();
+	}
+	
+	private Stream<Class<?>> applicationClasses() {
+		return application.map(Application::getClasses).map(Set::stream).orElse(Stream.empty()); 
+	}
+	
+	private Stream<Object> applicationSingletons() {
+		return application.map(Application::getSingletons).map(Set::stream).orElse(Stream.empty());
+	}
+	
 	@Override
 	public Set<Class<?>> getClasses() {
-		return prototypes.keySet().stream().map(Object::getClass).collect(Collectors.toSet()); 
+		return Stream.of(applicationClasses(), prototypes.keySet().stream().map(Object::getClass))
+			.flatMap(Function.identity())
+			.collect(Collectors.toSet()); 
 	}
 	
 	@Override
 	public Set<Object> getSingletons() {
-		return Stream.concat(singletons.stream(), Stream.of(getBinder())).collect(Collectors.toSet());
+		return Stream.of(applicationSingletons(), singletons.stream(), Stream.of(getBinder()))
+			.flatMap(Function.identity())
+			.collect(Collectors.toSet());
+	}
+	
+	@Override
+	public Map<String, Object> getProperties() {
+		return application.map(Application::getProperties).orElseGet(() -> super.getProperties());
 	}
 	
 	private ServiceLocator locator() {
-		return whiteboard.getServiceLocator();
+		return managedResource.getServiceLocator();
 	}
 	
 	boolean isEmpty() {
-		return prototypes.isEmpty() && singletons.isEmpty();
+		return prototypes.isEmpty() && singletons.isEmpty() && !application.isPresent();
 	}
 	
 	private AbstractBinder getBinder() {
 		return new AbstractBinder() {
 			
 			@Override
-			protected void configure() {
-				bind(DynamicApplication.this).to(DynamicApplication.class);
+			protected void configure() {				
 				prototypes.forEach(this::add);
 			}
 			
