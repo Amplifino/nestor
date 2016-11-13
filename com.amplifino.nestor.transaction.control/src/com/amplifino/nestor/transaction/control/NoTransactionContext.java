@@ -11,10 +11,10 @@ import org.osgi.service.transaction.control.TransactionStatus;
 
 class NoTransactionContext extends ActiveTransactionContext {
 	
-	private final NoTransactionScope scope;
+	private final RootNoTransactionScope scope;
 	private final Map<Object, Object> scopedObjects = new HashMap<>();
 	
-	public NoTransactionContext(NoTransactionScope scope) {
+	public NoTransactionContext(RootNoTransactionScope scope) {
 		this.scope = scope;
 	}
 	

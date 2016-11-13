@@ -53,4 +53,9 @@ class NoScope extends AbstractTransactionScope {
 		return transactionControl;
 	}
 	
+	@Override
+	TransactionScope supportNoTransactionScope() {
+		return new RootNoTransactionScope(this);
+	}
+	
 }

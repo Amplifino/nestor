@@ -10,7 +10,14 @@ class NestedTransactionScope extends RealTransactionScope {
 	
 	NestedTransactionScope(TransactionScope parent) {
 		super(parent);
-		this.context = new RealTransactionContext(this);
+		TransactionControlImpl transactionControl = parent.getTransactionControl();
+		Object contextKey = transactionControl.contextKey();
+		this.context = (TransactionContext) transactionControl.synchronizationRegistry().getResource(contextKey);
+		if (context == null) {
+			// interference of code interacting directly with TransactionManager
+			context = new RealTransactionContext(this);
+			transactionControl.synchronizationRegistry().putResource(contextKey, context);
+		}
 	}
 	
 	

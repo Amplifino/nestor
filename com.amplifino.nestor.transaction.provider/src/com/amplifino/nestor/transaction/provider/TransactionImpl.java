@@ -1,6 +1,8 @@
 package com.amplifino.nestor.transaction.provider;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import javax.transaction.xa.Xid;
 import com.amplifino.nestor.transaction.provider.spi.AbortException;
 import com.amplifino.nestor.transaction.provider.spi.GlobalTransaction;
 import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
+import com.amplifino.nestor.transaction.provider.xa.spi.XAResourceKind;
 
 class TransactionImpl implements Transaction {
 	
@@ -30,7 +33,7 @@ class TransactionImpl implements Transaction {
 	private final GlobalTransaction globalTransaction;
 	private int lastBranch = 0;
 	private int status;
-	private final List<TransactionBranch> branches = new ArrayList<>(); 
+	private List<TransactionBranch> branches = new ArrayList<>(); 
 	private final List<Synchronization> synchronizers = new ArrayList<>();
 	private final List<Synchronization> interposedSynchronizers = new ArrayList<>();
 	private final Map<Object, Object> resources = new HashMap<>();
@@ -85,13 +88,19 @@ class TransactionImpl implements Transaction {
 	}
 	
 	private void twoPhaseCommit() throws RollbackException, HeuristicMixedException {
+		sortBranches();
+		if (xaResourceKind(branches.get(branches.size() - 2)).compareTo(XAResourceKind.Kind.EXCLUSIVE_LAST) >= 0) {
+			rollback();
+			throw new RollbackException("Too many non compliant resources");
+		}
 		try {
-			try {
-				phaseOne();
-			} finally {
-				branches.removeIf(TransactionBranch::isReadOnly);
+			branches = phaseOne(); 
+			if (branches.isEmpty()) {
+				log.commitComplete(globalTransaction);
+				return;
+			} else {
+				log.committing(globalTransaction, xids());
 			}
-			log.committing(globalTransaction, xids());
 		} catch (AbortException e) {
 			throw (HeuristicMixedException) new HeuristicMixedException("Failure in transaction log").initCause(e);
 		} catch (Throwable e) {
@@ -100,13 +109,35 @@ class TransactionImpl implements Transaction {
 		phaseTwo();
 	}
 	
-	private void phaseOne() throws XAException {
+	private List<TransactionBranch> phaseOne() throws XAException {
+		List<TransactionBranch> phase2Branches = new ArrayList<>();
 		status = Status.STATUS_PREPARING;
 		log.preparing(globalTransaction, xids());
-		for (TransactionBranch branch : branches) {				
-			branch.prepare(log);							
+		for (int i = 0 ; i < branches.size() - 1; i++) {
+			TransactionBranch branch = branches.get(i);
+			branch.prepare(log);
+			if (!branch.isReadOnly()) {
+				phase2Branches.add(branch);
+			}
 		}
+		TransactionBranch lastBranch = branches.get(branches.size() - 1);
+		if (phase2Branches.isEmpty()) {
+			lastBranch.commitOnePhase();
+			status = Status.STATUS_COMMITTED;
+			return Collections.emptyList();
+		} else {
+			lastBranch.prepare(log);
+			if (!lastBranch.isReadOnly()) {
+				phase2Branches.add(lastBranch);
+			}
+		}
+		if (phase2Branches.size() == 1) {
+			phase2Branches.get(0).commitTwoPhase(log);
+			status = Status.STATUS_COMMITTED;
+			return Collections.emptyList();
+		} 
 		status = Status.STATUS_PREPARED;
+		return phase2Branches;
 	}
 	
 	private void phaseTwo() throws HeuristicMixedException {
@@ -152,38 +183,34 @@ class TransactionImpl implements Transaction {
 			return false;
 		}
 		try {
-			return branch.get().end(flags);
+			return branch.get().end(resource, flags);
 		} catch (XAException e) {
 			throw (SystemException) new SystemException(e.toString()).initCause(e);
 		}		
 	}
-
-
-	private boolean isParticipant(XAResource resource) {
-		return branch(resource).isPresent();
-	}
 	
 	private Optional<TransactionBranch> branch(XAResource resource) {
 		return branches.stream()
-			.filter(branch -> branch.resource().equals(resource))
+			.filter(branch -> branch.resource(resource).isPresent())
 			.findAny();
 	}
 	
 	@Override
 	public boolean enlistResource(XAResource resource) throws RollbackException, IllegalStateException, SystemException {
 		checkActive();		
-		if (!isParticipant(resource)) {
-			TransactionBranch branch = new TransactionBranch(resource, branch());
-			try {
-				branch.start();
-			} catch (XAException e) {
-				throw (SystemException) new SystemException(e.getMessage()).initCause(e);
+		try {
+			for (TransactionBranch branch : branches) {
+				if (branch.adopt(resource)) {
+					return true;
+				}
 			}
-			branches.add(branch);			
+			TransactionBranch branch = new TransactionBranch(resource, branch());
+			branch.start();
+			branches.add(branch);
 			return true;
-		} else {
-			return false;
-		}
+		} catch (XAException e) {
+			throw (SystemException) new SystemException(e.getMessage()).initCause(e);
+		}			
 	}
 
 	@Override
@@ -277,5 +304,17 @@ class TransactionImpl implements Transaction {
 		if (status != Status.STATUS_ACTIVE && status != Status.STATUS_MARKED_ROLLBACK) {
 			throw new IllegalStateException("Transaction not active, but in state: " + status);
 		}
+	}
+	
+	private void sortBranches() {
+		branches.sort(Comparator.comparing(this::xaResourceKind));
+	}
+	
+	private XAResourceKind.Kind xaResourceKind(TransactionBranch branch) {
+		return Optional.of(branch.resource())
+			.filter(XAResourceKind.class::isInstance)
+			.map(XAResourceKind.class::cast)
+			.map(XAResourceKind::kind)
+			.orElse(XAResourceKind.Kind.COMPLIANT);		
 	}
 }

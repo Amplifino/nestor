@@ -30,4 +30,8 @@ abstract class RealTransactionScope extends ActiveTransactionScope {
 		}
 	}
 	
+	@Override
+	final TransactionScope supportNoTransactionScope() {
+		return new RootNoTransactionScope(this);
+	}
 }

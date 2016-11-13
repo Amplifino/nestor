@@ -35,7 +35,7 @@ abstract class AbstractTransactionScope implements TransactionScope {
 	@Override
 	public final TransactionScope notSupported() {
 		suspend();
-		return new NoTransactionScope(this);
+		return new RootNoTransactionScope(this);
 	}
 	
 	@Override
@@ -51,8 +51,10 @@ abstract class AbstractTransactionScope implements TransactionScope {
 	
 	@Override
 	public final TransactionScope supports() {
-		return inTransaction() ? new NestedTransactionScope(this) : new NoTransactionScope(this);
+		return inTransaction() ? new NestedTransactionScope(this) : supportNoTransactionScope();
 	}
+	
+	abstract TransactionScope supportNoTransactionScope();
 	
 	void suspend() {
 		try {

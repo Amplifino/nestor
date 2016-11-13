@@ -42,9 +42,9 @@ public interface TransactionLog {
 	 * @param globalTransaction
 	 * @param xids that will be committed. This is a subset of the xids on the corresponding
 	 * preparing call as some resources may have responded with read_only
-	 * @throws AbortException should only be thrown if the implementor is in doubt wether
-	 * the commit record got logged or not, in other words wether state() for the same global transaction
-	 * would return INDOUBT_COMMIT or INDOUUBT_ROLLBACK after a VM crash. In this case the TM manager will abort the 2PC 
+	 * @throws AbortException should only be thrown if the implementor is in doubt whether
+	 * the commit record got logged or not, in other words whether state() for the same global transaction
+	 * would return INDOUBT_COMMIT or INDOUBT_ROLLBACK after a VM crash. In this case the TM manager will abort the 2PC 
 	 * process leaving all resources in doubt about the outcome of the transaction.
 	 * If the Transaction log has an exceptional situation where it knows that it failed to write the 
 	 * commit record (in other words state() will return INDOUBT_ROLLBACK), 

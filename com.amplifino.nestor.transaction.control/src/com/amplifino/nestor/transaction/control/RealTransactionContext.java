@@ -8,9 +8,7 @@ import javax.transaction.Synchronization;
 import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
-import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
-import javax.transaction.xa.Xid;
 
 import org.osgi.service.transaction.control.LocalResource;
 import org.osgi.service.transaction.control.TransactionException;
@@ -73,7 +71,7 @@ class RealTransactionContext extends ActiveTransactionContext {
 
 	@Override
 	public void registerLocalResource(LocalResource resource)  {
-		registerXAResource(new XAResourceAdapter(resource), null);
+		registerXAResource(scope.getTransactionControl().wrapResource(resource), null);
 	}
 
 	@Override
@@ -177,67 +175,6 @@ class RealTransactionContext extends ActiveTransactionContext {
 		public void beforeCompletion() {
 			runnable.run();
 		}
-		
-	}
-	
-	private static class XAResourceAdapter implements XAResource {
-		
-		private final LocalResource resource;
-		
-		XAResourceAdapter(LocalResource resource) {
-			this.resource = resource;
-		}
-
-		@Override
-		public void commit(Xid xid, boolean onePhase) throws XAException {
-			if (onePhase) {
-				resource.commit();
-			} else {
-				throw new TransactionException("Two phase commit not supported for local resource " + resource);
-			}			
-		}
-
-		@Override
-		public void end(Xid xid, int flags) throws XAException {			
-		}
-
-		@Override
-		public void forget(Xid xid) throws XAException {			
-		}
-
-		@Override
-		public int getTransactionTimeout() throws XAException {
-			return 0;
-		}
-
-		@Override
-		public boolean isSameRM(XAResource xares) throws XAException {
-			return false;
-		}
-
-		@Override
-		public int prepare(Xid xid) throws XAException {
-			throw new TransactionException("Prepare not supported for local resource " + resource);
-		}
-
-		@Override
-		public Xid[] recover(int flag) throws XAException {
-			throw new TransactionException("Recover not supported for local resource " + resource);
-		}
-
-		@Override
-		public void rollback(Xid xid) throws XAException {
-			resource.rollback();
-		}
-
-		@Override
-		public boolean setTransactionTimeout(int seconds) throws XAException {
-			return false;
-		}
-
-		@Override
-		public void start(Xid xid, int flags) throws XAException {			
-		}	
 		
 	}
 

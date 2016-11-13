@@ -8,12 +8,12 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.amplifino.nestor.transaction.provider.spi.GlobalTransaction;
-import com.amplifino.nestor.transaction.provider.spi.RecoveryAgent;
+import com.amplifino.nestor.transaction.provider.spi.RecoveryService;
 import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
 import com.amplifino.nestor.transaction.provider.spi.TransactionLog.GlobalTransactionState;
 
 @Component
-public class RecoveryAgentImpl implements RecoveryAgent {
+public class RecoveryServiceImpl implements RecoveryService {
 
 	@Reference
 	private TransactionLog log;

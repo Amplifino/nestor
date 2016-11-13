@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Application;
 
 import org.glassfish.hk2.api.Factory;

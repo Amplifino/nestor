@@ -4,15 +4,20 @@ import java.util.concurrent.Callable;
 
 import javax.transaction.TransactionManager;
 import javax.transaction.TransactionSynchronizationRegistry;
+import javax.transaction.xa.XAResource;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.transaction.control.LocalResource;
 import org.osgi.service.transaction.control.ScopedWorkException;
 import org.osgi.service.transaction.control.TransactionBuilder;
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
 
 @Component(property={"osgi.xa.enabled:Boolean=true"})
+@Designate(ocd=TransactionControlConfiguration.class)
 public class TransactionControlImpl implements TransactionControl {
 	
 	private final ThreadLocal<TransactionScope> scopeHolder = ThreadLocal.withInitial(this::initialScope);
@@ -20,6 +25,13 @@ public class TransactionControlImpl implements TransactionControl {
 	private TransactionManager transactionManager;
 	@Reference
 	private TransactionSynchronizationRegistry synchronizationRegistry;
+	private TransactionControlConfiguration config;
+	private final Object contextKey = new Object(); 
+	
+	@Activate
+	public void activate(TransactionControlConfiguration config) {
+		this.config = config;
+	}
 	
 	private TransactionScope getScope() {
 		return scopeHolder.get();
@@ -121,5 +133,13 @@ public class TransactionControlImpl implements TransactionControl {
 	
 	TransactionSynchronizationRegistry synchronizationRegistry() {
 		return synchronizationRegistry;
+	}
+
+	XAResource wrapResource(LocalResource resource) {
+		return config.compliance().wrap(resource);
+	}
+	
+	Object contextKey() {
+		return contextKey;
 	}
 }

@@ -38,6 +38,7 @@ class RootTransactionScope extends RealTransactionScope {
 	private void begin() {
 		try {
 			getTransactionControl().transactionManager().begin();
+			getTransactionControl().synchronizationRegistry().putResource(getTransactionControl().contextKey(), context);		
 		} catch (SystemException | NotSupportedException e) {
 			throw new TransactionException(e.toString(), e);
 		}

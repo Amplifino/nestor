@@ -20,4 +20,5 @@ Bundle-Version: 1.0.0
 -dsannotations: *
 Export-Package: \
 	javax.transaction;version=1.1,\
-	com.amplifino.nestor.transaction.provider.spi
+	com.amplifino.nestor.transaction.provider.spi,\
+	com.amplifino.nestor.transaction.provider.xa.spi

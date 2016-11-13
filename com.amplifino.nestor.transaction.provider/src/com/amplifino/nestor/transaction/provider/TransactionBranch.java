@@ -1,5 +1,9 @@
 package com.amplifino.nestor.transaction.provider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
@@ -8,55 +12,69 @@ import com.amplifino.nestor.transaction.provider.spi.TransactionLog;
 
 class TransactionBranch {
 	
-	private final XAResource xaResource;
+	private final List<ManagedResource> resources = new ArrayList<>();
 	private final Xid xid;
 	private PrepareResult prepareResult;
-	private boolean started;
 	
 	TransactionBranch(XAResource xaResource, Xid xid) {
-		this.xaResource = xaResource;
+		resources.add(new ManagedResource(xaResource));
 		this.xid = xid;
 		this.prepareResult = PrepareResult.NOTPREPARED;
-		started = false;
-	}
-	
-	XAResource resource() {
-		return xaResource;
 	}
 	
 	Xid xid() {
 		return xid;
 	}
 	
-	void start() throws XAException {
-		xaResource.start(xid, XAResource.TMNOFLAGS);
-		started = true;
+	XAResource resource() {
+		return resources.get(0).resource();
 	}
 	
-	void join() throws XAException {
-		xaResource.start(xid, XAResource.TMJOIN);
-		started = true;
+	Optional<ManagedResource> resource(XAResource xaResource) {
+		return resources.stream().filter( r -> r.resource() == xaResource).findFirst();
 	}
-	
-	boolean end() throws XAException {
-		return end(XAResource.TMSUCCESS);
-	}
-	
-	boolean end(int flags) throws XAException {
-		if (started) {
-			xaResource.end(xid, flags);
-			started = false;
+		
+	boolean adopt(XAResource candidate) throws XAException {
+		if (resource(candidate).isPresent()) {
 			return true;
+		}
+		if (resource().isSameRM(candidate)) {
+			ManagedResource managedResource = new ManagedResource(candidate);
+			managedResource.start(xid, XAResource.TMJOIN);
+			resources.add(managedResource);
+			return true;
+		}
+		return false;
+	}
+	
+	void start() throws XAException {
+		for (ManagedResource each: resources) {
+			each.start(xid, XAResource.TMJOIN);
+		}
+	}
+	
+	void end() throws XAException {		
+		end(XAResource.TMSUCCESS);
+	}
+	
+	void end(int flags) throws XAException {
+		for (ManagedResource each: resources) {
+			each.end(xid, flags);
+		}
+	}
+	
+	boolean end(XAResource resource, int flags) throws XAException {
+		Optional<ManagedResource> managedResource = resource(resource);
+		if (managedResource.isPresent()) {
+			return managedResource.get().end(xid, flags);
 		} else {
 			return false;
 		}
 	}
 	
 	void prepare(TransactionLog log) throws XAException {
-		if (started) {
-			end();
-		}
-		prepareResult = PrepareResult.of(xaResource.prepare(xid));
+		end();
+		prepareResult = PrepareResult.of(resource().prepare(xid));
 		if (prepareResult == PrepareResult.OK) {
 			log.prepared(xid);
 		}
@@ -66,10 +84,8 @@ class TransactionBranch {
 		if (prepareResult != PrepareResult.NOTPREPARED) {
 			throw new IllegalStateException();
 		}
-		if (started) {
-			end();
-		}
-		xaResource.commit(xid, true);
+		end();
+		resource().commit(xid, true);
 	}
 	
 	void commitTwoPhase(TransactionLog log) throws XAException {
@@ -77,7 +93,7 @@ class TransactionBranch {
 			case NOTPREPARED:
 				throw new IllegalStateException();
 			case OK:
-				xaResource.commit(xid, false);
+				resource().commit(xid, false);
 				log.committed(xid);
 				break;
 			case READONLY:				
@@ -86,13 +102,11 @@ class TransactionBranch {
 	
 	void rollback(TransactionLog log) throws XAException {
 		if (!isReadOnly()) {
-			if (started) {
-				end();
-			}
-			xaResource.rollback(xid);
-			if (prepareResult == PrepareResult.OK) {
-				log.rollbacked(xid);
-			}
+			end();
+		}
+		resource().rollback(xid);
+		if (prepareResult == PrepareResult.OK) {
+			log.rollbacked(xid);
 		}
 	}
 	

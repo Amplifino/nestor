@@ -29,7 +29,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.util.tracker.ServiceTracker;
 
-import com.amplifino.nestor.transaction.provider.spi.RecoveryAgent;
+import com.amplifino.nestor.transaction.provider.spi.RecoveryService;
 
 
 public class InDoubtRecoveryTest {
@@ -66,8 +66,8 @@ public class InDoubtRecoveryTest {
 		for (XADataSource ds : dataSources) {
 			XAResource resource = ds.getXAConnection().getXAResource();
 			Assert.assertTrue(resource.recover(XAResource.TMSTARTRSCAN | XAResource.TMENDRSCAN).length > 0);
-			RecoveryAgent agent = getService(RecoveryAgent.class);
-			agent.recover(resource);
+			RecoveryService recoveryService = getService(RecoveryService.class);
+			recoveryService.recover(resource);
 			Assert.assertTrue(resource.recover(XAResource.TMSTARTRSCAN | XAResource.TMENDRSCAN).length == 0);
 		}
 		Assert.assertEquals(expectedCount, rowCount());
