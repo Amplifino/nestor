@@ -6,6 +6,12 @@ import java.util.UUID;
 import javax.transaction.xa.Xid;
 import javax.xml.bind.DatatypeConverter;
 
+/**
+ * A wrapper around a global transaction id byte array 
+ * that supports equals() and hashCode()
+ * This class is only meant as a communication between the Transaction Manager and a Transaction log
+ *
+ */
 public final class GlobalTransaction {
 	
 	private final byte[] id;
@@ -14,6 +20,12 @@ public final class GlobalTransaction {
 		this.id = id;
 	}
 	
+	/**
+	 * returns the transaction id
+	 * For performance reasons, no defensive copy is made.
+	 * Users of this method must not modify the returned byte array in any way.
+	 * @return
+	 */
 	public byte[] id() {
 		return id;
 	}
