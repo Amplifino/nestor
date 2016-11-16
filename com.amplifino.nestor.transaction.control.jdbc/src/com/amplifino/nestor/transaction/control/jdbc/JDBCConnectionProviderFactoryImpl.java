@@ -11,13 +11,10 @@ import java.util.function.Supplier;
 import javax.sql.DataSource;
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.TransactionSynchronizationRegistry;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.transaction.control.TransactionException;
 import org.osgi.service.transaction.control.jdbc.JDBCConnectionProvider;
@@ -31,10 +28,6 @@ import com.amplifino.pools.Pool;
 @Component
 public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProviderFactory {
 	
-	@Reference
-	private TransactionManager transactionManager;
-	@Reference
-	private TransactionSynchronizationRegistry synchronization;
 	private BundleContext bundleContext; 
 
 	@Activate

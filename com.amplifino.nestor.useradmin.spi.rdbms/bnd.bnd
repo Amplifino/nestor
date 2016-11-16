@@ -5,3 +5,4 @@
 	com.amplifino.nestor.rdbms.schema;version=latest,\
 	osgi.core;version=6.0
 Private-Package: com.amplifino.nestor.useradmin.spi.rdbms
+Include-Resource: LICENSE, README.md, bnd.bnd

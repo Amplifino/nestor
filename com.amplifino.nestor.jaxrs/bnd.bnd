@@ -25,3 +25,4 @@ Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Ap
 Bundle-Vendor: Amplifino bvba
 Bundle-ContactAddress: http://www.amplifino.be
 Bundle-DocURL: https://github.com/Amplifino/nestor
+Include-Resource: LICENSE, README.md, bnd.bnd

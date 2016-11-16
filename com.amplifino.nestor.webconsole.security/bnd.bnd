@@ -15,3 +15,4 @@ Bundle-Vendor: Amplifino bvba
 Bundle-ContactAddress: http://www.amplifino.be
 Bundle-DocURL: https://github.com/Amplifino/nestor
 Bundle-Version: 1.0
+Include-Resource: LICENSE, README.md, bnd.bnd
