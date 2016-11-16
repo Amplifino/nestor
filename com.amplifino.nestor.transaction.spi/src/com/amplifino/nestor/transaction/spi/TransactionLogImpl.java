@@ -28,13 +28,13 @@ public class TransactionLogImpl implements TransactionLog {
 	
 	private final Logger logger = Logger.getLogger("com.amplifino.nestor.transaction.spi");
 	private final Map<GlobalTransaction, GlobalTransactionState> transactions = new ConcurrentHashMap<>();
-	private final AtomicReference<PersistentLog> logHelperHolder = new AtomicReference<>();
+	private final AtomicReference<PersistentLog> persistentLogHolder = new AtomicReference<>();
 	private int formatId;
 	
 	
 	@Reference(cardinality=ReferenceCardinality.OPTIONAL, policy=ReferencePolicy.DYNAMIC, policyOption=ReferencePolicyOption.GREEDY) 
 	public void setTransactionLogHelper(PersistentLog logHelper) {
-		logHelperHolder.set(logHelper);
+		persistentLogHolder.set(logHelper);
 	}
 	
 	@Activate
@@ -42,7 +42,7 @@ public class TransactionLogImpl implements TransactionLog {
 		this.formatId = config.formatId();
 	}
 	public void unsetTransactionLogHelper(PersistentLog logHelper) {
-		logHelperHolder.compareAndSet(logHelper, null);
+		persistentLogHolder.compareAndSet(logHelper, null);
 	}
 	
 	@Override
@@ -58,9 +58,9 @@ public class TransactionLogImpl implements TransactionLog {
 	@Override
 	public void committing(GlobalTransaction globalTransaction, Stream<Xid> xids) throws AbortException {
 		transactions.put(globalTransaction, GlobalTransactionState.COMITTING);
-		PersistentLog logHelper = logHelperHolder.get();
-		if (logHelper != null) {
-			logHelper.remember(globalTransaction);
+		PersistentLog persistentLog = persistentLogHolder.get();
+		if (persistentLog != null) {
+			persistentLog.remember(globalTransaction);
 		}
 	}
 	
@@ -84,9 +84,9 @@ public class TransactionLogImpl implements TransactionLog {
 	@Override
 	public void commitComplete(GlobalTransaction globalTransaction) {
 		transactions.remove(globalTransaction);
-		PersistentLog logHelper = logHelperHolder.get();
-		if (logHelper != null) {
-			logHelper.forget(globalTransaction);
+		PersistentLog persistentLog = persistentLogHolder.get();
+		if (persistentLog != null) {
+			persistentLog.forget(globalTransaction);
 		}
 	}
 	
@@ -116,13 +116,16 @@ public class TransactionLogImpl implements TransactionLog {
 	public GlobalTransactionState state(GlobalTransaction globalTransaction) {
 		GlobalTransactionState state = transactions.get(globalTransaction);
 		if (state == null) {
-			PersistentLog logHelper = logHelperHolder.get();
-			if (logHelper == null) {
+			// transaction not in memory, consult persistent log
+			PersistentLog persistentLog = persistentLogHolder.get();
+			if (persistentLog == null) {
+				// since we do not have a persistent log we do not know the outcome of the tx after restart
 				return GlobalTransactionState.UNKNOWN;
 			} else {
-				if (logHelper.recalls(globalTransaction)) {
+				if (persistentLog.recalls(globalTransaction)) {
 					return GlobalTransactionState.INDOUBT_COMMIT;
 				} else {
+					// the xid is ours, and we do not have a commit record, so there was no commit decision, hence rollback
 					return GlobalTransactionState.INDOUBT_ROLLBACK;
 				}
 			}

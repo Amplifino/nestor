@@ -1,18 +1,19 @@
-# JAX-RS Whiteboard service #
+# com.amplifino.nestir.jaxrs #
 
-This bundle is an initial implementation of OSGI RFC 217 JAX-RS service.
+This bundle is an initial implementation of OSGI RFC 217 JAX-RS service,
+using Jersey and the HTTP Service.
 
 Main issue is to map the url mapping requirements of RFC 217 to Jersey.
 
-Deviations from the draft spec: 
+Deviations from the draft spec and additional remarks: 
 
 ### 5.1.1 Resource mapping ###
 
 Currently the whiteboard uses a different servlet for each unique value of osgi.jaxrs.resource.base.
-So far this seems the only reasonable way to prefix the @Path path with a base value.
+So far this seems the only reasonable way to prefix the @Path path declared in the resource with a base value.
 (unless declaring all methods using the programmatic API of Resource.Builder)
 
-As a result some resources may hide other resources e.g.
+As a result some servlets may hide resources declared in other servlets e.g.
 a resource with osgi.jaxrs.resource.base=/a and a method with path("b/c") will be hidden 
 by a resource with osgi.jaxrs.resource.base = /a/b.
 
@@ -50,9 +51,9 @@ not implemented
 
 ### 5.8 JAX-RS client ###
 
-not implement. Seems like a bad idea to publish a javax.rs.ws.client.ClientBuilder as it is not thread safe. 
+not implemented. Seems like a bad idea to publish a javax.rs.ws.client.ClientBuilder service as it is not thread safe. 
 Even when using a PrototypeServiceFactory, clients can still get access to shared instance when using ServiceReference.getService().
-The implementation does provide a JerseyReady service, which indicates that Jersey initialization is complete,
+The implementation does publish a JerseyReady service after Jersey initialization has completed,
 and it safe to use ClientBuilder.newBuilder() or ClientBuilder.newClient();
 
 ### 5.9 Implementation Provided Capabilities ###

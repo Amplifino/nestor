@@ -1,4 +1,4 @@
-# com.amplifino.useradmin.rest
+# com.amplifino.useradmin.rest #
 rest interface on osgi user admin service.
 uses the rest whiteboard for api publishing.
 uses the htpp whiteboard for html and javascript publishing.

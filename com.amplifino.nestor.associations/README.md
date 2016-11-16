@@ -1,3 +1,4 @@
-# com.amplifino.nestor.associatinos
+# com.amplifino.nestor.associations #
 
-basic interfaces and classes to support lazy associations
+basic interfaces and classes to support lazy associations.
+Work in progress.

@@ -1,4 +1,4 @@
-# com.amplifino.nestor.rest.whiteboard
+# com.amplifino.nestor.rest.whiteboard #
 
 
 OSGI Whiteboard for JAX-RS applications using Jersey as a provider and Jackson for JSON handling.  

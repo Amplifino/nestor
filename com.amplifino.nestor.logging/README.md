@@ -1,4 +1,4 @@
-# Amplifino Logging bridge
+# com.amplifino.nestor.logging #
 
 Bundle to forward log messages from java.util.logging to OSGI Log Service.
 Requires Declarative Services.  

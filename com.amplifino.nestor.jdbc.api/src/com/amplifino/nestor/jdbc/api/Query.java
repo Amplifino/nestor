@@ -9,14 +9,30 @@ import javax.sql.DataSource;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * Query encapsulates a SQL command 
- *
+ * Query encapsulates a SQL query and provides a fluent interface, mapping checked SQLExceptions to UncheckedSQLException.
+ * 
+ * Sample usage:
+ * <pre>
+ * {@code
+ * 	List<String> names = Query.on(dataSource)
+ * 		.text("select name from mytable ")
+ * 		.text("where id = ? and moddate > ? ")
+ * 		.parameters( id, moddate)
+ * 		.select( r -> r.getString(1));
+ * } 
+ * </pre>
+ * Both text and parameters can be repeated and interleaved.
+ * 
+ * After a terminal operation the Query instance should be discarded.
+ * 
  */
 @ProviderType
 public interface Query {
 	
 	/**
 	 * adds the argument to the sql text
+	 * text() can be repeated multiple times and interleaved with parameters
+	 * 
 	 * @param sql
 	 * @return this
 	 */
@@ -24,6 +40,13 @@ public interface Query {
 	
 	/**
 	 * adds the arguments to the list of objects to bind to the sql statement
+	 * Most parameters will be bound using PreparedStatement.setObject, 
+	 * except for instances classes in the java.time package, which are converted
+	 * to the corresponding classes in java.sql and use PreparedStatement.setTimeStamp|setDate|setTime.
+	 * 
+	 * parameters can be repeated multiple times, interleaved with text.
+	 * the parameters are bound in the same order.
+	 *  
 	 * @param parameter
 	 * @param parameters
 	 * @return this
@@ -43,9 +66,12 @@ public interface Query {
 	 * @return this
 	 */
 	Query fetchSize(int fetchSize);
+	
 	/**
 	 * executes the sql text and return a list obtained
 	 * by calling parser.parse for each row in the resultset.
+	 * This is a terminal operation.
+	 * 
 	 * @param parser
 	 * @return
 	 * @throws UncheckedSQLException
@@ -53,8 +79,15 @@ public interface Query {
 	<T> List<T> select(TupleParser<T> parser);
 	
 	/**
-	 * executes the sql text and execute consumer.accept(parse.parse)
-	 * for each row in the resultset.
+	 * executes the sql text, parse each row using parser and pass the result to the consumer.
+	 * While logically equivalent to
+	 * <pre>
+	 * {@code
+	 * 	   select(parser).forEach(consumer);
+	 * }
+	 * this avoids the need for the intermediate list and corresponding memory need for large queries.
+	 * 
+	 * This is a terminal operation.
 	 *  
 	 * @param parser
 	 * @param consumer
@@ -62,8 +95,11 @@ public interface Query {
 	 * @throws UncheckedSQLException
 	 */
 	<T> long select(TupleParser<T> parser, Consumer<T> consumer);
+	
 	/**
-	 * returns the result of parser.parse for the first row in the resultSet)
+	 * returns the result of parser.parse for the first row in the resultSet.
+	 * 
+	 * This is a terminal operation.
 	 *
 	 * @param parser
 	 * @return an Optional containing the parsed first row, or Optional.empty() if resultSet was empty 
@@ -72,7 +108,10 @@ public interface Query {
 	<T> Optional<T> findFirst(TupleParser<T> parser);
 	
 	/**
-	 * execute the sql text 
+	 * execute the sql text.
+	 * 
+	 * this is a terminal operation.
+	 * 
 	 * @return return value of statement.executeUpdate();
 	 * @throws UncheckedSQLException
 	 */
@@ -81,6 +120,9 @@ public interface Query {
 	/**
 	 * execute a batch of sql statements,
 	 * calling binder.bind for each element in batch
+	 * 
+	 * this is a terminal operation.
+	 * 
 	 * @param batch
 	 * @param binder
 	 * @return return value of statement.executeBatch();
@@ -90,7 +132,9 @@ public interface Query {
 	
 	/**
 	 * exectues the sql text and
-	 * returns the value of parser.parse(statement.getGeneratedKey().next())
+	 * returns the value of parser.parse(statement.getGeneratedKey().next()).
+	 * 
+	 * this is a terminal operation.
 	 * 
 	 * @param parser
 	 * @return
@@ -100,6 +144,10 @@ public interface Query {
 	/**
 	 * executes the sql text and collect the resultSet in the object provided by the supplier
 	 * by executing accumulator.accept 
+	 * The supplier will be invoked with the first row as argument.
+	 * 
+	 * this is a terminal operation.
+	 * 
 	 * @param supplier
 	 * @param accumulator
 	 * @return an Optional containing the supplied Object, or Optional.empty() if resultSet was empty
@@ -108,12 +156,14 @@ public interface Query {
 	<T> Optional<T> collect(TupleParser<T> supplier, TupleAccumulator<T> accumulator);
 
 	/**
-	 * @return the sql text
+	 * for debugging and instrumentation
+	 * @return the accumulated sql text
 	 */
 	String text();
 	
 	/**
-	 * @return a list of bind parameters
+	 * for debugging and instrumentation
+	 * @return a list of accumulated bind parameters
 	 */
 	List<Object> parameters();
 	
