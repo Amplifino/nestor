@@ -1,5 +1,6 @@
 package com.amplifino.nestor.jaxrs.test;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,6 +34,7 @@ public class SingletonSample {
 	@GET
 	@Path("singleton")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed("Test")
 	public SampleDto getResource() {
 		SampleDto dto = new SampleDto();
 		dto.name = configuration.name();

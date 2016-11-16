@@ -1,4 +1,9 @@
 -buildpath: \
 	com.amplifino.nestor.jaxrs;version=latest,\
 	javax.ws.rs-api;version=2.0,\
-	osgi.cmpn;version=6.0
+	osgi.cmpn;version=6.0,\
+	org.glassfish.jersey.core.jersey-server;version=2.22,\
+	javax.annotation-api;version=1.2,\
+	com.fasterxml.jackson.core.jackson-databind,\
+	com.fasterxml.jackson.core.jackson-annotations;version=2.5
+Private-Package: com.amplifino.nestor.jaxrs.test

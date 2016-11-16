@@ -9,7 +9,8 @@
 	osgi.identity;filter:='(&(osgi.identity=com.fasterxml.jackson.module.jackson-module-jaxb-annotations)(version>=2.5.4))',\
 	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.shell)(version>=0.12.0))',\
 	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.command)(version>=0.16.0))',\
-	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.log)(version>=1.0.1))'
+	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.log)(version>=1.0.1))',\
+	osgi.identity;filter:='(osgi.identity=org.glassfish.jersey.media.jersey-media-jaxb)'
 -runbundles: \
 	com.amplifino.nestor.jaxrs;version=snapshot,\
 	com.amplifino.nestor.jaxrs.test;version=snapshot,\
@@ -47,7 +48,8 @@
 	org.apache.felix.gogo.runtime;version='[0.16.2,0.16.3)',\
 	org.apache.felix.gogo.shell;version='[0.12.0,0.12.1)',\
 	org.apache.felix.gogo.command;version='[0.16.0,0.16.1)',\
-	org.apache.felix.log;version='[1.0.1,1.0.2)'
+	org.apache.felix.log;version='[1.0.1,1.0.2)',\
+	org.glassfish.jersey.media.jersey-media-jaxb;version='[2.22.1,2.22.2)'
 -runblacklist: \
 	osgi.identity;filter:='(osgi.identity=osgi.residential)',\
 	osgi.identity;filter:='(osgi.identity=osgi.cmpn)',\
