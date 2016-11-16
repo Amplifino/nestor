@@ -35,11 +35,7 @@ class ManagedResource {
 	}
 	
 	String alias(String mountPoint) {
-		if ("/".equals(mountPoint)) {
-			return base;
-		} else {
-			return mountPoint + base;
-		}
+		return mountPoint + ("/".equals(base) ? "" : base);		
 	}
 
 	void publish() {

@@ -90,20 +90,23 @@ public class Whiteboard {
 	}
 	
 	private List<String> normalizedList(ServiceReference<?> reference, String key) {
-		Object stringy = reference.getProperty(key);
-		if (stringy instanceof String) {
-			return Arrays.asList(normalize((String) stringy));
+		Object stringPlus = reference.getProperty(key);
+		if (stringPlus instanceof String) {
+			return Arrays.asList(normalize((String) stringPlus));
 		}
-		if (stringy instanceof String[]) {
-			return Arrays.stream((String[]) stringy).map(this::normalize).collect(Collectors.toList());
-		}
-		if (stringy instanceof Collection) {
-			return ((Collection<?>) stringy).stream()
-				.filter(String.class::isInstance)
-				.map(String.class::cast)
+		if (stringPlus instanceof String[]) {
+			return Arrays.stream((String[]) stringPlus)
+				.map(this::normalize)
 				.collect(Collectors.toList());
 		}
-		throw new IllegalArgumentException(Objects.toString(stringy));
+		if (stringPlus instanceof Collection) {
+			return ((Collection<?>) stringPlus).stream()
+				.filter(String.class::isInstance)
+				.map(String.class::cast)
+				.map(this::normalize)
+				.collect(Collectors.toList());
+		}
+		throw new IllegalArgumentException(Objects.toString(stringPlus));
 	}
 	
 	private ManagedResource resource(String alias) {

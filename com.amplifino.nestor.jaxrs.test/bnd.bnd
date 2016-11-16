@@ -1,0 +1,4 @@
+-buildpath: \
+	com.amplifino.nestor.jaxrs;version=latest,\
+	javax.ws.rs-api;version=2.0,\
+	osgi.cmpn;version=6.0
