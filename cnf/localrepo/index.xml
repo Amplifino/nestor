@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1479327365147" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1479328910195" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.obelix"/>
@@ -7367,6 +7367,112 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.message.filtering.spi)(version&gt;=2.22.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="2.24.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="e17950c7e1a9bae23752534658ccf3661d7819c7b99edf8469d456f1068984aa"/>
+      <attribute name="url" value="org.glassfish.jersey.media.jersey-media-moxy/org.glassfish.jersey.media.jersey-media-moxy-2.24.0.jar"/>
+      <attribute name="size" type="Long" value="25040"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.glassfish.jersey.moxy.internal"/>
+      <attribute name="version" type="Version" value="2.24.0"/>
+      <attribute name="bundle-symbolic-name" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+      <directive name="uses" value="org.glassfish.hk2.api,org.glassfish.hk2.utilities.binding,javax.inject,javax.ws.rs.core,org.glassfish.jersey.message.filtering.spi,org.eclipse.persistence.jaxb,javax.xml.bind"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.glassfish.jersey.moxy.json.internal"/>
+      <attribute name="version" type="Version" value="2.24.0"/>
+      <attribute name="bundle-symbolic-name" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+      <directive name="uses" value="jersey.repackaged.com.google.common.collect,javax.ws.rs.ext,javax.ws.rs.core,org.eclipse.persistence.jaxb.rs,org.eclipse.persistence.internal.core.helper,org.eclipse.persistence.jaxb,org.glassfish.jersey.moxy.json,org.glassfish.jersey.internal.util,javax.xml.bind,javax.inject,org.glassfish.jersey.message.filtering.spi,javax.annotation,org.glassfish.jersey.internal.spi"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.glassfish.jersey.moxy.xml"/>
+      <attribute name="version" type="Version" value="2.24.0"/>
+      <attribute name="bundle-symbolic-name" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+      <directive name="uses" value="javax.ws.rs.ext,org.eclipse.persistence.jaxb,javax.xml.bind,javax.ws.rs.core"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.glassfish.jersey.moxy.json"/>
+      <attribute name="version" type="Version" value="2.24.0"/>
+      <attribute name="bundle-symbolic-name" value="org.glassfish.jersey.media.jersey-media-moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.24.0"/>
+      <directive name="uses" value="javax.ws.rs.ext,jersey.repackaged.com.google.common.collect,org.eclipse.persistence.jaxb,org.eclipse.persistence.oxm,javax.xml.bind,org.glassfish.jersey.moxy.internal,org.glassfish.jersey.moxy.json.internal,javax.ws.rs,org.glassfish.jersey,org.glassfish.jersey.message.filtering,javax.ws.rs.core,org.glassfish.jersey.internal,org.glassfish.jersey.internal.util"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.annotation)(version&gt;=1.2.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.inject)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.ws.rs)(version&gt;=2.0.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.ws.rs.core)(version&gt;=2.0.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.ws.rs.ext)(version&gt;=2.0.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=jersey.repackaged.com.google.common.collect)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.core.helper)(version&gt;=2.6.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jaxb)(version&gt;=2.6.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jaxb.rs)(version&gt;=2.6.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm)(version&gt;=2.6.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.hk2.api)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.hk2.utilities.binding)(version&gt;=2.5.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.internal)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.internal.spi)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.internal.util)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.message.filtering)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.glassfish.jersey.message.filtering.spi)(version&gt;=2.24.0)(!(version&gt;=3.0.0)))"/>
     </requirement>
   </resource>
   <resource>
