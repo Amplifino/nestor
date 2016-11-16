@@ -7,7 +7,7 @@ import java.util.Set;
  * Utility class to help building a dot source
  *
  */
-public class DigraphBuilder {
+public final class DigraphBuilder {
 	private final StringBuilder builder;
 	private final Set<String> nodes = new HashSet<>(); 
 	
@@ -250,7 +250,7 @@ public class DigraphBuilder {
 	}
 
 	/**
-	 * enumaration of supported shapes
+	 * enumeration of supported shapes
 	 *
 	 */
 	public enum Shape {

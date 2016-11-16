@@ -9,8 +9,10 @@ This repo contains the following Bundles (BndTools projects)
 
 - **cnf**: BndTools bundle repository
 - **com.amplifino.counters**: thread safe counters
+- **com.amplifino.nestor.associations**: lazy references to map rdbms foreign keys.
 - **com.amplifino.nestor.bundles.rest:** sample rest whiteboard application showing graphical view of bundle wiring
 - **com.amplifino.nestor.dot**: java interface to external GraphViz dot program
+- **com.amplifino.nestor.jaxrs**: OSGI RFC217 rest whiteboard using Jersey 
 - **com.amplifino.nestor.jdbc.api**: fluent api on top of JDBC
 - **com.amplifino.nestor.jdbc.pools**: JDBC connection pool using OSGI JDBC service (DataSourceFactory)
 - **com.amplifino.nestor.logging**: logging bridge from java.util.logging to OSGI Log Service
@@ -23,8 +25,12 @@ This repo contains the following Bundles (BndTools projects)
 - **com.amplifino.nestor.soap.sample**: extremely simple sample webservice for testing soap whiteboard
 - **com.amplifino.nestor.soap.test**: soap whiteboard test bundle
 - **com.amplifino.nestor.transaction**: safe transaction API on top of javax.transaction.UserTransaction
+- **com.amplifino.nestor.transaction.control**: OSGI RFC221 transaction control implementation
+- **com.amplifino.nestor.transaction.control.jdbc**: OSGI RFC221 transaction control jdbc specifics implementation
+- **com.amplifino.nestor.transaction.control.jdbc.test**: test bundle fro com.amplifino.nestor.transaction.control.jdbc
 - **com.amplifino.nestor.transaction.datasources**: JTA Transactional JDBC connection pool
 - **com.amplifino.nestor.transaction.provider**: implementation of OSGI JTA Transaction Service
+- **com.amplifino.nestor.transaction.spi**: TransactionLog implementation for use in com.amplifino.nestor.transaction.provider
 - **com.amplifino.nestor.transaction.test**: transaction test bundle
 - **com.amplifino.nestor.useradmin**: implementation of OSGI UserAdmin Service with pluggable persistence provider
 - **com.amplifino.nestor.useradmin.rest**: rest interface on OSGI UserAdmin Service with sample UI using Angular.js

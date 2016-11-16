@@ -38,7 +38,7 @@ import com.amplifino.pools.PoolEntry;
  * This is a type 3 DataSpource implementation according to the DataSource javadoc. 
  * 
  */
-public class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
+public final class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
 
 	private final XADataSource xaDataSource;
 	private final TransactionManager transactionManager;

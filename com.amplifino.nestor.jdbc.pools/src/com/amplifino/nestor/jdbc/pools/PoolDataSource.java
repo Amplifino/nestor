@@ -201,7 +201,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		}
 		
 		/**
-		 * sets the pool's intial size
+		 * sets the pool's initial size
 		 * @param initialSize
 		 * @return this
 		 */
