@@ -17,19 +17,19 @@ import org.osgi.service.transaction.control.recovery.RecoverableXAResource;
 
 import com.amplifino.pools.Pool;
 
-class JDBCConnectionProviderImpl implements JDBCConnectionProvider, AutoCloseable {
+class JDBCXAConnectionProvider implements JDBCConnectionProvider, AutoCloseable {
 	
 	private final Pool<XAConnection> pool;
 	private final ServiceRegistration<RecoverableXAResource> recoveryReference;
 	
-	public JDBCConnectionProviderImpl(Pool<XAConnection> pool, BundleContext context) {
+	public JDBCXAConnectionProvider(Pool<XAConnection> pool, BundleContext context) {
 		this.pool = pool;
 		recoveryReference = context.registerService(RecoverableXAResource.class, new RecoverableXAResourceImpl(), null);
 	}
 		
 	@Override
 	public Connection getResource(TransactionControl transactionControl) throws TransactionException {		
-		return new ConnectionWrapper(transactionControl, pool);
+		return new XAConnectionWrapper(transactionControl, pool);
 	}
 	
 	@Override

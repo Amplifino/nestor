@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 
+import javax.sql.DataSource;
 import javax.sql.XADataSource;
 import javax.transaction.UserTransaction;
 
@@ -48,7 +49,7 @@ public class TransactionControlScenarioTest {
 		try (Statement statement = keepAliveConnection.createStatement()) {
 			statement.execute("create table test (name varchar(80))");
 		}
-		JDBCConnectionProvider provider = factory.getProviderFor(xaDataSource, Collections.emptyMap());
+		JDBCConnectionProvider provider = factory.getProviderFor((DataSource) xaDataSource, Collections.emptyMap());
 		connection = provider.getResource(transactionControl);
 	}
 	

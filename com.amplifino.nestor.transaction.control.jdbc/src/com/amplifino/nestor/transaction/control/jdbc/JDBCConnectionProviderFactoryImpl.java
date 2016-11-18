@@ -8,7 +8,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
+import javax.sql.PooledConnection;
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
 
@@ -22,7 +24,6 @@ import org.osgi.service.transaction.control.jdbc.JDBCConnectionProviderFactory;
 
 import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
 import com.amplifino.nestor.adapters.DataSourceAdapter;
-import com.amplifino.nestor.adapters.XADataSourceAdapter;
 import com.amplifino.pools.Pool;
 
 @Component
@@ -37,26 +38,32 @@ public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProvider
 	
 	@Override
 	public JDBCConnectionProvider getProviderFor(DataSource dataSource, Map<String, Object> properties) {
-		return getProviderFor(XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(dataSource)), properties);
+		ConnectionPoolDataSource adapter = ConnectionPoolDataSourceAdapter.on(dataSource);
+		Pool.Builder<PooledConnection> builder = Pool.builder(uncheck(() -> adapter.getPooledConnection()));
+		configure(builder, properties);
+		return new JDBCLocalConnectionProvider(builder.build());
 	}
 
 	@Override
 	public JDBCConnectionProvider getProviderFor(XADataSource xaSource, Map<String, Object> properties) {
-		Pool<XAConnection> pool = Pool.builder(uncheck(() -> xaSource.getXAConnection()))
+		Pool.Builder<XAConnection> builder = Pool.builder(uncheck(() -> xaSource.getXAConnection()));
+		configure(builder, properties);
+		return new JDBCXAConnectionProvider(builder.build(), bundleContext);		
+	}
+	
+	private void configure(Pool.Builder<?> pool, Map<String, Object> properties) {
+		pool
 			.maxIdle((int) properties.getOrDefault(JDBCConnectionProviderFactory.MIN_CONNECTIONS, 10))
 			.maxSize((int) properties.getOrDefault(JDBCConnectionProviderFactory.MAX_CONNECTIONS, 10))
 			.maxIdleTime((int) properties.getOrDefault(JDBCConnectionProviderFactory.IDLE_TIMEOUT, 3), TimeUnit.MINUTES)
-			.maxWait((int) properties.getOrDefault(JDBCConnectionProviderFactory.CONNECTION_TIMEOUT, 30), TimeUnit.SECONDS)
-			.build();
-		return new JDBCConnectionProviderImpl(pool, bundleContext);		
+			.maxWait((int) properties.getOrDefault(JDBCConnectionProviderFactory.CONNECTION_TIMEOUT, 30), TimeUnit.SECONDS);	
 	}
 
 	@Override
 	public JDBCConnectionProvider getProviderFor(DataSourceFactory dataSourceFactory, Properties props, Map<String, Object> map) {
 		try {
-			if (Boolean.TRUE.equals(props.getProperty("osgi.use.driver"))) {
-				Driver driver = dataSourceFactory.createDriver(props);
-				return getProviderFor(XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(DataSourceAdapter.on(driver, props))), map);	
+			if (Boolean.TRUE.equals(props.getProperty("osgi.use.driver"))) {				
+				return getProviderFor(dataSourceFactory.createDriver(props),  props, map);	
 			} else {
 				return getProviderFor(dataSourceFactory.createXADataSource(props), map);
 			}
@@ -67,7 +74,7 @@ public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProvider
 
 	@Override
 	public JDBCConnectionProvider getProviderFor(Driver driver, Properties props, Map<String, Object> map) {
-		return getProviderFor(XADataSourceAdapter.on(ConnectionPoolDataSourceAdapter.on(DataSourceAdapter.on(driver, props))), map);
+		return getProviderFor(DataSourceAdapter.on(driver, props), map);
 	}
 
 	static <T> Supplier<T> uncheck(Callable<T> callable) {

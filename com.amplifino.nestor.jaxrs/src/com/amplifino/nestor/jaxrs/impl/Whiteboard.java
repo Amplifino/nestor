@@ -171,10 +171,8 @@ public class Whiteboard {
 	}
 	
 	private synchronized void unregisterFilter(ServiceReference<?> reference, Object service) {
-		List<String> aliases= normalizedList(reference, JaxRSWhiteboardConstants.JAX_RS_FILTER_BASE);
-		unregisterFilterOrInterceptor(reference, service, aliases);
 		filters.remove(reference);
-		context.ungetService(reference);
+		unregisterFilterOrInterceptor(reference, service, normalizedList(reference, JaxRSWhiteboardConstants.JAX_RS_FILTER_BASE));
 	}
 	
 	private synchronized Object registerInterceptor(ServiceReference<?> reference) {
@@ -185,10 +183,8 @@ public class Whiteboard {
 	}
 	
 	private synchronized void unregisterInterceptor(ServiceReference<?> reference, Object service) {
-		List<String> aliases = normalizedList(reference, JaxRSWhiteboardConstants.JAX_RS_FILTER_BASE);
-		unregisterFilterOrInterceptor(reference, service, aliases);
 		interceptors.remove(reference);
-		context.ungetService(reference);
+		unregisterFilterOrInterceptor(reference, service, normalizedList(reference, JaxRSWhiteboardConstants.JAX_RS_INTERCEPTOR_BASE));
 	}
 	
 	private boolean startsWithAny(String base, List<String> aliases) {

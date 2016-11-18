@@ -2,7 +2,7 @@ package com.amplifino.nestor.jaxrs.test;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-//@XmlRootElement
+@XmlRootElement
 public class SampleDto {
 
 	public String name;

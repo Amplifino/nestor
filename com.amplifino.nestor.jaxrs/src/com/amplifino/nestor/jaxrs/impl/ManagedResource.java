@@ -4,7 +4,6 @@ import javax.servlet.ServletException;
 import javax.ws.rs.core.Application;
 
 import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.osgi.framework.Constants;

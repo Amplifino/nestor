@@ -19,29 +19,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-import javax.sql.XAConnection;
-
 import org.osgi.service.transaction.control.TransactionContext;
 import org.osgi.service.transaction.control.TransactionControl;
 import org.osgi.service.transaction.control.TransactionException;
 
-import com.amplifino.pools.Pool;
-
 /**
- * Provides transparant access to connection registered with transactioncontext
  *
  */
-class ConnectionWrapper implements Connection {
+abstract class ConnectionWrapper implements Connection {
 	
-	private final Pool<XAConnection> pool;
 	private final TransactionControl transactionControl;
 	
-	ConnectionWrapper(TransactionControl transactionControl, Pool<XAConnection> pool) {
+	ConnectionWrapper(TransactionControl transactionControl) {
 		this.transactionControl = transactionControl;
-		this.pool = pool;
 	}
 	
-    private Connection getConnection() throws SQLException {
+    final Connection getConnection() throws SQLException {
     	TransactionContext context = transactionControl.getCurrentContext();
     	if (context == null) {
     		throw new TransactionException("No active scope");
@@ -50,25 +43,14 @@ class ConnectionWrapper implements Connection {
     	return connection == null ? newConnection() : connection;
     }
     
-    private Connection newConnection() throws SQLException {
-    	XAConnection xaConnection = pool.borrow();
-    	Connection connection = xaConnection.getConnection();
-    	transactionControl.getCurrentContext().postCompletion(status -> this.close(connection, xaConnection));
+    final Connection newConnection() throws SQLException {
+    	Connection connection = newConnection(transactionControl);
     	transactionControl.getCurrentContext().putScopedValue(this, connection);
-    	if (transactionControl.activeTransaction()) {
-    		transactionControl.getCurrentContext().registerXAResource(xaConnection.getXAResource(), null);
-    	}
     	return connection;
     }
     
-    private void close(Connection connection, XAConnection xaConnection) {
-    	try {
-    		connection.close();
-    	} catch (SQLException e) {
-    	}    	
-    	pool.release(xaConnection);
-    }
-    
+    abstract Connection newConnection(TransactionControl transactionControl) throws SQLException;
+      
     @Override
     public Statement createStatement() throws SQLException {
         return getConnection().createStatement();
