@@ -74,18 +74,6 @@ public class DataSourceResource {
 		}
 	}
 	
-	/*
-	private SqlResult describe(DataSource dataSource, String table) throws SQLException {
-		try (Connection connection = dataSource.getConnection()) {
-			try (Statement statement = connection.createStatement()) {
-				try (ResultSet resultSet = statement.executeQuery("select * from " + table + " where 1 = 0")) {
-					return new SqlResult(parse(resultSet.getMetaData()));
-				}
-			}
-		}
-	}
-	*/
-	
 	private SqlResult describe(DataSource dataSource, String table) throws SQLException {
 		return toSqlResult(dataSource, c -> c.getMetaData().getColumns(null,  null,  table.toUpperCase(), "%"));		
 	}
@@ -128,22 +116,6 @@ public class DataSourceResource {
 		}
 		return result;
 	}
-	
-	/*
-	private List<Map<String, Object>> parse(ResultSetMetaData metaData) throws SQLException {
-		List<Map<String, Object>> result = new ArrayList<>();
-		for (int i = 1 ; i <= metaData.getColumnCount(); i++) {
-			Map<String, Object> row = new LinkedHashMap<>(5);
-			row.put("name", metaData.getColumnName(i));
-			row.put("type", metaData.getColumnType(i));
-			row.put("scale", metaData.getScale(i));
-			row.put("java", metaData.getColumnClassName(i));
-			row.put("isNullable", metaData.isNullable(i));
-			result.add(row);
-		}
-		return result;
-	}
-	*/
 	
 	@GET
 	@Path("{name}/tables")

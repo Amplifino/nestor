@@ -38,7 +38,7 @@ import com.amplifino.pools.PoolEntry;
  * This is a type 3 DataSpource implementation according to the DataSource javadoc. 
  * 
  */
-public final class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier {
+public final class TransactionalDataSource extends CommonDataSourceWrapper implements DataSource, ConnectionEventListener, CountsSupplier, AutoCloseable {
 
 	private final XADataSource xaDataSource;
 	private final TransactionManager transactionManager;
@@ -48,6 +48,7 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 	private final Set<XAConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	private Optional<String> validationQuery = Optional.empty();
 	private long validationIdleTime = 0;
+	private boolean overruleIsSameRM = false;
 	
 	private TransactionalDataSource(XADataSource xaDataSource, TransactionManager transactionManager, TransactionSynchronizationRegistry synchronization) {
 		super(xaDataSource);
@@ -121,13 +122,21 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 		}
 	}
 	
+	private XAResource xaResource(XAConnection connection) throws SQLException {
+		if (overruleIsSameRM) {
+			return new NotSameRMXAResourceWrapper(connection.getXAResource());
+		} else {
+			return connection.getXAResource();
+		}
+	}
+	
 	private Connection getConnection(Transaction transaction) throws SQLException, SystemException, RollbackException {		
 		Connection connection = (Connection) synchronization.getResource(this);
 		if (connection != null) {
 			return ConnectionInJtaTransactionWrapper.on(connection);
 		}
 		PoolEntry<XAConnection> poolEntry = xaConnection();
-		XAResource xaResource = poolEntry.get().getXAResource();
+		XAResource xaResource = xaResource(poolEntry.get());
 		connection = poolEntry.get().getConnection();
 		if (!isValid(connection, poolEntry.age())) {
 			try {
@@ -195,6 +204,7 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 	/**
 	 * closes the connection pool, releasing all pooled connections 
 	 */
+	@Override
 	public void close() {
 		pool.close();		
 	}
@@ -324,6 +334,11 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 		 */
 		public Builder lifo() {
 			poolBuilder.lifo();
+			return this;
+		}
+		
+		public Builder overruleIsSameRM() {
+			transactionalDataSource.overruleIsSameRM = true;
 			return this;
 		}
 		

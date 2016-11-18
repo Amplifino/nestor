@@ -58,7 +58,7 @@ class ManagedResource {
 	}
 	
 	ResourceConfig resourceConfig() {
-		return ResourceConfig.forApplication(application).register(JacksonFeature.class);
+		return ResourceConfig.forApplication(application);
 	}
 	
 	void add(ServiceReference<?> reference, Object service) {

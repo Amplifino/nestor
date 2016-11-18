@@ -23,14 +23,22 @@ dataSourceControllers.controller('SqlCtrl', ['$scope', 'DataSource' , 'Table',
 	
 
 	$scope.addTable = function() {
-		$scope.sqlText += " " + $scope.selectedTable.name;
+		if ($scope.sqlText) {
+			$scope.sqlText += " " + $scope.selectedTable.name;
+		} else {
+			$scope.sqlText = $scope.selectTable.name;
+		}
 	}
 	
 	$scope.addColumns = function() {
-		$scope.sqlText += $scope.selectedColumns
-			.map( function(col) {
-				return " " + col.name })
+		var columns = $scope.selectedColumns
+			.map( function(col) { return " " + col.name; })
 			.toString();
+		if ($scope.sqlText) {
+			$scope.sqlText += " " + columns;
+		} else {
+			$scope.sqlText = columns;
+		}
 	}
 		
 }]);

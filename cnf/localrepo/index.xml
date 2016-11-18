@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1479328910195" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1479331009370" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.obelix"/>
@@ -3668,6 +3668,1280 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.eclipse.persistence.core"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="8685cdedbf10e2ee3d298580204860dde40d04fc414df273dc5aee56c4a20c35"/>
+      <attribute name="url" value="org.eclipse.persistence.core/org.eclipse.persistence.core-2.6.1.jar"/>
+      <attribute name="size" type="Long" value="5349395"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.annotations"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.config"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.descriptors"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.mappings"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.mappings.converters"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.mappings.transformers"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.queries"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.core.sessions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.descriptors"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.descriptors.changetracking"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.descriptors.copying"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.descriptors.invalidation"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.descriptors.partitioning"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.dynamic"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.eis"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.eis.interactions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.eis.mappings"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.exceptions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.exceptions.i18n"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.expressions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.expressions.spatial"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.history"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.indirection"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.cache"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.codegen"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.core.databaseaccess"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.core.descriptors"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.core.helper"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.core.queries"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.core.sessions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.databaseaccess"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.descriptors"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.descriptors.changetracking"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.dynamic"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.expressions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.helper"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.helper.linkedlist"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.history"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.identitymaps"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.indirection"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.indirection.jdk8"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.jpql"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.parsing"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.parsing.jpql"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.parsing.jpql.antlr"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.rs.metadata.model"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jpa.rs.metadata.model.v2"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.localization"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.localization.i18n"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.mappings.converters"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.accessor"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.conversion"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.documentpreservation"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.mappings"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.record"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.record.deferred"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.record.json"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.record.namespaces"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.schema"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.schema.model"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.oxm.unmapped"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.platform.database"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.queries"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.security"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sequencing"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.cdi"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.broadcast"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.corba"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.corba.sun"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.jms"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.rmi"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.coordination.rmi.iiop"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.event"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.log"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.login"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.platform"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.pool"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.project"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.property"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.rcm"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.rcm.command"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.sequencing"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.session"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.transport"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.transport.discovery"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.factories.model.transport.naming"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.sessions.remote"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.weaving"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.logging"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.converters"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.foundation"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.querykeys"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.structures"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.transformers"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.mappings.xdb"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.annotations"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.attachment"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.documentpreservation"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.json"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.mappings"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.mappings.converters"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.mappings.nullpolicy"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.platform"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.record"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.schema"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.sequenced"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.oxm.unmapped"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.converters"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.events"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.jdbc"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.oracle.annotations"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.oracle.jdbc"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.oracle.plsql"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.database.partitioning"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.glassfish"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.jboss"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.oc4j"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.sap"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.sunas"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.was"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.server.wls"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.xml"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.platform.xml.jaxp"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.queries"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sequencing"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services.glassfish"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services.jboss"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services.mbean"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services.weblogic"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.services.websphere"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.broker"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.changesets"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination.broadcast"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination.corba"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination.corba.sun"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination.jms"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.coordination.rmi"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.factories"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.interceptors"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.remote"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.remote.corba.sun"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.remote.rmi"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.remote.rmi.iiop"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.serializers"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.sessions.server"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.tools"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.tools.file"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.tools.profiler"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.tools.schemaframework"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.tools.tuning"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.glassfish"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.jboss"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.jotm"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.oc4j"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.sap"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.sunas"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.was"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.transaction.wls"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.core"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.activation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.crypto)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.crypto.spec)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.enterprise.context.spi)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.enterprise.inject.spi)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.imageio)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.imageio.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.jms)(version&gt;=1.1.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.json)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.json.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.mail)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.mail.internet)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.management)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.management.openmbean)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <attribute name="jpa" value="2.1"/>
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.persistence)(version&gt;=1.1.0)(!(version&gt;=2.2.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <attribute name="jpa" value="2.1"/>
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.persistence.spi)(version&gt;=1.1.0)(!(version&gt;=2.2.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.resource)(version&gt;=1.5.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.resource.cci)(version&gt;=1.5.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.rmi)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.rmi.CORBA)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.sql)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.transaction)(version&gt;=1.1.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind.annotation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.datatype)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.namespace)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.parsers)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.stream.events)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.dom)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.sax)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.validation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.xpath)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.eclipse.persistence.internal.libraries.antlr.runtime)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.eclipse.persistence.internal.libraries.antlr.runtime.tree)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.eclipse.persistence.internal.libraries.asm)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql.parser)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql.utility)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql.utility.filter)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql.utility.iterable)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.jpa.jpql.utility.iterator)(version&gt;=2.1.0)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.omg.CORBA)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.omg.CORBA.portable)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.omg.CORBA_2_3.portable)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.w3c.dom)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.xml.sax)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.xml.sax.ext)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.xml.sax.helpers)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.bundle">
+      <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.antlr)(bundle-version&gt;=3.2.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.bundle">
+      <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.asm)(bundle-version&gt;=5.0.1))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.7))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.eclipse.persistence.moxy"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" type="Version" value="2.6.0.v20150309-bf26070"/>
@@ -4001,6 +5275,359 @@
     </requirement>
     <requirement namespace="osgi.wiring.bundle">
       <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.core)(bundle-version&gt;=2.6.0))"/>
+      <directive name="visibility" value="reexport"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.bundle">
+      <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.asm)(bundle-version&gt;=5.0.1))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.eclipse.persistence.moxy"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="1382ed93cdfd6ae9210bf234610ea57b77238da90273f23260d693d3ecbf679d"/>
+      <attribute name="url" value="org.eclipse.persistence.moxy/org.eclipse.persistence.moxy-2.6.1.jar"/>
+      <attribute name="size" type="Long" value="633586"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jaxb"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.internal.jaxb.many"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.attachment"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.compiler"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.dynamic"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.dynamic.metadata"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.javamodel"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.javamodel.oxm"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.javamodel.reflection"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.metadata"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.rs"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.eclipse.persistence.jaxb.xmlmodel"/>
+      <attribute name="version" type="Version" value="2.6.1"/>
+      <attribute name="bundle-symbolic-name" value="org.eclipse.persistence.moxy"/>
+      <attribute name="bundle-version" type="Version" value="2.6.1.v20150916-55dc7c3"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.bind)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.bind.annotation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.bind.api)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.bind.api.impl)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.sun.codemodel)(version&gt;=2.2.11)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.xsom)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.xsom.impl)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=com.sun.xml.xsom.impl.parser)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.sun.tools.xjc)(version&gt;=2.2.11)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.sun.tools.xjc.model)(version&gt;=2.2.11)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.sun.tools.xjc.outline)(version&gt;=2.2.11)(!(version&gt;=3.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.activation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.json)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.json.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.validation)(version&gt;=1.1.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.validation.constraints)(version&gt;=1.1.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.validation.groups)(version&gt;=1.1.0))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.ws.rs)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.ws.rs.core)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.ws.rs.ext)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind.annotation)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind.annotation.adapters)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind.attachment)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind.helpers)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.namespace)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.parsers)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.dom)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.sax)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.stax)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.transform.stream)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.validation)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.config)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.descriptors)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.dynamic)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.exceptions)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.databaseaccess)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.descriptors)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.helper)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.eclipse.persistence.internal.libraries.asm)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.localization)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.oxm)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.oxm.record)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.oxm.schema)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.oxm.schema.model)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.queries)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.security)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.internal.sessions)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.logging)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.mappings)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.mappings.converters)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.mappings.transformers)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.annotations)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.attachment)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.documentpreservation)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.mappings)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.mappings.converters)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.mappings.nullpolicy)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.platform)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.record)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.oxm.schema)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.platform.xml)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.sessions)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.persistence.sessions.factories)(version&gt;=2.6.1))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.w3c.dom)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.xml.sax)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.xml.sax.helpers)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.bundle">
+      <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.core)(bundle-version&gt;=2.6.1))"/>
       <directive name="visibility" value="reexport"/>
     </requirement>
     <requirement namespace="osgi.wiring.bundle">

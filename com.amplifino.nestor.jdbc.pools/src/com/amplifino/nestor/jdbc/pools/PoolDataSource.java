@@ -31,7 +31,7 @@ import com.amplifino.pools.PoolEntry;
  * This is a type 2 DataSource implementation according to the DataSource javadoc.
  *
  */
-public final class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, ConnectionEventListener {
+public final class PoolDataSource extends CommonDataSourceWrapper implements DataSource, CountsSupplier, AutoCloseable, ConnectionEventListener {
 
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	private Pool<PooledConnection> pool;
@@ -115,6 +115,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		failedConnections.add((PooledConnection) event.getSource());
 	}
 	
+	@Override
 	public void close() {
 		pool.close();
 	}

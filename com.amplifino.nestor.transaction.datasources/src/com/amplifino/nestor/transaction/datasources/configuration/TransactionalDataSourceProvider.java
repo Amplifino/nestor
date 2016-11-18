@@ -64,6 +64,9 @@ public class TransactionalDataSourceProvider {
 		} else {
 			builder.lifo();
 		}
+		if (configuration.overruleIsSameRM()) {
+			builder.overruleIsSameRM();
+		}
 		dataSource = builder.build();
 		Dictionary<String, Object> dictionary = new Hashtable<>();
 		dictionary.put(DataSourceFactory.JDBC_DATABASE_NAME, configuration.dataSourceName());	

@@ -30,6 +30,7 @@ public @interface TransactionalDataSourceConfiguration {
 	int propertyCycle();
 	@AttributeDefinition(description="Ldap filter for DataSourceFactory")
 	String dataSourceFactory_target() default "(osgi.jdbc.driver.name=*)";
+	boolean overruleIsSameRM() default false;
 	@AttributeDefinition(description="For two phase commit XADATASOURCE is required")
 	FactoryMethod factoryMethod() default FactoryMethod.XADATASOURCE;
 	String webconsole_configurationFactory_nameHint() default "DataSource {dataSourceName} for applications {application}";
