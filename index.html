@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Nestor by Amplifino</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Nestor</h1>
+      <h2 class="project-tagline">OSGI Declarative Service components to build a light weight enterprise application server</h2>
+      <a href="https://github.com/Amplifino/nestor" class="btn">View on GitHub</a>
+      <a href="https://github.com/Amplifino/nestor/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Amplifino/nestor/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="nestor" class="anchor" href="#nestor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>nestor</h1>
+
+<p>Project nestor builds a modular enterprise application server based on OSGI and Declarative Services. </p>
+
+<p>See also: <a href="http://www.amplifino.be/html/nestor.html">http://www.amplifino.be/html/nestor.html</a>.</p>
+
+<p>Development environment is based on Eclipse+BndTools. </p>
+
+<p>This repo contains the following Bundles (BndTools projects)  </p>
+
+<ul>
+<li>
+<strong>cnf</strong>: BndTools bundle repository</li>
+<li>
+<strong>com.amplifino.counters</strong>: thread safe counters</li>
+<li>
+<strong>com.amplifino.nestor.associations</strong>: lazy references to map rdbms foreign keys.</li>
+<li>
+<strong>com.amplifino.nestor.bundles.rest:</strong> sample rest whiteboard application showing graphical view of bundle wiring</li>
+<li>
+<strong>com.amplifino.nestor.dot</strong>: java interface to external GraphViz dot program</li>
+<li>
+<strong>com.amplifino.nestor.jaxrs</strong>: OSGI RFC217 rest whiteboard using Jersey </li>
+<li>
+<strong>com.amplifino.nestor.jdbc.api</strong>: fluent api on top of JDBC</li>
+<li>
+<strong>com.amplifino.nestor.jdbc.pools</strong>: JDBC connection pool using OSGI JDBC service (DataSourceFactory)</li>
+<li>
+<strong>com.amplifino.nestor.logging</strong>: logging bridge from java.util.logging to OSGI Log Service</li>
+<li>
+<strong>com.amplifino.nestor.logging.test</strong>: test bundle for com.amplifino.nestor.logging</li>
+<li>
+<strong>com.amplifino.nestor.rdbms.schema</strong>: database schema</li>
+<li>
+<strong>com.amplifino.nestor.rdbms.schema.test</strong>: database schema test bundle</li>
+<li>
+<strong>com.amplifino.nestor.rest</strong>: rest whiteboard using Jersey and Jackson</li>
+<li>
+<strong>com.amplifino.nestor.security.http</strong>: servlet filter using OSGI useradmin service </li>
+<li>
+<strong>com.amplifino.nestor.soap</strong>: soap whiteboard using JAX-WS Reference Implementation included in Java 8</li>
+<li>
+<strong>com.amplifino.nestor.soap.sample</strong>: extremely simple sample webservice for testing soap whiteboard</li>
+<li>
+<strong>com.amplifino.nestor.soap.test</strong>: soap whiteboard test bundle</li>
+<li>
+<strong>com.amplifino.nestor.transaction</strong>: safe transaction API on top of javax.transaction.UserTransaction</li>
+<li>
+<strong>com.amplifino.nestor.transaction.control</strong>: OSGI RFC221 transaction control implementation</li>
+<li>
+<strong>com.amplifino.nestor.transaction.control.jdbc</strong>: OSGI RFC221 transaction control jdbc specifics implementation</li>
+<li>
+<strong>com.amplifino.nestor.transaction.control.jdbc.test</strong>: test bundle fro com.amplifino.nestor.transaction.control.jdbc</li>
+<li>
+<strong>com.amplifino.nestor.transaction.datasources</strong>: JTA Transactional JDBC connection pool</li>
+<li>
+<strong>com.amplifino.nestor.transaction.provider</strong>: implementation of OSGI JTA Transaction Service</li>
+<li>
+<strong>com.amplifino.nestor.transaction.spi</strong>: TransactionLog implementation for use in com.amplifino.nestor.transaction.provider</li>
+<li>
+<strong>com.amplifino.nestor.transaction.test</strong>: transaction test bundle</li>
+<li>
+<strong>com.amplifino.nestor.useradmin</strong>: implementation of OSGI UserAdmin Service with pluggable persistence provider</li>
+<li>
+<strong>com.amplifino.nestor.useradmin.rest</strong>: rest interface on OSGI UserAdmin Service with sample UI using Angular.js</li>
+<li>
+<strong>com.amplifino.nestor.useradmin.spi.obelix</strong>: persistence provider for nestor.useradmin using Obelix project</li>
+<li>
+<strong>com.amplifino.nestor.useradmin.spi.rdbms</strong>: persistence provider for nestor.useradmin using a relational database </li>
+<li>
+<strong>com.amplifino.nestor.useradmin.test</strong>: test bundle for nestor.useradmin</li>
+<li>
+<strong>com.amplifino.nestor.webconsole.security</strong>: secures webconsole password with PBKDF2 hash</li>
+<li>
+<strong>com.amplifino.pools</strong>: generic object pool</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Amplifino/nestor">Nestor</a> is maintained by <a href="https://github.com/Amplifino">Amplifino</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
