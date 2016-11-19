@@ -1,0 +1,7 @@
+<form>
+<p>Includes:<br/> 
+basic OSGI services: Log, DS, HTTP<br/>
+basic Felix utilities: gogo and web console<br/>
+basic Nestor services: jersey based rest whiteboard, jdbc connection pool and H2 DataSourceFactory<br/>
+</p>
+</form>
