@@ -1,15 +1,25 @@
-# nestor
+# nestor #
 Project nestor builds a modular enterprise application server based on OSGI and Declarative Services. 
 
 See also: [http://www.amplifino.be/html/nestor.html](http://www.amplifino.be/html/nestor.html).
 
 Development environment is based on Eclipse+BndTools. 
 
+Main nestor components are:
+
+- a generic, configurable object pool
+- a jdbc database connection pool, configurable with OSGI Config Admin and using an OSGi DataSourceFactory.
+- a transaction manager implementation
+- a transactional jdbc database connection pool.
+- a whiteboard for JAX-RS applications using Jersey and Jackson
+- a whiteboard for SOAP web services using the JAX-WS implementation included in Java SE.
+
 This repo contains the following Bundles (BndTools projects)  
 
 - **cnf**: BndTools bundle repository
 - **com.amplifino.counters**: thread safe counters
 - **com.amplifino.nestor.associations**: lazy references to map rdbms foreign keys.
+- **com.amplifino.nestor.bndrun.template**: template for bndrun files containing essential bundles for interactive testing.
 - **com.amplifino.nestor.bundles.rest:** sample rest whiteboard application showing graphical view of bundle wiring
 - **com.amplifino.nestor.dot**: java interface to external GraphViz dot program
 - **com.amplifino.nestor.jaxrs**: OSGI RFC217 rest whiteboard using Jersey 
