@@ -3,11 +3,13 @@ package com.amplifino.pools;
 final class DefaultPoolEntry<T> implements PoolEntry<T>{
 	
 	private final T pooled;
-	private long poolTime;
+	private final long poolTime;
+	private final boolean fresh;
 
-	DefaultPoolEntry(T pooled) {
+	DefaultPoolEntry(T pooled, boolean fresh) {
 		this.pooled = pooled;
 		this.poolTime = System.currentTimeMillis();
+		this.fresh = fresh;
 	}
 	
 	@Override
@@ -25,5 +27,9 @@ final class DefaultPoolEntry<T> implements PoolEntry<T>{
 		return age() > age;
 	}
 	
+	@Override
+	public boolean isFresh() {
+		return fresh;
+	}
 	
 }

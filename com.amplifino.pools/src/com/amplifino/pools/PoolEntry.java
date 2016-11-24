@@ -3,7 +3,7 @@ package com.amplifino.pools;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author kha
+ * Interface for advanced pool users 
  *
  * @param <T>
  */
@@ -27,4 +27,9 @@ public interface PoolEntry<T> {
 	 * @return
 	 */
 	boolean older(long ms);
+	
+	/**
+	 * @return true if this is a newly allocated pool member, false if it comes from the idle pool
+	 */
+	boolean isFresh();
 }

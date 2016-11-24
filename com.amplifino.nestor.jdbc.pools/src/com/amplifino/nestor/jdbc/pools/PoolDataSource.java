@@ -36,7 +36,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	private final ConnectionPoolDataSource connectionPoolDataSource;
 	private Pool<PooledConnection> pool;
 	private OptionalInt isValidTimeout = OptionalInt.of(0);
-	private final Set<PooledConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<PooledConnection> failedConnections = ConcurrentHashMap.newKeySet();
 	private Optional<String> validationQuery = Optional.empty();
 	private long validationIdleTime = 0;
 	
@@ -60,39 +60,46 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		while(true) {
-			PoolEntry<PooledConnection> poolEntry = pool.borrowEntry();
-			Connection connection = poolEntry.get().getConnection();
-			if (isValid(connection, poolEntry.age())) {
-				return connection;
-			} else {
-				pool.evict(poolEntry.get());				
+		PoolEntry<PooledConnection> poolEntry = pool.borrowEntry();
+		try {
+			return getConnection(poolEntry);
+		} catch (Throwable e) {
+			pool.evict(poolEntry.get());
+			if (poolEntry.isFresh()) {
+				throw e;
 			}
+		}
+		return getConnection();
+	}
+	
+	private Connection getConnection(PoolEntry<PooledConnection> poolEntry) throws SQLException {
+		Connection connection = poolEntry.get().getConnection();
+		try {
+			checkValid(connection, poolEntry.age());
+			return connection;
+		} catch (Throwable e) {
+			connection.close();
+			throw e;
 		}
 	}
 	
-	private boolean isValid(Connection connection, long age) throws SQLException {
+	private void checkValid(Connection connection, long age) throws SQLException {
 		if (connection.isClosed()) {
-			return false;
+			throw new SQLException("connection is closed");
 		}
 		if (age < validationIdleTime) {
-			return true;
+			return;
 		}
 		if (isValidTimeout.isPresent()) {
 			if (!connection.isValid(isValidTimeout.getAsInt())) {
-				return false;
+				throw new SQLException("connection not valid");
 			}
 		}
 		if (validationQuery.isPresent()) {
-			try {
-				try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
-					statement.execute();
-				}
-			} catch (SQLException e) {
-				return false;
+			try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
+				statement.execute();
 			}
 		}
-		return true;
 	}
 
 	@Override
@@ -138,6 +145,11 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		}
 	}
 	
+	@Override
+	public Counts counts() {
+		return pool.counts();
+	}
+	
 	/**
 	 * return a PoolDataSource builder
 	 * @param connectionPoolDataSource factory object for obtaining pooled connections
@@ -145,11 +157,6 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	 */
 	public static Builder builder(ConnectionPoolDataSource connectionPoolDataSource) {
 		return new Builder(connectionPoolDataSource);
-	}
-
-	@Override
-	public Counts counts() {
-		return pool.counts();
 	}
 
 	/**

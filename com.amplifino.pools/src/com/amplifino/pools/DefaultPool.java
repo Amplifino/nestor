@@ -126,17 +126,23 @@ final class DefaultPool<T> implements Pool<T> {
 	}
 	
 	private DefaultPoolEntry<T> takeEntry() {
-		while(!closed.get()) {
+		if (closed.get()) {
+			tryClose();
+			throw new IllegalStateException("Pool closed");
+		} else {
 			DefaultPoolEntry<T> candidate = doBorrow();
 			if (activate(candidate)) {
 				counters.increment(Stats.BORROWS);
 				return candidate;
 			} else {
 				destroy(candidate.get());
+				if (candidate.isFresh()) {
+					throw new IllegalStateException("Unable to activate fresh entry");
+				} else {
+					return takeEntry();
+				}
 			}
-		}		
-		tryClose();
-		throw new IllegalStateException("Pool closed");
+		}				
 	}
 	
 	@Override
@@ -230,11 +236,11 @@ final class DefaultPool<T> implements Pool<T> {
 	}
 	
 	private DefaultPoolEntry<T> doBorrow() {
-		return Optional.ofNullable(idles.pollLast()).orElseGet(() -> new DefaultPoolEntry<>(this.allocate()));
+		return Optional.ofNullable(idles.pollLast()).orElseGet(() -> new DefaultPoolEntry<>(this.allocate(), true));
 	}
 	
 	private void doRelease(T borrowed) {
-		if (!passivate(borrowed) || !strategy.offer(idles, new DefaultPoolEntry<>(borrowed))) {
+		if (!passivate(borrowed) || !strategy.offer(idles, new DefaultPoolEntry<>(borrowed, false))) {
 			destroy(borrowed);
 		}
 	}
@@ -283,8 +289,7 @@ final class DefaultPool<T> implements Pool<T> {
 		T t = Objects.requireNonNull(supplier.get());
 		int newSize = poolSize.incrementAndGet();
 		logger.info(logMessage("Pool size increased to " + newSize));
-		counters.increment(Stats.ALLOCATIONS);
-		counters.max(Stats.MAXSIZE, newSize);
+		counters.increment(Stats.ALLOCATIONS).max(Stats.MAXSIZE, newSize);
 		return t;		
 	}
 	

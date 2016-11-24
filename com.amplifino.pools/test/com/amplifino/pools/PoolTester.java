@@ -146,13 +146,14 @@ public class PoolTester {
 	public void testOnBorrow() {
 		Iterator<Integer> iterator = IntStream.range(0, Integer.MAX_VALUE).iterator();
 		Pool<Integer> pool = Pool.builder(iterator::next)
+			.initialSize(100)
 			.onBorrow(i -> ((i.intValue() % 3) != 0))
 			.build();
 		Assert.assertTrue(IntStream.range(0, 10)
 				.mapToObj( i -> pool.borrow())
 				.allMatch(i -> ((i.intValue() % 3) != 0)));
 		Counts counts = pool.counts();
-		Assert.assertEquals(15, counts.get(Pool.Stats.ALLOCATIONS));
+		Assert.assertEquals(100, counts.get(Pool.Stats.ALLOCATIONS));
 		Assert.assertEquals(10, counts.get(Pool.Stats.BORROWS));
 		Assert.assertEquals(5, counts.get(Pool.Stats.DESTROYS));
 		Assert.assertEquals(5, counts.get(Pool.Stats.INVALIDONBORROW));				

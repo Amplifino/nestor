@@ -3,7 +3,9 @@ package com.amplifino.nestor.transaction.datasources;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
@@ -45,7 +47,7 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 	private final TransactionSynchronizationRegistry synchronization;
 	private Pool<XAConnection> pool;	
 	private OptionalInt isValidTimeout = OptionalInt.of(0);
-	private final Set<XAConnection> failedConnections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<XAConnection> failedConnections = ConcurrentHashMap.newKeySet();
 	private Optional<String> validationQuery = Optional.empty();
 	private long validationIdleTime = 0;
 	private boolean overruleIsSameRM = false;
@@ -107,19 +109,33 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 		}
 	}
 	
-	private Connection getLocalConnection() throws SQLException {
+	private Map.Entry<XAConnection, Connection>  getConnectionPair() throws SQLException {
 		PoolEntry<XAConnection> poolEntry = xaConnection();
-		Connection connection = poolEntry.get().getConnection();
-		if (!isValid(connection, poolEntry.age())) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-			}
+		try {
+			Connection connection = getConnection(poolEntry);
+			return new AbstractMap.SimpleImmutableEntry<>(poolEntry.get(), connection);
+		} catch (Throwable e) {
 			pool.evict(poolEntry.get());
-			return getLocalConnection();
-		} else {
-			return connection;
+			if (poolEntry.isFresh()) {
+				throw e;
+			}
 		}
+		return getConnectionPair();
+	}
+	
+	private Connection getConnection(PoolEntry<XAConnection> poolEntry)  throws SQLException {
+		Connection connection = poolEntry.get().getConnection();
+		try {
+			checkValid(connection, poolEntry.age());
+		} catch (Throwable e) {
+			connection.close();
+			throw e;
+		}
+		return connection;		
+	}
+	
+	private Connection getLocalConnection() throws SQLException {
+		return getConnectionPair().getValue();		
 	}
 	
 	private XAResource xaResource(XAConnection connection) throws SQLException {
@@ -132,48 +148,45 @@ public final class TransactionalDataSource extends CommonDataSourceWrapper imple
 	
 	private Connection getConnection(Transaction transaction) throws SQLException, SystemException, RollbackException {		
 		Connection connection = (Connection) synchronization.getResource(this);
-		if (connection != null) {
+		if (connection == null) {
+			return newConnection(transaction);
+		} else {
 			return ConnectionInJtaTransactionWrapper.on(connection);
 		}
-		PoolEntry<XAConnection> poolEntry = xaConnection();
-		XAResource xaResource = xaResource(poolEntry.get());
-		connection = poolEntry.get().getConnection();
-		if (!isValid(connection, poolEntry.age())) {
-			try {
-				connection.close();					
-			} catch (SQLException e) {
-			}
-			pool.evict(poolEntry.get());
-			return getConnection(transaction);
-		}
-		transaction.enlistResource(xaResource);
-		transaction.registerSynchronization(new ConnectionCloser(connection));
-		synchronization.putResource(this, connection);
-		return ConnectionInJtaTransactionWrapper.on(connection);
 	}
 	
-	private boolean isValid(Connection connection, long age) throws SQLException {
+	private Connection newConnection(Transaction transaction) throws SQLException, SystemException, RollbackException {
+		Map.Entry<XAConnection, Connection> entry = getConnectionPair();
+		try {
+			XAResource xaResource = xaResource(entry.getKey());
+			transaction.enlistResource(xaResource);
+			Connection connection = entry.getValue();
+			transaction.registerSynchronization(new ConnectionCloser(connection));
+			synchronization.putResource(this, connection);
+			return ConnectionInJtaTransactionWrapper.on(connection);
+		} catch (Throwable e) {
+			entry.getValue().close();
+			throw e;
+		}
+	}
+	
+	private void checkValid(Connection connection, long age) throws SQLException {
 		if (connection.isClosed()) {
-			return false;
+			throw new SQLException("connection closed");
 		}
 		if (age < validationIdleTime) {
-			return true;
+			return;
 		}
 		if (isValidTimeout.isPresent()) {
 			if (!connection.isValid(isValidTimeout.getAsInt())) {
-				return false;
+				throw new SQLException("connection not valid");
 			}
 		}
 		if (validationQuery.isPresent()) {
-			try {
-				try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
-					statement.execute();
-				}
-			} catch (SQLException e) {
-				return false;
+			try (PreparedStatement statement = connection.prepareStatement(validationQuery.get())) {
+				statement.execute();
 			}
 		}
-		return true;
 	}
 
 	@Override
