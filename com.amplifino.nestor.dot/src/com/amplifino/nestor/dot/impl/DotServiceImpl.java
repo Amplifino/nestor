@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -44,8 +46,13 @@ public class DotServiceImpl implements DotService {
                 process.waitFor();
                 return buffer.toByteArray();
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch(InterruptedException e) {
+        	Logger.getLogger("com.amplifino.nestor.dot").info("Interrupted while calling dot");
+        	Thread.currentThread().interrupt();
+        	throw new RuntimeException(e);
+        }
+        catch (IOException e) {
+            Logger.getLogger("com.amplifino.nestor.dot").log(Level.WARNING, "IOException while calling dot" + e, e);
             throw new RuntimeException(e);
         }
     }

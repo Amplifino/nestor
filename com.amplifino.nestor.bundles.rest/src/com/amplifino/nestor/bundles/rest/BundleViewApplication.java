@@ -1,8 +1,7 @@
 package com.amplifino.nestor.bundles.rest;
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.ws.rs.core.Application;
 
@@ -37,23 +36,23 @@ public class BundleViewApplication extends Application {
 	
 	@Override
 	public Set<Class<?>> getClasses() {
-		return Stream.of(BundleResource.class).collect(Collectors.toSet());
+		return Collections.singleton(BundleResource.class);
 	}
 	
 	@Override
 	public Set<Object> getSingletons() {
-		return Stream.of(new AbstractBinder() {
+		return Collections.singleton(new AbstractBinder() {
 			@Override
 			protected void configure() {
 				bind(context).to(BundleContext.class);		
 				bind(dotService).to(DotService.class);
 			}
-		}).collect(Collectors.toSet());
+		});
 	}
 
 	@Override
 	public String toString() {
-		return "Osgi Application";
+		return "OSGi Bundle View Application";
 	}
 	
 

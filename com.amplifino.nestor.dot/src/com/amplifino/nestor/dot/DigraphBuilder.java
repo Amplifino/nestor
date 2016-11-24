@@ -18,7 +18,7 @@ public final class DigraphBuilder {
 	}
 	
 	/**
-	 * sets the digraph name
+	 * create a new Builder with the given name
 	 * @param name
 	 * @return
 	 */
@@ -149,11 +149,11 @@ public final class DigraphBuilder {
 		return builder.toString();
 	}
 	
-	public WireBuilder wire(String name) {
+	public EdgeBuilder edge(String name) {
 		if (!nodes.contains(name)) {
 			throw new IllegalArgumentException(name);
 		}
-		return new WireBuilder(name);
+		return new EdgeBuilder(name);
 	}
 	
 	/**
@@ -262,11 +262,11 @@ public final class DigraphBuilder {
 		TRIANGLE;
 	}
 	
-	public class WireBuilder {
+	public class EdgeBuilder {
 		
 		private final String from;
 		
-		private WireBuilder(String from) {
+		private EdgeBuilder(String from) {
 			this.from = from;
 		}
 		

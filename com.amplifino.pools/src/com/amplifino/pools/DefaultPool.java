@@ -11,6 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -26,7 +27,7 @@ final class DefaultPool<T> implements Pool<T> {
 	private Deque<DefaultPoolEntry<T>> idles;
 	private Semaphore semaphore;
 	private final AtomicInteger poolSize = new AtomicInteger(0);
-	private volatile boolean closed;
+	private final AtomicBoolean closed = new AtomicBoolean();
 	private final CountDownLatch closeComplete = new CountDownLatch(1);
 	
 	private final Supplier<T> supplier;
@@ -84,8 +85,6 @@ final class DefaultPool<T> implements Pool<T> {
 		if (cycleTime > 0 ) {
 			scheduledFuture = executorService.scheduleAtFixedRate(this::cycle, cycleTime, cycleTime, cycleUnit);
 		}
-		// redundant initialization to force visibility to other threads
-		closed = false;
 	}
 	
 	private boolean acquire() {
@@ -109,7 +108,7 @@ final class DefaultPool<T> implements Pool<T> {
 	
 	@Override
 	public PoolEntry<T> borrowEntry() {		
-		if (closed) {
+		if (closed.get()) {
 			throw new IllegalStateException("Pool closed");
 		}
 		if (acquire()) {
@@ -127,7 +126,7 @@ final class DefaultPool<T> implements Pool<T> {
 	}
 	
 	private DefaultPoolEntry<T> takeEntry() {
-		while(!closed) {
+		while(!closed.get()) {
 			DefaultPoolEntry<T> candidate = doBorrow();
 			if (activate(candidate)) {
 				counters.increment(Stats.BORROWS);
@@ -150,7 +149,7 @@ final class DefaultPool<T> implements Pool<T> {
 		counters.increment(Stats.RELEASES);
 		doRelease(borrowed);
 		semaphore.release();
-		if (closed) {
+		if (closed.get()) {
 			tryClose();
 		}
 	}
@@ -160,17 +159,16 @@ final class DefaultPool<T> implements Pool<T> {
 		counters.increment(Stats.RELEASES).increment(Stats.EVICTIONS);
 		destroy(borrowed);
 		semaphore.release();
-		if (closed) {
+		if (closed.get()) {
 			tryClose();
 		}
 	}
 	
 	@Override
 	public void close() {
-		if (closed) {
+		if (!closed.compareAndSet(false, true)) {
 			throw new IllegalStateException("Already closed");
 		}
-		closed = true;
 		if (scheduledFuture != null) {
 			scheduledFuture.cancel(false);
 		}
@@ -251,7 +249,7 @@ final class DefaultPool<T> implements Pool<T> {
 			if (!result) {
 				counters.increment(Stats.INVALIDONBORROW);
 			}
-			return result && !closed;
+			return result && !closed.get();
 		} catch (Throwable e) {
 			logger.log(Level.WARNING, logMessage("Pool Error when borrowing " + entry.get()), e);
 			counters.increment(Stats.INVALIDONBORROW);
@@ -321,7 +319,7 @@ final class DefaultPool<T> implements Pool<T> {
 	
 	@Override
 	public void cycle() {
-		if (closed) {
+		if (closed.get()) {
 			return;
 		}
 		while (cycleOne());
