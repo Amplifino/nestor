@@ -1,0 +1,15 @@
+Bundle-Version: 1.0
+Bundle-Name: Amplifino Apache  ActiveMQ Connection Manager
+Bundle-Category: communication
+Bundle-Copyright: Amplifino (c) 2016
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software \
+	License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.be
+Bundle-DocURL: https://github.com/Amplifino/nestor
+-buildpath: \
+	org.apache.activemq.activemq-client;version=5.14,\
+	osgi.annotation;version=6.0,\
+	osgi.cmpn;version=6.0,\
+	osgi.core;version=6.0,\
+	org.apache.geronimo.specs.geronimo-jms_1.1_spec;version=1.1

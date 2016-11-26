@@ -3,7 +3,6 @@ package com.amplifino.nestor.jdbc.pools;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;

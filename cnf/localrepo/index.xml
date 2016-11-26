@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1479331009370" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1480158433067" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.amplifino.obelix"/>
@@ -1300,6 +1300,344 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.apache.activemq.activemq-client"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="01d4dbdf472f924d6868b43faef4a83b22d76172f158856d8e9ff407b4275487"/>
+      <attribute name="url" value="org.apache.activemq.activemq-client/org.apache.activemq.activemq-client-5.14.1.jar"/>
+      <attribute name="size" type="Long" value="1423042"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire.v1"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.openwire,org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.filter,org.apache.activemq.wireformat"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.discovery.simple"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport.discovery,org.slf4j,org.apache.activemq.command,org.apache.activemq.thread,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transaction"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.command"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.blob,org.apache.activemq,org.apache.activemq.util,javax.jms,org.apache.activemq.jndi,org.apache.activemq.filter,org.fusesource.hawtbuf,org.apache.activemq.wireformat,org.apache.activemq.broker.scheduler,org.apache.activemq.state,org.slf4j,org.apache.activemq.usage,org.apache.activemq.broker.region,org.apache.activemq.advisory,org.apache.activemq.transport,javax.transaction.xa"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.discovery.multicast"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport.discovery,org.apache.activemq.command,org.slf4j,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.discovery.masterslave"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,org.apache.activemq.transport.discovery.simple,org.apache.activemq.transport.discovery,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.blob"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.jms,org.apache.activemq.command,org.apache.commons.net.ftp"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.fanout"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.thread,org.slf4j,org.apache.activemq.util,org.apache.activemq,org.apache.activemq.transport,org.apache.activemq.command,org.apache.activemq.wireformat,org.apache.activemq.state,org.apache.activemq.transport.discovery"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.tcp"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.wireformat,javax.net.ssl,javax.net,org.apache.activemq.broker,org.slf4j,org.apache.activemq.transport,org.apache.activemq,org.apache.activemq.thread,org.apache.activemq.openwire"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.util"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,javax.jms,org.apache.activemq.command,javax.net.ssl,org.fusesource.hawtbuf,org.apache.activemq,javax.transaction.xa"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.ws"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.multicast"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport.udp,org.apache.activemq.command,org.apache.activemq.openwire,org.slf4j,org.apache.activemq.util,org.apache.activemq.transport,org.apache.activemq.wireformat"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire.v9"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.openwire,org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.filter,org.apache.activemq.wireformat"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.thread"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.nio"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport.tcp,javax.net.ssl,org.apache.activemq.util,org.apache.activemq.openwire,org.slf4j,org.apache.activemq.wireformat,org.apache.activemq.command,org.apache.activemq.thread,javax.net,org.apache.activemq.broker,org.apache.activemq.transport"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.reliable"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,org.apache.activemq.openwire,org.apache.activemq.transport.udp,org.apache.activemq.util,org.apache.activemq.transport,org.apache.activemq.command"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.filter.function"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.filter,javax.jms,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.advisory"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq,javax.jms,org.apache.activemq.command,org.slf4j"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.state"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.command,org.slf4j,javax.transaction.xa,org.apache.activemq.util,javax.jms,org.apache.activemq.transport"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.mock"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport,org.apache.activemq.wireformat,org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.wireformat,org.apache.activemq"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.util,org.apache.activemq.transport,org.apache.activemq.management,org.slf4j,javax.jms,org.apache.activemq.command,org.apache.activemq.blob,org.apache.activemq.usage,org.apache.activemq.state,org.apache.activemq.transport.failover,org.apache.activemq.broker.region.policy,org.apache.activemq.thread,org.apache.activemq.advisory,org.apache.activemq.jndi,javax.naming,org.apache.activemq.broker.region,org.apache.activemq.transaction,org.apache.activemq.selector,org.apache.activemq.filter,org.apache.activemq.broker,javax.net.ssl,javax.transaction.xa"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.broker.scheduler"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.jms"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.jndi"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.naming,org.apache.activemq.command,org.apache.activemq,javax.jms,javax.naming.spi,org.slf4j"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.wireformat"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.util"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.selector"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.util,javax.jms,org.apache.activemq.filter"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.usage"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,org.apache.activemq"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.filter"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.command,javax.jms,org.apache.activemq.util,org.apache.activemq.filter.function,org.apache.activemq.broker.region,org.slf4j,javax.xml.parsers"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.broker"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.net.ssl"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.discovery"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq,org.apache.activemq.command,org.apache.activemq.util,org.slf4j,org.apache.activemq.transport,org.apache.activemq.transport.failover"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.discovery.zeroconf"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.jmdns,org.slf4j,org.apache.activemq.transport.discovery,org.apache.activemq.util,javax.jms,org.apache.activemq.command"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.udp"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq,org.apache.activemq.transport.reliable,org.apache.activemq.command,org.apache.activemq.openwire,org.apache.activemq.util,org.slf4j,org.apache.activemq.transport,org.apache.activemq.wireformat,org.apache.activemq.transport.tcp"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport.failover"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.transport,org.apache.activemq.command,org.slf4j,org.apache.activemq.thread,org.apache.activemq,org.apache.activemq.wireformat,org.apache.activemq.broker,org.apache.activemq.util,org.apache.activemq.state"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.management"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="javax.management.j2ee.statistics,org.apache.activemq,org.apache.activemq.util,javax.jms,org.slf4j"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.transport"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.slf4j,org.apache.activemq.thread,org.apache.activemq.command,org.apache.activemq.wireformat,org.apache.activemq.openwire,org.apache.activemq.util,org.apache.activemq,org.apache.activemq.transport.tcp"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire.v12"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.openwire,org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.filter,org.apache.activemq.wireformat"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.broker.region.policy"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq,org.apache.activemq.command,org.apache.activemq.filter"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire.v11"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.openwire,org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.filter,org.apache.activemq.wireformat"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.broker.region"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.command"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.apache.activemq.openwire.v10"/>
+      <attribute name="version" type="Version" value="5.14.1"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.activemq.activemq-client"/>
+      <attribute name="bundle-version" type="Version" value="5.14.1"/>
+      <directive name="uses" value="org.apache.activemq.openwire,org.apache.activemq.command,org.apache.activemq.util,org.apache.activemq.filter,org.apache.activemq.wireformat"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.jmdns)(version&gt;=3.4.0)(!(version&gt;=4.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.jms)(version&gt;=1.1.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.management.j2ee.statistics)(version&gt;=1.1.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.naming.spi)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net.ssl)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.transaction.xa)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.parsers)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.apache.commons.net.ftp)(version&gt;=3.5.0)(!(version&gt;=4.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.fusesource.hawtbuf)(version&gt;=1.11.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.slf4j)(version&gt;=1.7.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.apache.felix.http.api"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" type="Version" value="3.0.0"/>
@@ -2295,6 +2633,87 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.util.tracker)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.0.1"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="7ad780c72a92039bc07cbc09b6ee8d06571a1fbd92d4361a19a433d783b6e221"/>
+      <attribute name="url" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec/org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec-1.0.1.jar"/>
+      <attribute name="size" type="Long" value="20220"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.0.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.0.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="javax.management.j2ee.statistics"/>
+      <attribute name="version" type="Version" value="1.1.0"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.0.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="javax.management.j2ee"/>
+      <attribute name="version" type="Version" value="1.1.0"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.geronimo.specs.geronimo-j2ee-management_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.0.1"/>
+      <directive name="uses" value="javax.ejb,javax.management"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.ejb)"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.management)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.management.j2ee)(version&gt;=1.1.0))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.management.j2ee.statistics)(version&gt;=1.1.0))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.apache.geronimo.specs.geronimo-jms_1.1_spec"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.1.1"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="18d9ff7b9066aa99cf89843f5055d2fe58b1abe4346ee9df0daf4ac18ca232d7"/>
+      <attribute name="url" value="org.apache.geronimo.specs.geronimo-jms_1.1_spec/org.apache.geronimo.specs.geronimo-jms_1.1_spec-1.1.1.jar"/>
+      <attribute name="size" type="Long" value="32359"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.apache.geronimo.specs.geronimo-jms_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.1.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.apache.geronimo.specs.geronimo-jms_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.1.1"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="javax.jms"/>
+      <attribute name="version" type="Version" value="1.1.0"/>
+      <attribute name="bundle-symbolic-name" value="org.apache.geronimo.specs.geronimo-jms_1.1_spec"/>
+      <attribute name="bundle-version" type="Version" value="1.1.1"/>
+      <directive name="uses" value="javax.transaction.xa"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=javax.jms)(version&gt;=1.1.0))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.transaction.xa)"/>
     </requirement>
   </resource>
   <resource>
@@ -5634,6 +6053,40 @@
       <directive name="filter" value="(&amp;(osgi.wiring.bundle=org.eclipse.persistence.asm)(bundle-version&gt;=5.0.1))"/>
       <directive name="resolution" value="optional"/>
     </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.fusesource.hawtbuf.hawtbuf"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="1.11.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="c6b45db967f3b2b3e28fd2f0724b1730a89d3f5aa9eef3664de29caba219593e"/>
+      <attribute name="url" value="org.fusesource.hawtbuf.hawtbuf/org.fusesource.hawtbuf.hawtbuf-1.11.0.jar"/>
+      <attribute name="size" type="Long" value="50155"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.fusesource.hawtbuf.hawtbuf"/>
+      <attribute name="bundle-version" type="Version" value="1.11.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.fusesource.hawtbuf.hawtbuf"/>
+      <attribute name="bundle-version" type="Version" value="1.11.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.fusesource.hawtbuf"/>
+      <attribute name="version" type="Version" value="1.11.0"/>
+      <attribute name="bundle-symbolic-name" value="org.fusesource.hawtbuf.hawtbuf"/>
+      <attribute name="bundle-version" type="Version" value="1.11.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.fusesource.hawtbuf.codec"/>
+      <attribute name="version" type="Version" value="1.11.0"/>
+      <attribute name="bundle-symbolic-name" value="org.fusesource.hawtbuf.hawtbuf"/>
+      <attribute name="bundle-version" type="Version" value="1.11.0"/>
+      <directive name="uses" value="org.fusesource.hawtbuf"/>
+    </capability>
   </resource>
   <resource>
     <capability namespace="osgi.identity">
@@ -9312,6 +9765,366 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.slf4j)(version&gt;=1.6.0)(!(version&gt;=1.7.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="8fb6e91bb4368abca954b2543d0a202adff08e8d21c9fd46959a580bdd72207c"/>
+      <attribute name="url" value="org.mongodb.mongo-java-driver/org.mongodb.mongo-java-driver-3.3.0.jar"/>
+      <attribute name="size" type="Long" value="1540617"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.annotations,com.mongodb.bulk,com.mongodb.client,com.mongodb.connection,com.mongodb.event,javax.net,org.bson,org.bson.codecs,org.bson.codecs.configuration,org.bson.conversions,org.bson.io,org.bson.json,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.annotations"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.assertions"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.async"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.async"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.binding"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.async,com.mongodb.connection"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.bulk"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.annotations,com.mongodb.bulk,com.mongodb.client.model,com.mongodb.client.result,org.bson,org.bson.codecs.configuration,org.bson.conversions"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.gridfs"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.annotations,com.mongodb.client,com.mongodb.client.gridfs.model,org.bson,org.bson.conversions,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.gridfs.codecs"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.client.gridfs.model,org.bson,org.bson.codecs,org.bson.codecs.configuration"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.gridfs.model"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.model"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.client.model.geojson,org.bson,org.bson.conversions"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.model.geojson"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.annotations"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.model.geojson.codecs"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.client.model.geojson,org.bson,org.bson.codecs,org.bson.codecs.configuration"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.client.result"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.connection"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.annotations,com.mongodb.async,com.mongodb.binding,com.mongodb.bulk,com.mongodb.event,com.mongodb.internal.connection,com.mongodb.selector,javax.net,org.bson,org.bson.codecs,org.bson.io,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.connection.netty"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.connection,io.netty.buffer,io.netty.channel,io.netty.channel.socket"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.diagnostics.logging"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.event"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.annotations,com.mongodb.connection,org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.gridfs"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,org.bson,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.async"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.async,com.mongodb.diagnostics.logging"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.authentication"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.connection"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.connection,javax.net.ssl,org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.management.jmx"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.management"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.thread"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.internal.validator"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.management"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb.event"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.operation"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.annotations,com.mongodb.async,com.mongodb.binding,com.mongodb.bulk,com.mongodb.client.model,com.mongodb.connection,org.bson,org.bson.codecs"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.selector"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="com.mongodb,com.mongodb.annotations,com.mongodb.connection"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="com.mongodb.util"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson.codecs,org.bson.codecs.configuration,org.bson.conversions,org.bson.io,org.bson.json,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.assertions"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.codecs"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson,org.bson.codecs.configuration,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.codecs.configuration"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson.codecs"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.conversions"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson,org.bson.codecs.configuration"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.diagnostics"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.io"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.json"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson,org.bson.types"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.types"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+      <directive name="uses" value="org.bson"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <attribute name="osgi.wiring.package" value="org.bson.util"/>
+      <attribute name="version" type="Version" value="3.3.0"/>
+      <attribute name="bundle-symbolic-name" value="org.mongodb.mongo-java-driver"/>
+      <attribute name="bundle-version" type="Version" value="3.3.0"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.xml.bind)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.crypto)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.crypto.spec)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.management)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.net.ssl)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.security.sasl)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=javax.security.auth.callback)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(osgi.wiring.package=org.ietf.jgss)"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.bootstrap)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.buffer)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.channel)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.channel.nio)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.channel.socket)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.channel.socket.nio)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.handler.ssl)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.handler.timeout)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=io.netty.util.concurrent)(version&gt;=4.0.0)(!(version&gt;=5.0.0)))"/>
+      <directive name="resolution" value="optional"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.slf4j)(version&gt;=1.7.0)(!(version&gt;=2.0.0)))"/>
       <directive name="resolution" value="optional"/>
     </requirement>
   </resource>
