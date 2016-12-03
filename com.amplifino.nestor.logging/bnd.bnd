@@ -10,7 +10,8 @@ Include-Resource: LICENSE, README.md, bnd.bnd
 -dsannotations: *
 -buildpath: \
 	osgi.cmpn;version=6.0,\
-	osgi.annotation;version=6.0
+	osgi.annotation;version=6.0,\
+	osgi.core;version=6.0
 Private-Package: com.amplifino.nestor.logging.impl
 Export-Package: com.amplifino.nestor.logging
 Bundle-DocURL: https://github.com/Amplifino/nestor
