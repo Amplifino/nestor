@@ -16,7 +16,8 @@
 	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.webconsole.jdbc.pools)',\
 	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.jdbc.pools)',\
 	osgi.identity;filter:='(osgi.identity=org.h2)',\
-	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.activemq)'
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.activemq)',\
+	osgi.identity;filter:='(osgi.identity=com.amplifino.nestor.jms)'
 -runblacklist: \
 	osgi.identity;filter:='(osgi.identity=osgi.cmpn)',\
 	osgi.identity;filter:='(osgi.identity=osgi.residential)',\
@@ -75,4 +76,5 @@
 	org.glassfish.jersey.media.jersey-media-jaxb;version='[2.24.0,2.24.1)',\
 	org.glassfish.jersey.media.jersey-media-json-jackson;version='[2.24.0,2.24.1)',\
 	org.h2;version='[1.4.190,1.4.191)',\
-	slf4j.api;version='[1.7.21,1.7.22)'
+	slf4j.api;version='[1.7.21,1.7.22)',\
+	com.amplifino.nestor.jms;version=snapshot
