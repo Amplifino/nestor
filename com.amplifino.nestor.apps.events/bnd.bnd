@@ -1,0 +1,9 @@
+-buildpath: \
+	javax.ws.rs-api;version=2.0,\
+	org.glassfish.jersey.media.jersey-media-sse;version=2.24,\
+	osgi.cmpn;version=6.0,\
+	org.glassfish.hk2.api;version=2.5,\
+	org.glassfish.hk2.external.javax.inject;version=2.5,\
+	org.glassfish.jersey.core.jersey-server;version=2.24
+-includeresource: resources=resources
+Private-Package: com.amplifino.nestor.apps.events

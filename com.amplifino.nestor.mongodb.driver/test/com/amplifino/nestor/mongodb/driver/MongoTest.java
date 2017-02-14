@@ -1,7 +1,5 @@
 package com.amplifino.nestor.mongodb.driver;
 
-import java.util.function.Consumer;
-
 import org.bson.Document;
 import org.junit.Test;
 

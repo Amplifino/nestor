@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" ng-app="eventApp">
+	<head>
+	  <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	  <title>Events</title>
+	  <link rel="stylesheet" href="css/bootstrap.min.css">
+	  <link rel="stylesheet" href="css/app.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.js"></script>
+	  <script src="js/ui-bootstrap-tpls-1.1.1.min.js"></script>
+	  <script src="js/app.js"></script>
+	  <script src="js/controllers.js"></script>
+	  <script src="js/services.js"></script>
+	</head>
+	<body>
+	    <div class="container-fluid" ng-controller="EventCtrl"> 
+			<div class="panel panel-default">
+  				<div class="panel-heading" style='background-color:Moccasin'>
+					<h4 class="panel-title">Events</h4>
+				</div>
+			<div class="panel-body" style='background-color:black;color:green'>
+				<div ng-repeat="event in events">
+					{{event.timestamp | date : 'dd/MM/yyyy HH:mm:ss.sss'}}: {{event.message}}<br/>
+				</div>				
+			</div>	  	
+  		</div>
+	</body>
+</html>
