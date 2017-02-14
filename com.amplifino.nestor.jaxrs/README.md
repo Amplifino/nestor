@@ -1,4 +1,4 @@
-# com.amplifino.nestir.jaxrs #
+# com.amplifino.nestor.jaxrs #
 
 This bundle is an initial implementation of OSGI RFC 217 JAX-RS service,
 using Jersey and the HTTP Service.
@@ -59,12 +59,4 @@ and it safe to use ClientBuilder.newBuilder() or ClientBuilder.newClient();
 ### 5.9 Implementation Provided Capabilities ###
 
 not implemented
-
-
-### Other ###
-
-The current implementation uses Jackson as JSON libray.
-Jersey's default choice is Moxy, but for an unknown reason,
-this did not work in this environment. 
-
 
