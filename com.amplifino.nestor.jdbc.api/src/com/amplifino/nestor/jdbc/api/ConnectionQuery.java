@@ -58,6 +58,16 @@ class ConnectionQuery extends AbstractQuery {
 			}
 		}
 		
+		
+		@Override
+		public <T> Optional<T> selectOne(TupleParser<T> parser) {
+			try {
+				return handler().selectOne(connection, parser);
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
+		
 		@Override
 		public  <T> int[] executeBatch(Iterable<? extends T> values, Binder<? super T> binder) {
 			try {

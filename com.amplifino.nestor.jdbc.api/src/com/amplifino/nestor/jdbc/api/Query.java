@@ -106,7 +106,20 @@ public interface Query {
 	 * @throws UncheckedSQLException
 	 */
 	<T> Optional<T> findFirst(TupleParser<T> parser);
-	
+
+	/**
+	 * returns the result of parser.parse for the first row in the resultSet.
+	 * throws an error if the resultSet has more than one row
+	 * 
+	 * This is a terminal operation.
+	 *
+	 * @param parser
+	 * @return an Optional containing the parsed first row, or Optional.empty() if resultSet was empty 
+	 * @throws UncheckedSQLException
+	 * @throws IllegalStateException
+	 */
+	<T> Optional<T> selectOne(TupleParser<T> parser);
+
 	/**
 	 * execute the sql text.
 	 * 
@@ -190,6 +203,24 @@ public interface Query {
 	 */
 	static Query on(Connection connection) {
 		return new ConnectionQuery(connection);
+	}
+	
+	static void startTrace(TraceOption option, TraceOption ... options) {
+		int traceMask = 1 << option.ordinal();
+		for (TraceOption o : options) {
+			traceMask |= 1 << o.ordinal();
+		}
+		QueryHandler.setTraceMask(traceMask);
+	}
+	
+	static void stopTrace() {
+		QueryHandler.setTraceMask(0);
+	}
+	
+	enum TraceOption {
+		SQLTEXT,
+		PARAMETERS,
+		FETCHCOUNT;
 	}
 	
 }

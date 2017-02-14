@@ -50,6 +50,17 @@ class DataSourceQuery extends AbstractQuery  {
 		}
 
 		@Override
+		public <T> Optional<T> selectOne(TupleParser<T> parser) {
+			try {
+				try (Connection connection = dataSource.getConnection()) {
+					return handler().selectOne(connection, parser);
+				}
+			} catch (SQLException e) {
+				throw new UncheckedSQLException(e);
+			}
+		}
+		
+		@Override
 		public int executeUpdate() {
 			try {
 				try (Connection connection = dataSource.getConnection()) {

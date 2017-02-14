@@ -20,6 +20,7 @@ public class QueryTest {
 	
 	@Before
 	public void setup() throws SQLException {
+		Query.startTrace(Query.TraceOption.SQLTEXT, Query.TraceOption.PARAMETERS, Query.TraceOption.FETCHCOUNT);
 		JdbcDataSource dataSource = new JdbcDataSource();
 		dataSource.setUrl("jdbc:h2:mem:");
 		connection = dataSource.getConnection();

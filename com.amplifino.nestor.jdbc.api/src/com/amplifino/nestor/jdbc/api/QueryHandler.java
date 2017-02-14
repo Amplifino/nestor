@@ -17,8 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 final class QueryHandler  {
+		
+		private static final Logger logger = Logger.getLogger("com.amplifino.nestor.jdbc.api");
+		private static int traceMask = 0;
 		
 		private StringBuilder sqlBuilder = new StringBuilder();
 		private final List<Object> parameters = new ArrayList<>();
@@ -44,13 +48,38 @@ final class QueryHandler  {
 			this.fetchSize = fetchSize;
 		}
 		
-		<T> Optional<T> findFirst(Connection connection, TupleParser<T> parser) throws SQLException {
+		<T> Optional<T> findFirst(Connection connection, TupleParser<T> parser) throws SQLException {			
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
 				bind(statement);
+				logExecution("findFirst: ");
 				try (ResultSet resultSet = statement.executeQuery()) {
 					if (resultSet.next()) {
+						logCount(1);
 						return Optional.of(parser.parse(resultSet));
 					} else {
+						logCount(0);
+						return Optional.empty();
+					}
+				}
+			}
+		}
+		
+		<T> Optional<T> selectOne(Connection connection, TupleParser<T> parser) throws SQLException {
+			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				bind(statement);
+				logExecution("selectOne: ");
+				try (ResultSet resultSet = statement.executeQuery()) {
+					if (resultSet.next()) {
+						T singleton = parser.parse(resultSet);
+						if (resultSet.next()) {
+							logCount(2);
+							throw new IllegalStateException("Query returned more than one row");
+						} else {
+							logCount(1);
+							return Optional.of(singleton);
+						}
+					} else {
+						logCount(0);
 						return Optional.empty();
 					}
 				}
@@ -60,6 +89,7 @@ final class QueryHandler  {
 		int executeUpdate(Connection connection) throws SQLException {
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
 				bind(statement);
+				logExecution("executeUpdate: ");
 				return statement.executeUpdate();
 			}
 		}
@@ -92,11 +122,13 @@ final class QueryHandler  {
 					statement.setFetchSize(fetchSize);
 				}
 				bind(statement);
+				logExecution("select: ");
 				try (ResultSet resultSet = statement.executeQuery()) {
 					long i = 0;
 					while(resultSet.next() && i++ < limit) {
 						consumer.accept(parser.parse(resultSet));
 					}
+					logCount(i);
 					return i;
 				}
 			}
@@ -108,9 +140,11 @@ final class QueryHandler  {
 					statement.setFetchSize(fetchSize);
 				}
 				bind(statement);
+				logExecution("collect: ");
 				try (ResultSet resultSet = statement.executeQuery()) {
 					boolean isEmpty = !resultSet.next();
 					if (isEmpty) {
+						logCount(0);
 						return Optional.empty();
 					}
 					T t = supplier.parse(resultSet);
@@ -118,6 +152,7 @@ final class QueryHandler  {
 					do {
 						accumulator.accept(t, resultSet);
 					} while (resultSet.next() && i++ < limit);
+					logCount(i);
 					return Optional.of(t);
 				}
 			}
@@ -126,6 +161,7 @@ final class QueryHandler  {
 		<T> T generatedKey(Connection connection, TupleParser<T> generatedKeyParser) throws SQLException {
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS)) {
 				bind(statement);
+				logExecution("generatedKey:" );
 				statement.executeUpdate();
 				try (ResultSet resultSet = statement.getGeneratedKeys()) {
 					resultSet.next();
@@ -136,10 +172,13 @@ final class QueryHandler  {
 		
 		<T> int[] executeBatch(Connection connection, Iterable<T> values, Binder<? super T> binder) throws SQLException {
 			try (PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString())) {
+				int i = 0;
 				for (T value : values) {
 					binder.bind(statement, value);
 					statement.addBatch();
+					i++;
 				}
+				logBatch(i);
 				return statement.executeBatch();
 			}
 		}
@@ -156,4 +195,40 @@ final class QueryHandler  {
 			this.parameters.addAll(parameters);
 		}
 		
+		private boolean loggingText() {
+			return (traceMask & 1) != 0;
+		}
+		
+		private boolean loggingParameters() {
+			return (traceMask & 2) != 0 && parameters.size() > 0;
+		}
+		
+		private void logExecution(String header) {
+			if (loggingText()) {
+				logger.info(header + sqlBuilder.toString());
+			}
+			if (loggingParameters()) {
+				logger.info("Parameters " + parameters);
+			}
+		}
+		
+		private void logBatch(int count) {
+			if (loggingText()) {
+				logger.info("Batch size: " + count + " sql: " + sqlBuilder.toString());
+			}
+		}
+		
+		private void logCount(long count) {
+			if (loggingCount()) {
+				logger.info("Fetched " + count + " row" + (count == 1 ? "" : "s"));
+			}
+		}
+		
+		private boolean loggingCount() {
+			return (traceMask & 4) != 0;
+		}
+		
+		static void setTraceMask(int value) {
+			traceMask = value;
+		}
 }
