@@ -1,10 +1,13 @@
 package com.amplifino.counters;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * Thread safe counters used for instrumenting infrastructure components
  *
  * @param <T> enum type
  */
+@ProviderType
 public interface Counters<T extends Enum<T>> {
 	
 	/**

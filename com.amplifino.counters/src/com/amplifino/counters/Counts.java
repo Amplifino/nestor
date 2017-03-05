@@ -5,18 +5,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * Counts represents a snapshot of a Counters instance.
  *
  */
-/**
- * @author kha
- *
- */
-/**
- * @author kha
- *
- */
+@ProviderType
 public interface Counts {
 	
 	/**
