@@ -32,6 +32,7 @@ public @interface DataSourceConfiguration {
 	String dataSourceFactory_target() default "(osgi.jdbc.driver.name=*)";
 	@AttributeDefinition(description="When using DATASOURCE or DRIVER the configured dataSource will return wrapped Connections")
 	FactoryMethod factoryMethod() default FactoryMethod.CONNECTIONPOOLDATASOURCE;
+	boolean trace() default false;
 	String webconsole_configurationFactory_nameHint() default "DataSource {dataSourceName} for applications {application}";
 	
 	enum FactoryMethod {

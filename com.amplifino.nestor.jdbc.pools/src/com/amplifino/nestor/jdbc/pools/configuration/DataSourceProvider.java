@@ -5,6 +5,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
@@ -16,12 +17,16 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.metatype.annotations.Designate;
 
 import com.amplifino.nestor.adapters.ConnectionPoolDataSourceAdapter;
 import com.amplifino.nestor.adapters.ConnectionPoolDataSourceXaAdapter;
 import com.amplifino.nestor.adapters.DataSourceAdapter;
+import com.amplifino.nestor.jdbc.pools.DataSourceWrapper;
 import com.amplifino.nestor.jdbc.pools.PoolDataSource;
 
 @Component(configurationPolicy=ConfigurationPolicy.REQUIRE)
@@ -30,11 +35,16 @@ public class DataSourceProvider {
 
 	@Reference
 	private DataSourceFactory dataSourceFactory;
+	private final AtomicReference<DataSourceWrapper> wrapperReference = new AtomicReference<>();;
 	private PoolDataSource dataSource;
 	private ServiceRegistration<DataSource> registration;
+	private DataSourceConfiguration configuration;
+	private BundleContext context;
 	
 	@Activate
-	public void activate(BundleContext context, DataSourceConfiguration configuration) throws SQLException {
+	public synchronized void activate(BundleContext context, DataSourceConfiguration configuration) throws SQLException {
+		this.context = context;
+		this.configuration = configuration;
 		ConnectionPoolDataSource connectionPoolDataSource = createConnectionPoolDataSource(configuration);
 		PoolDataSource.Builder builder = PoolDataSource.builder(connectionPoolDataSource)
 			.name(configuration.dataSourceName())
@@ -66,10 +76,38 @@ public class DataSourceProvider {
 			builder.lifo();
 		}
 		dataSource = builder.build();
+		register();
+	}
+	
+	private void register() {
 		Dictionary<String, Object> dictionary = new Hashtable<>();
 		dictionary.put(DataSourceFactory.JDBC_DATABASE_NAME, configuration.dataSourceName());	
 		dictionary.put("application", configuration.application());
-		registration = context.registerService(DataSource.class, dataSource,  dictionary);
+		registration = context.registerService(DataSource.class, wrap(dataSource),  dictionary);
+	}
+	
+	@Reference(cardinality=ReferenceCardinality.OPTIONAL, policy=ReferencePolicy.DYNAMIC) 
+	public synchronized void setWrapper(DataSourceWrapper wrapper) {
+		wrapperReference.set(wrapper);
+		refresh();
+	}
+	
+	public synchronized void unsetWrapper(DataSourceWrapper wrapper) {
+		if (wrapperReference.compareAndSet(wrapper, null)) {
+			refresh();
+		}
+	}
+	
+	private void refresh() {
+		if (registration != null && configuration.trace()) {			
+			registration.unregister();
+			register();
+		}
+	}
+	
+	private DataSource wrap(DataSource dataSource) {
+		DataSourceWrapper wrapper = wrapperReference.get();
+		return wrapper == null || !configuration.trace() ? dataSource : wrapper.wrap(dataSource);				
 	}
 	
 	private ConnectionPoolDataSource createConnectionPoolDataSource(DataSourceConfiguration configuration) throws SQLException {
@@ -108,8 +146,9 @@ public class DataSourceProvider {
 	}
 	
 	@Deactivate 
-	public void deactivate() {
+	public synchronized void deactivate() {
 		dataSource.close();
 		registration.unregister();
+		registration = null;
 	}
 }

@@ -4,3 +4,4 @@
 Private-Package: com.amplifino.nestor.rdbms.schema.impl
 Export-Package: com.amplifino.nestor.rdbms.schema
 -dsannotations: *
+Bundle-Version: 1.0.0.${tstamp}
