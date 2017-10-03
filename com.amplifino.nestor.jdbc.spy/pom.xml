@@ -10,33 +10,22 @@
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>amplifino.nestor.transaction.control</artifactId>
+    <artifactId>amplifino.nestor.jdbc.spy</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <!-- Project dependencies -->
         <dependency>
             <groupId>com.amplifino.nestor</groupId>
-            <artifactId>amplifino.nestor.transaction</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amplifino.nestor</groupId>
-            <artifactId>amplifino.nestor.transaction.provider</artifactId>
-            <version>1.1.0</version>
+            <artifactId>amplifino.nestor.jdbc.pools</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
         <!-- Third party dependencies -->
         <dependency>
-            <groupId>org.apache.aries.tx-control</groupId>
-            <artifactId>tx-control-api</artifactId>
-            <version>0.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
+            <groupId>net.ttddyy</groupId>
+            <artifactId>datasource-proxy</artifactId>
+            <version>1.4.2</version>
         </dependency>
     </dependencies>
-
 </project>

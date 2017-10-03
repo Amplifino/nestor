@@ -22,20 +22,6 @@
             <artifactId>amplifino.counters</artifactId>
             <version>1.1.0</version>
         </dependency>
-
-        <!-- Third party dependencies -->
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.cmpn</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.annotation</artifactId>
-        </dependency>
     </dependencies>
 
 </project>
