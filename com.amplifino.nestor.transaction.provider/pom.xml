@@ -19,11 +19,13 @@
             <groupId>org.apache.aries.tx-control</groupId>
             <artifactId>tx-control-api</artifactId>
             <version>0.0.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <version>1.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

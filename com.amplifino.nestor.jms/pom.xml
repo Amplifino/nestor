@@ -19,11 +19,13 @@
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.jdbc.pools</artifactId>
             <version>3.2.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.amplifino</groupId>
             <artifactId>amplifino.counters</artifactId>
             <version>1.1.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Third party dependencies -->

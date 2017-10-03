@@ -19,6 +19,7 @@
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.jdbc.pools</artifactId>
             <version>3.2.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Third party dependencies -->
@@ -26,6 +27,7 @@
             <groupId>net.ttddyy</groupId>
             <artifactId>datasource-proxy</artifactId>
             <version>1.4.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

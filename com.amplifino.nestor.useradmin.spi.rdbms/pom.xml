@@ -19,16 +19,19 @@
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.useradmin</artifactId>
             <version>1.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.jdbc.api</artifactId>
             <version>1.3.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.rdbms.schema</artifactId>
             <version>1.0.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

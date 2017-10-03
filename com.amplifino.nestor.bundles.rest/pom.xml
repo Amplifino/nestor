@@ -19,6 +19,7 @@
             <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.nestor.dot</artifactId>
             <version>3.0.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Third party dependencies -->
