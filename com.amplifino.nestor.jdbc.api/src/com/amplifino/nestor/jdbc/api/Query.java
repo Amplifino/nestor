@@ -1,6 +1,7 @@
 package com.amplifino.nestor.jdbc.api;
 
 import java.sql.Connection;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -186,6 +187,17 @@ public interface Query {
 	 * @return this Query
 	 */
 	Query add(Query subQuery);
+	
+	
+	/**
+	 * adds an in clause with as many bind markers as the size of the collection and adds the collection elements as bind parameters.
+	 * the callers must ensure that all previous bind parameters are set prior to this call, and that the collection size does not 
+	 * exceed the limits of the database. (e.g. Oracle has a limitation that an expression list can not contain more than 1000 elements).
+	 * 
+	 * @param collection elements to bind
+	 * @return this Query
+	 */
+	Query in(Collection<?> collection);
 	
 	/**
 	 * creates a new Query instance on the given DataSource

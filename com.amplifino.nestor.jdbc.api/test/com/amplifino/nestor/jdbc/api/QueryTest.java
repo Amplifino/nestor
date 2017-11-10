@@ -3,6 +3,7 @@ package com.amplifino.nestor.jdbc.api;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,28 @@ public class QueryTest {
 			return;
 		}
 		Assert.fail();
+	}
+	
+	@Test
+	public void testIn() {
+		List<Integer> all = Arrays.asList(1,2,3,4,5,6);
+		List<Integer> selected = Arrays.asList(1,2,3,7);
+		Query.on(connection)
+			.text("insert into test (id, name) values(?,?) ")
+			.executeBatch(
+				all.stream()
+					.map(i -> new AbstractMap.SimpleImmutableEntry<>(i , "Entry" + i))
+					.collect(Collectors.toList()),
+				(statement, entry) -> {
+					statement.setInt(1, entry.getKey());
+					statement.setString(2, entry.getValue());
+				});
+		List<Map.Entry<Integer, String>> selection = 
+			Query.on(connection)
+				.text("select id, name from test where id ")
+				.in(selected)
+				.select(r -> new AbstractMap.SimpleImmutableEntry<>(r.getInt(1), r.getString(2)));
+		Assert.assertEquals(3, selection.size());
 	}
 	
 	private List<Map.Entry<Integer, String>> select() {

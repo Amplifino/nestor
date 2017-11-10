@@ -3,7 +3,7 @@ Export-Package: com.amplifino.nestor.jdbc.api
 	osgi.annotation;version=6.0,\
 	biz.aQute.junit;version=3.0,\
 	org.h2;version=1.4
-Bundle-Version: 1.3.0
+Bundle-Version: 1.4.0
 Bundle-Name: Amplifino Jdbc Api
 Bundle-Description: Fluent Api for Jdbc
 Bundle-Category: Utility

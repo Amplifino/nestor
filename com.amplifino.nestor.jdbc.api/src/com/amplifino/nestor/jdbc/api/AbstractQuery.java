@@ -1,7 +1,9 @@
 package com.amplifino.nestor.jdbc.api;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 abstract class AbstractQuery implements Query {
 		
@@ -16,6 +18,16 @@ abstract class AbstractQuery implements Query {
 		@Override
 		public Query parameters(Object parameter, Object... parameters) {
 			handler.parameters(parameter, parameters);
+			return this;
+		}
+		
+		@Override
+		public Query in(Collection<?> collection) {
+			if (collection.isEmpty()) {
+				throw new IllegalArgumentException("Argument should not be empty");
+			}
+			handler.text(collection.stream().map( o -> "?").collect(Collectors.joining(", ", "in (",") ")));
+			collection.forEach(o -> parameters(o));
 			return this;
 		}
 		
