@@ -61,7 +61,7 @@ public class BundleResource {
 	@GET
 	@Path("/image")
 	@Produces("image/svg+xml")
-	public String image(@Context DotService dotService, @QueryParam("filter") String filter) {
+	public String image(@Context DotService dotService, @QueryParam("filter") String filter, @QueryParam("tred") String tred) {
 		Predicate<Bundle> bundleFilter;
 		if (filter != null && !filter.trim().isEmpty()) {
 			Pattern pattern = Pattern.compile(filter);
@@ -85,7 +85,8 @@ public class BundleResource {
 			.distinct()
 			.forEach( adapter -> builder.edge(name(adapter.from())).to(name(adapter.to())));				
 		builder.closeCurly();
-		return new String(dotService.toSvg(builder.build()));
+		String digraph = builder.build();
+		return new String(dotService.toSvg("1".equals(tred) ? dotService.tred(digraph) : digraph));
 	}
 	
 	
