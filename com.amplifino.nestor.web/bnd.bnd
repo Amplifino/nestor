@@ -1,0 +1,15 @@
+-buildpath: \
+	osgi.cmpn;version=6.0,\
+	javax.servlet;version=3.1
+-includeresource: resources=resources
+Private-Package: com.amplifino.nestor.web
+Bundle-Name: Amplifino Web Server
+Bundle-Description: Web Server Helper
+Bundle-Category: util
+Bundle-Copyright: Amplifino (c) 2017
+Bundle-License: http://www.opensource.org/licenses/apache2.0.php;description='Apache Software \
+	License 2.0';link='http://www.apache.org/licenses/LICENSE-2.0.html'
+Bundle-Vendor: Amplifino bvba
+Bundle-ContactAddress: http://www.amplifino.com
+Bundle-DocURL: https://github.com/Amplifino/nestor
+Bundle-Version: 1.0.0
