@@ -28,42 +28,42 @@ import com.amplifino.pools.Pool;
 
 @Component
 public class JDBCConnectionProviderFactoryImpl implements JDBCConnectionProviderFactory {
-	
-	private BundleContext bundleContext; 
+
+	private BundleContext bundleContext;
 
 	@Activate
 	public void activate(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 	}
-	
+
 	@Override
 	public JDBCConnectionProvider getProviderFor(DataSource dataSource, Map<String, Object> properties) {
 		ConnectionPoolDataSource adapter = ConnectionPoolDataSourceAdapter.on(dataSource);
-		Pool.Builder<PooledConnection> builder = Pool.builder(uncheck(() -> adapter.getPooledConnection()));
+		Pool.Builder<PooledConnection> builder = Pool.builder(uncheck(adapter::getPooledConnection));
 		configure(builder, properties);
 		return new JDBCLocalConnectionProvider(builder.build());
 	}
 
 	@Override
 	public JDBCConnectionProvider getProviderFor(XADataSource xaSource, Map<String, Object> properties) {
-		Pool.Builder<XAConnection> builder = Pool.builder(uncheck(() -> xaSource.getXAConnection()));
+		Pool.Builder<XAConnection> builder = Pool.builder(uncheck(xaSource::getXAConnection));
 		configure(builder, properties);
-		return new JDBCXAConnectionProvider(builder.build(), bundleContext);		
+		return new JDBCXAConnectionProvider(builder.build(), bundleContext);
 	}
-	
+
 	private void configure(Pool.Builder<?> pool, Map<String, Object> properties) {
 		pool
 			.maxIdle((int) properties.getOrDefault(JDBCConnectionProviderFactory.MIN_CONNECTIONS, 10))
 			.maxSize((int) properties.getOrDefault(JDBCConnectionProviderFactory.MAX_CONNECTIONS, 10))
 			.maxIdleTime((int) properties.getOrDefault(JDBCConnectionProviderFactory.IDLE_TIMEOUT, 3), TimeUnit.MINUTES)
-			.maxWait((int) properties.getOrDefault(JDBCConnectionProviderFactory.CONNECTION_TIMEOUT, 30), TimeUnit.SECONDS);	
+			.maxWait((int) properties.getOrDefault(JDBCConnectionProviderFactory.CONNECTION_TIMEOUT, 30), TimeUnit.SECONDS);
 	}
 
 	@Override
 	public JDBCConnectionProvider getProviderFor(DataSourceFactory dataSourceFactory, Properties props, Map<String, Object> map) {
 		try {
-			if (Boolean.TRUE.equals(props.getProperty("osgi.use.driver"))) {				
-				return getProviderFor(dataSourceFactory.createDriver(props),  props, map);	
+			if (Boolean.TRUE.equals(props.getProperty("osgi.use.driver"))) {
+				return getProviderFor(dataSourceFactory.createDriver(props),  props, map);
 			} else {
 				return getProviderFor(dataSourceFactory.createXADataSource(props), map);
 			}

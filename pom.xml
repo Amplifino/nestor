@@ -46,6 +46,7 @@
         <module>com.amplifino.nestor.useradmin</module>
         <module>com.amplifino.nestor.useradmin.rest</module>
         <module>com.amplifino.nestor.useradmin.spi.rdbms</module>
+        <module>com.amplifino.nestor.web</module>
         <module>com.amplifino.nestor.webconsole.jdbc.pools</module>
         <module>com.amplifino.nestor.webconsole.security</module>
     </modules>
