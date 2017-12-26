@@ -34,7 +34,7 @@ public class ApiListing {
 	}
 	
 	private Swagger toSwagger(String alias, Application application) {				
-		return new Reader(new Swagger().basePath("api/" + alias)).read(classes(application));        
+		return new Reader(new Swagger().basePath("/api/" + alias)).read(classes(application));        
 	}
 
     @GET
