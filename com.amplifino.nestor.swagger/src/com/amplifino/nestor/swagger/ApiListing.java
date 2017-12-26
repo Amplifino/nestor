@@ -2,7 +2,6 @@ package com.amplifino.nestor.swagger;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +42,7 @@ public class ApiListing {
     @ApiOperation(value = "The swagger definition in either JSON or YAML", hidden = true)
     @Path("/{alias}.{type:json|yaml}")
     public Response getListing(@PathParam("alias") String alias, @PathParam("type") String type) {
-        if (type != null && type.trim().equalsIgnoreCase("yaml")) {
+        if ("yaml".equalsIgnoreCase(type)) {
             return getListingYaml(alias);
         } else {
             return getListingJson(alias);
@@ -74,11 +73,9 @@ public class ApiListing {
     }
     
     private Set<Class<?>> classes(Application application) {
-    	return Stream.of(
-    			Stream.of(application.getClass()), 
+    	return Stream.concat(
     			application.getClasses().stream(), 
-    			application.getSingletons().stream().map(Object::getClass))
-    		.flatMap(Function.identity())    		
+    			Stream.concat(application.getSingletons().stream(), Stream.of(application)).map(Object::getClass))
     		.collect(Collectors.toSet());
     }
 
