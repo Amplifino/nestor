@@ -30,7 +30,12 @@ import org.osgi.resource.Capability;
 import com.amplifino.nestor.dot.DigraphBuilder;
 import com.amplifino.nestor.dot.DotService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SwaggerDefinition;
+
 @Path("/")
+@Api
 public class BundleResource {
 
 	private final BundleContext context;
@@ -61,6 +66,7 @@ public class BundleResource {
 	@GET
 	@Path("/image")
 	@Produces("image/svg+xml")
+	@ApiOperation("Show image")
 	public String image(@Context DotService dotService, @QueryParam("filter") String filter, @QueryParam("tred") String tred) {
 		Predicate<Bundle> bundleFilter;
 		if (filter != null && !filter.trim().isEmpty()) {

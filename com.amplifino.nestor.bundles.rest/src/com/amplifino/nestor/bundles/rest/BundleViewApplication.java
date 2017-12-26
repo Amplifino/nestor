@@ -14,11 +14,23 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 
 import com.amplifino.nestor.dot.DotService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.Contact;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
+
+@SwaggerDefinition(			
+	info=@Info(
+		version="1.0", 
+		contact=@Contact(
+			name="Amplifino", 
+			email="info@amplifino.com", 
+			url="https://github.com/Amplifino/nestor/tree/master/com.amplifino.nestor.bundles.rest"), 	
+		title="Bundle Wiring Api "))
 @Component(service=Application.class, property={
 		"alias=/bundles", 
 		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PATTERN + "=/apps/bundles/*",
 		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PREFIX + "=/resources"})
-
 public class BundleViewApplication extends Application {
 
 	private volatile BundleContext context;

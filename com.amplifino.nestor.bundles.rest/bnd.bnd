@@ -15,5 +15,9 @@ Private-Package: com.amplifino.nestor.bundles.rest
 	osgi.core;version=6.0,\
 	com.amplifino.nestor.dot;version=latest,\
 	org.glassfish.hk2.api;version=2.4,\
-	org.glassfish.hk2.external.javax.inject;version=2.4
+	org.glassfish.hk2.external.javax.inject;version=2.4,\
+	com.eclipsesource.jaxrs.swagger-all;version=1.5
 Bundle-DocURL: https://github.com/Amplifino/nestor
+Import-Package: \
+	io.swagger.annotations;resolution:=optional,\
+	*
