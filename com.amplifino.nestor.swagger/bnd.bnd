@@ -1,0 +1,8 @@
+-includeresource: resources=resources
+-buildpath: \
+	com.eclipsesource.jaxrs.swagger-all;version=1.5,\
+	javax.ws.rs-api;version=2.0,\
+	osgi.cmpn;version=6.0,\
+	com.eclipsesource.jaxrs.provider.swagger;version=1.1,\
+	org.glassfish.hk2.api;version=2.4
+Private-Package: com.amplifino.nestor.swagger
