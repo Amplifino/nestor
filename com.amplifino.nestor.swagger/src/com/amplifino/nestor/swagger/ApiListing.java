@@ -40,7 +40,7 @@ public class ApiListing {
     @GET
     @Produces({MediaType.APPLICATION_JSON, "application/yaml"})
     @ApiOperation(value = "The swagger definition in either JSON or YAML", hidden = true)
-    @Path("/{alias}.{type:json|yaml}")
+    @Path("/{alias}/swagger.{type:json|yaml}")
     public Response getListing(@PathParam("alias") String alias, @PathParam("type") String type) {
         if ("yaml".equalsIgnoreCase(type)) {
             return getListingYaml(alias);
@@ -51,7 +51,7 @@ public class ApiListing {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("/{alias}")
+    @Path("/{alias}/swagger")
     @ApiOperation(value = "The swagger definition in JSON", hidden = true)
     public Response getListingJson(@PathParam("alias") String alias) {
         return process(alias)
@@ -62,7 +62,7 @@ public class ApiListing {
 
     @GET
     @Produces("application/yaml")
-    @Path("/{alias}")
+    @Path("/{alias}/swagger")
     @ApiOperation(value = "The swagger definition in YAML", hidden = true)
     public Response getListingYaml(@PathParam("alias") String alias) {
     	return process(alias)

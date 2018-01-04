@@ -18,14 +18,14 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 
 import io.swagger.jaxrs.listing.SwaggerSerializers;
 
-@Component(service=Application.class, property={"alias=/swagger",
+@Component(service=Application.class, property={"alias=/doc",
 		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PATTERN + "=/apps/swagger/*",
 		HttpWhiteboardConstants.HTTP_WHITEBOARD_RESOURCE_PREFIX + "=/resources/web"})
 public class SwaggerApplication extends Application {
 	
 	private final Map<String, Application> applications = new ConcurrentHashMap<>();
 
-	@Reference(cardinality=ReferenceCardinality.AT_LEAST_ONE, policy=ReferencePolicy.DYNAMIC, target="(&(alias=/*)(!(alias=/swagger)))") 
+	@Reference(cardinality=ReferenceCardinality.AT_LEAST_ONE, policy=ReferencePolicy.DYNAMIC, target="(&(alias=/*)(!(alias=/doc)))") 
 	public void addApplication(Application application, Map<String, Object> properties) {
 		Object alias = properties.get("alias");
 		if  (alias == null || ! (alias instanceof String)) {
@@ -44,6 +44,7 @@ public class SwaggerApplication extends Application {
 		Set<Class<?>> resources = new HashSet<>();
 		resources.add(ApiListing.class);
 		resources.add(SwaggerSerializers.class);
+		resources.add(CorsFilter.class);
 		return resources;
 	}
 	

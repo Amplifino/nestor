@@ -10,12 +10,13 @@
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.runtime)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
-	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.http.jetty)(version>=3.2.4))'
+	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.http.jetty)(version>=3.2.4))',\
+	osgi.identity;filter:='(&(osgi.identity=com.amplifino.nestor.bundles.rest)(version>=1.0.2))',\
+	osgi.identity;filter:='(&(osgi.identity=com.amplifino.nestor.swagger)(version>=0.0.0))'
 -runfw: org.apache.felix.framework;version='[5.4.0,5.4.0]'
 -runee: JavaSE-1.8
 -runbundles: \
 	com.amplifino.counters;version=snapshot,\
-	com.amplifino.nestor.datasources.rest;version=snapshot,\
 	com.amplifino.nestor.jdbc.pools;version=snapshot,\
 	com.amplifino.nestor.webconsole.jdbc.pools;version=snapshot,\
 	com.amplifino.pools;version=snapshot,\
@@ -56,7 +57,14 @@
 	org.apache.felix.gogo.runtime;version='[0.16.2,0.16.3)',\
 	org.apache.felix.gogo.shell;version='[0.12.0,0.12.1)',\
 	org.apache.felix.eventadmin;version='[1.4.8,1.4.9)',\
-	org.apache.felix.http.jetty;version='[3.2.4,3.2.5)'
+	org.apache.felix.http.jetty;version='[3.2.4,3.2.5)',\
+	com.amplifino.nestor.bundles.rest;version=snapshot,\
+	com.amplifino.nestor.datasources.rest;version='[1.0.0,1.0.1)',\
+	com.amplifino.nestor.dot;version=snapshot,\
+	com.amplifino.nestor.swagger;version=snapshot,\
+	com.eclipsesource.jaxrs.swagger-all;version='[1.5.7,1.5.8)',\
+	org.glassfish.jersey.media.jersey-media-multipart;version='[2.24.0,2.24.1)',\
+	org.jvnet.mimepull;version='[1.9.7,1.9.8)'
 -runblacklist: \
 	osgi.identity;filter:='(osgi.identity=osgi.residential)',\
 	osgi.identity;filter:='(osgi.identity=osgi.cmpn)',\
