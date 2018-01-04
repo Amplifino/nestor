@@ -19,6 +19,7 @@ import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
+@Api
 @SwaggerDefinition(			
 	info=@Info(
 		version="1.0", 
