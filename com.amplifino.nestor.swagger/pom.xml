@@ -12,17 +12,13 @@
     </parent>
 
     <artifactId>amplifino.nestor.swagger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <dependencies>
         <dependency>
             <groupId>com.eclipsesource.jaxrs</groupId>
             <artifactId>swagger-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.eclipsesource.jaxrs</groupId>
-            <artifactId>provider-swagger</artifactId>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
