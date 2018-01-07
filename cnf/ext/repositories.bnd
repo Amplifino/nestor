@@ -1,5 +1,5 @@
 -plugin: \
-	aQute.bnd.deployer.repository.LocalIndexedRepo;\
+	aQute.bnd.deployer.repository.LocalIndexedRepo; \
 		name=Release; \
 		local=${workspace}/cnf/releaserepo; \
 		pretty=true; \
@@ -10,11 +10,16 @@
 		pretty=true; \
 	, \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Bndtools Hub; \
+		name="Bndtools Hub"; \
 		locations=https://raw.githubusercontent.com/bndtools/bundle-hub/master/index.xml.gz; \
 	, \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		name="Maven Central"; \
+		releaseUrls=https://repo1.maven.org/maven2/; \
+		pom=${workspace}/cnf/mavencentral.xml; \
+	, \
 	aQute.lib.deployer.FileRepo; \
-		name=Non OSGi; \
+		name="Non OSGi"; \
 		location=${workspace}/cnf/nonosgi-repo; \
 		latest=false;
 
