@@ -1,3 +1,0 @@
--buildpath: \
-	org.mongodb.mongo-java-driver,\
-	biz.aQute.junit;version=3.0
