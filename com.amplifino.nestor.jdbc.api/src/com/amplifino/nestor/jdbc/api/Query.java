@@ -34,7 +34,7 @@ public interface Query {
 	 * adds the argument to the sql text
 	 * text() can be repeated multiple times and interleaved with parameters
 	 * 
-	 * @param sql
+	 * @param sql sql text
 	 * @return this
 	 */
 	Query text(String sql);
@@ -48,22 +48,22 @@ public interface Query {
 	 * parameters can be repeated multiple times, interleaved with text.
 	 * the parameters are bound in the same order.
 	 *  
-	 * @param parameter
-	 * @param parameters
+	 * @param parameter first bind parameter
+	 * @param parameters additional bind parameters
 	 * @return this
 	 */
 	Query parameters(Object parameter, Object ... parameters);
 	
 	/**
 	 * limits the result set to the argument
-	 * @param limit
+	 * @param limit maximum number of rows to return
 	 * @return this
 	 */
 	Query limit(int limit);
 	
 	/**
 	 * sets the fetchSize to set on the related PreparedStatement
-	 * @param fetchSize
+	 * @param fetchSize fetch size
 	 * @return this
 	 */
 	Query fetchSize(int fetchSize);
@@ -73,9 +73,10 @@ public interface Query {
 	 * by calling parser.parse for each row in the resultset.
 	 * This is a terminal operation.
 	 * 
-	 * @param parser
-	 * @return
-	 * @throws UncheckedSQLException
+	 * @param parser converts resultset row to result type
+	 * @param <T> result type
+	 * @return result list
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> List<T> select(TupleParser<T> parser);
 	
@@ -86,14 +87,16 @@ public interface Query {
 	 * {@code
 	 * 	   select(parser).forEach(consumer);
 	 * }
+	 * </pre>
 	 * this avoids the need for the intermediate list and corresponding memory need for large queries.
 	 * 
 	 * This is a terminal operation.
 	 *  
-	 * @param parser
-	 * @param consumer
+	 * @param parser converts resultset row to result type 
+	 * @param consumer consumes result type
+	 * @param<T> result type
 	 * @return the number of rows in the resultSet
-	 * @throws UncheckedSQLException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> long select(TupleParser<T> parser, Consumer<T> consumer);
 	
@@ -102,9 +105,10 @@ public interface Query {
 	 * 
 	 * This is a terminal operation.
 	 *
-	 * @param parser
+	 * @param parser converts resultset row to result type
+	 * @param<T> result type
 	 * @return an Optional containing the parsed first row, or Optional.empty() if resultSet was empty 
-	 * @throws UncheckedSQLException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> Optional<T> findFirst(TupleParser<T> parser);
 
@@ -114,10 +118,11 @@ public interface Query {
 	 * 
 	 * This is a terminal operation.
 	 *
-	 * @param parser
+	 * @param parser converts resultset row to result type
+	 * @param<T> result type
 	 * @return an Optional containing the parsed first row, or Optional.empty() if resultSet was empty 
-	 * @throws UncheckedSQLException
-	 * @throws IllegalStateException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
+	 * @throws IllegalStateException if the query returns more than one row
 	 */
 	<T> Optional<T> selectOne(TupleParser<T> parser);
 
@@ -127,7 +132,7 @@ public interface Query {
 	 * this is a terminal operation.
 	 * 
 	 * @return return value of statement.executeUpdate();
-	 * @throws UncheckedSQLException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	int executeUpdate();
 	
@@ -137,10 +142,11 @@ public interface Query {
 	 * 
 	 * this is a terminal operation.
 	 * 
-	 * @param batch
-	 * @param binder
+	 * @param batch to process
+	 * @param binder bind batch entry to statement
+	 * @param <T> batch entry type
 	 * @return return value of statement.executeBatch();
-	 * @throws UncheckedSQLException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> int[] executeBatch(Iterable<? extends T> batch, Binder<? super T> binder);
 	
@@ -150,8 +156,10 @@ public interface Query {
 	 * 
 	 * this is a terminal operation.
 	 * 
-	 * @param parser
-	 * @return
+	 * @param parser converts resultset to generated key
+	 * @param <T> generated key type
+	 * @return the generated key
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> T generatedKey(TupleParser<T> parser);
 	
@@ -162,10 +170,11 @@ public interface Query {
 	 * 
 	 * this is a terminal operation.
 	 * 
-	 * @param supplier
-	 * @param accumulator
+	 * @param supplier supplies the result
+	 * @param accumulator add a row to the resut
+	 * @param <T> the result type
 	 * @return an Optional containing the supplied Object, or Optional.empty() if resultSet was empty
-	 * @throws UncheckedSQLException
+	 * @throws UncheckedSQLException if a jdbc call threw a SQLException
 	 */
 	<T> Optional<T> collect(TupleParser<T> supplier, TupleAccumulator<T> accumulator);
 
@@ -183,8 +192,8 @@ public interface Query {
 	
 	/**
 	 * adds a  subquery. Both text and parameters are copied
-	 * @param subQuery
-	 * @return this Query
+	 * @param subQuery query to add
+	 * @return this
 	 */
 	Query add(Query subQuery);
 	
@@ -195,14 +204,14 @@ public interface Query {
 	 * exceed the limits of the database. (e.g. Oracle has a limitation that an expression list can not contain more than 1000 elements).
 	 * 
 	 * @param collection elements to bind
-	 * @return this Query
+	 * @return this
 	 */
 	Query in(Collection<?> collection);
 	
 	/**
 	 * creates a new Query instance on the given DataSource
-	 * @param dataSource
-	 * @return 
+	 * @param dataSource connection provider
+	 * @return a new query
 	 */
 	static Query on(DataSource dataSource) {
 		return new DataSourceQuery(dataSource);
@@ -210,13 +219,18 @@ public interface Query {
 	
 	/**
 	 * creates a new Query instance on the given connection
-	 * @param connection
-	 * @return
+	 * @param connection to use for the query
+	 * @return a new query
 	 */
 	static Query on(Connection connection) {
 		return new ConnectionQuery(connection);
 	}
 	
+	/**
+	 * starts tracing query execution
+	 * @param option first trace option
+	 * @param options additional trace options
+	 */
 	static void startTrace(TraceOption option, TraceOption ... options) {
 		int traceMask = 1 << option.ordinal();
 		for (TraceOption o : options) {
@@ -225,13 +239,29 @@ public interface Query {
 		QueryHandler.setTraceMask(traceMask);
 	}
 	
+	/**
+	 * stops tracing 
+	 */
 	static void stopTrace() {
 		QueryHandler.setTraceMask(0);
 	}
 	
+	/**
+	 * Trace options
+	 *
+	 */
 	enum TraceOption {
+		/**
+		 * trace sql text 
+		 */
 		SQLTEXT,
+		/**
+		 * trace sql parameters 
+		 */
 		PARAMETERS,
+		/**
+		 * trace resultset size 
+		 */
 		FETCHCOUNT;
 	}
 	
