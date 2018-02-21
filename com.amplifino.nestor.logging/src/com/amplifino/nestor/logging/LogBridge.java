@@ -33,7 +33,8 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface LogBridge {
 	/**
-	 * Change the bridge's handler  log level
+	 * Change the bridge's handler log level
+	 * @param level the new log level
 	 */
 	void setLevel(Level level);
 }
