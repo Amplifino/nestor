@@ -52,8 +52,8 @@ public final class ConnectionInJtaTransactionWrapper extends ConnectionWrapper {
 	
 	/**
 	 * returns a Connection wrapper 
-	 * @param connection
-	 * @return
+	 * @param connection connection to wrap
+	 * @return the wrapped connection
 	 */
 	public static Connection on(Connection connection) {
 		return new ConnectionInJtaTransactionWrapper(connection);

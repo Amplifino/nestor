@@ -49,7 +49,7 @@ class TransactionBranch {
 	
 	void start() throws XAException {
 		for (ManagedResource each: resources) {
-			each.start(xid, XAResource.TMJOIN);
+			each.start(xid, XAResource.TMNOFLAGS);
 		}
 	}
 	

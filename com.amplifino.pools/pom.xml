@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.amplifino</groupId>
+    <groupId>com.amplifino.nestor</groupId>
     <artifactId>amplifino.pools</artifactId>
     <version>1.3.0</version>
 

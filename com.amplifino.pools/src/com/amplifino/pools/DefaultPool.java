@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.amplifino.counters.Counters;
+import com.amplifino.counters.Accumulators;
 import com.amplifino.counters.Counts;
 
 final class DefaultPool<T> implements Pool<T> {
@@ -49,7 +49,7 @@ final class DefaultPool<T> implements Pool<T> {
 	private TimeUnit cycleUnit;
 	
 	private Logger logger = Logger.getLogger("com.amplifino.pools");
-	private Counters<Stats> counters = Counters.of(Stats.class);
+	private Accumulators<Stats> counters = Accumulators.of(Stats.class);
 	private String name = "No name";
 	
 	private ScheduledExecutorService cycleExecutorService;
@@ -289,7 +289,7 @@ final class DefaultPool<T> implements Pool<T> {
 		T t = Objects.requireNonNull(supplier.get());
 		int newSize = poolSize.incrementAndGet();
 		logger.info(logMessage("Pool size increased to " + newSize));
-		counters.increment(Stats.ALLOCATIONS).max(Stats.MAXSIZE, newSize);
+		counters.increment(Stats.ALLOCATIONS).accumulate(Stats.MAXSIZE, newSize);
 		return t;		
 	}
 	

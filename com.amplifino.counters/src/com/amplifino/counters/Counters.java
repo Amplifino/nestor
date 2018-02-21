@@ -38,16 +38,18 @@ public interface Counters<T extends Enum<T>> {
 	/**
 	 * return a new set of counters for the given enum type
 	 * @param enumClass the enum type
-	 * @return
+	 * @param <T> the enum type
+	 * @return the new Counters instance
 	 */
 	static <T extends Enum<T>> Counters<T> of (Class<T> enumClass) {
 		return DefaultCounters.of(enumClass);
 	}
 
 	/**
-	 * return a null implementation when performance is more imporant than statistics
-	 * @param enumClass
-	 * @return
+	 * return a null implementation when performance is more important than statistics
+	 * @param enumClass the enum 
+	 * @param <T> the enum type
+	 * @return the no Counters instance
 	 */
 	static <T extends Enum<T>> Counters<T> empty(Class<T> enumClass) {
 		return NoCounters.of(enumClass);

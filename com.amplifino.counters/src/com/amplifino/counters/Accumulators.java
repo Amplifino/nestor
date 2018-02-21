@@ -13,6 +13,7 @@ public interface Accumulators<T extends Enum<T>> {
 	/**
 	 * perform the default operation for this key
 	 * @param key counter identification
+	 * @param value value to accumulate
 	 * @return this
 	 */
 	Accumulators<T> accumulate(T key, long value);
@@ -30,7 +31,8 @@ public interface Accumulators<T extends Enum<T>> {
 	/**
 	 * return a new set of counters for the given enum type
 	 * @param enumClass the enum type
-	 * @return
+	 * @param <T> the enum type
+	 * @return the new Accumulators instance
 	 */
 	static <T extends Enum<T>> Accumulators<T> of (Class<T> enumClass) {
 		return DefaultAccumulators.of(enumClass);

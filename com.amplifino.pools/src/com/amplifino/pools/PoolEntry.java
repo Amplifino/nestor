@@ -5,26 +5,26 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * Interface for advanced pool users 
  *
- * @param <T>
+ * @param <T> the pooled type
  */
 @ProviderType
 public interface PoolEntry<T> {
 
 	/**
 	 * return the pooled member
-	 * @return
+	 * @return the member
 	 */
 	T get();
 	/**
 	 * return the age in milliseconds that the entry was idle in the pool
-	 * @return
+	 * @return the entry's age
 	 */
 	long age();
 	
 	/**
 	 * test if the entry has been idle for more milliseconds than the argument.
-	 * @param ms
-	 * @return
+	 * @param ms age in milliseconds
+	 * @return true if entry has been idle longer than the argument
 	 */
 	boolean older(long ms);
 	

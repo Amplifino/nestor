@@ -16,13 +16,13 @@
     <dependencies>
         <!-- Project dependencies -->
         <dependency>
-            <groupId>com.amplifino</groupId>
+            <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.counters</artifactId>
             <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.amplifino</groupId>
+            <groupId>com.amplifino.nestor</groupId>
             <artifactId>amplifino.pools</artifactId>
             <version>1.3.0</version>
             <scope>provided</scope>

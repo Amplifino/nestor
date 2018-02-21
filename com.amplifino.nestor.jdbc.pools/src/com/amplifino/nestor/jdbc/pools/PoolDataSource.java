@@ -152,7 +152,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 	/**
 	 * return a PoolDataSource builder
 	 * @param connectionPoolDataSource factory object for obtaining pooled connections
-	 * @return
+	 * @return a pool builder
 	 */
 	public static Builder builder(ConnectionPoolDataSource connectionPoolDataSource) {
 		return new Builder(connectionPoolDataSource);
@@ -173,7 +173,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		/**
 		 * sets the maximum number of connections
-		 * @param maxSize
+		 * @param maxSize the pool's max size
 		 * @return this
 		 */
 		public Builder maxSize(int maxSize) {
@@ -183,7 +183,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		/**
 		 * sets the maximum number of idle connections
-		 * @param maxIdle
+		 * @param maxIdle the max idle count
 		 * @return this
 		 */
 		public Builder maxIdle(int maxIdle) {
@@ -193,8 +193,8 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		/**
 		 * sets the amount of time a connection can remain idle in the pool
-		 * @param amount
-		 * @param unit
+		 * @param amount the idle time amount
+		 * @param unit the idle time unit
 		 * @return this
 		 */
 		public Builder maxIdleTime(long amount, TimeUnit unit) {
@@ -209,7 +209,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		/**
 		 * sets the pool's initial size
-		 * @param initialSize
+		 * @param initialSize the pool's initial size
 		 * @return this
 		 */
 		public Builder initialSize(int initialSize) {
@@ -219,7 +219,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		
 		/**
 		 * sets the pool's name
-		 * @param name
+		 * @param name the pool's name
 		 * @return this
 		 */
 		public Builder name(String name) {
@@ -230,7 +230,7 @@ public final class PoolDataSource extends CommonDataSourceWrapper implements Dat
 		/**
 		 * sets the pool is valid timeout (in seconds)
 		 * a value of 0 means the driver's default
-		 * @param timeOut
+		 * @param timeOut time out in seconds
 		 * @return this
 		 */
 		public Builder isValidTimeout(int timeOut) {

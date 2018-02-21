@@ -21,24 +21,24 @@ public interface Pool<T> extends CountsSupplier {
 	
 	/**
 	 * borrow a pool member
-	 * @return 
+	 * @return the borrowed pool member
 	 */
 	T borrow();
 	/**
 	 * borrow a pool member entry.
 	 * To be used for pool users that need to know the time the entry remained idle in the pool
-	 * @return
+	 * @return the borrowed pool entry
 	 */
 	PoolEntry<T> borrowEntry();
 	
 	/**
 	 * return a previously borrowed member to the pool 
-	 * @param borrowed
+	 * @param borrowed the borrowed member
 	 */
 	void release(T borrowed);
 	/**
 	 * return a previously borrowed member, instructing the pool to evict it from the pool
-	 * @param borrowed
+	 * @param borrowed the borrowed pool member
 	 */
 	void evict(T borrowed);
 	/**
@@ -48,15 +48,15 @@ public interface Pool<T> extends CountsSupplier {
 	void close();
 	/**
 	 * wait for termination of the pool
-	 * @throws InterruptedException
+	 * @throws InterruptedException if thread was interrupted
 	 */
 	void await() throws InterruptedException;
 	/**
 	 * wait for termination of the pool
-	 * @param amount
-	 * @param timeUnit
-	 * @return
-	 * @throws InterruptedException
+	 * @param amount wait time amount 
+	 * @param timeUnit wait time unit
+	 * @return true if pool was terminated before argument elapsed.
+	 * @throws InterruptedException if thread was interrupted
 	 */
 	boolean await(long amount, TimeUnit timeUnit) throws InterruptedException;
 	/**
@@ -72,12 +72,13 @@ public interface Pool<T> extends CountsSupplier {
 	/**
 	 * returns the current pool size. For monitoring purpose only.
 	 * 
-	 * @return
+	 * @return the pool size
 	 */
 	int size();
 	/**
 	 * return a new pool builder
 	 * @param supplier for creating pool members
+	 * @param <S> the pool member type
 	 * @return the new builder
 	 */
 	static <S> Builder<S> builder(Supplier<S> supplier) {
@@ -88,12 +89,7 @@ public interface Pool<T> extends CountsSupplier {
 	 * Pool builder
 	 *
 	 * @param <T> pool member type
-	 */
-	/**
-	 * @author kha
-	 *
-	 * @param <T>
-	 */
+	 */	
 	@ProviderType
 	interface Builder<T> {
 		/**
@@ -116,33 +112,33 @@ public interface Pool<T> extends CountsSupplier {
 		Builder<T> onBorrow(Predicate<T> predicate);
 		/**
 		 * sets the pool initial size
-		 * @param initialSize
+		 * @param initialSize the pool's initial size
 		 * @return this
  		 */
 		Builder<T> initialSize(int initialSize);
 		/**
 		 * sets the pool maximum size.
-		 * @param maxSize
+		 * @param maxSize max size count
 		 * @return this
 		 */
 		Builder<T> maxSize(int maxSize);
 		/**
 		 * sets the maximum number of idle members in the pool
-		 * @param maxIdle
+		 * @param maxIdle max idle count
 		 * @return this
 		 */
 		Builder<T> maxIdle(int maxIdle);
 		/**
 		 * sets the maximum amount of time a caller will wait for a free pool member 
-		 * @param amount
-		 * @param timeUnit
+		 * @param amount max idle time amount
+		 * @param timeUnit max idle time unit
 		 * @return this
 		 */
 		Builder<T> maxWait(long amount, TimeUnit timeUnit);
 		/**
 		 * sets the maximum amount a member can remain idle in the pool
-		 * @param amount
-		 * @param timeUnit
+		 * @param amount max wait time amount
+		 * @param timeUnit max wait time unit
 		 * @return this
 		 */
 		Builder<T> maxIdleTime(long amount, TimeUnit timeUnit);
@@ -158,34 +154,34 @@ public interface Pool<T> extends CountsSupplier {
 		Builder<T> lifo();
 		/**
 		 * Overrides the default logger instance
-		 * @param logger
+		 * @param logger the pool logger
 		 * @return this
 		 */
 		Builder<T> logger(Logger logger);
 		/**
 		 * sets the pool name. Pool name is used in log messages.
-		 * @param name
+		 * @param name the pool name
 		 * @return this
 		 */
 		Builder<T> name(String name);
 		/**
 		 * sets the minimum idle time in order to test the pool member with onBorrow
-		 * @param amount
-		 * @param timeUnit
-		 * @return
+		 * @param amount idle time amount
+		 * @param timeUnit idle time unit
+		 * @return this
 		 */
 		Builder<T> minIdleTime(long amount, TimeUnit timeUnit);
 		/**
 		 * sets the cycle time (interval between scans for idle pool members that are older than maxIdle)
-		 * @param amount
-		 * @param timeUnit
+		 * @param amount delay between cycles		
+		 * @param timeUnit delay time unit
 		 * @return this
 		 */
 		Builder<T> propertyCycle(long amount, TimeUnit timeUnit);
 		/**
 		 * sets the executor service to use for the cycle task
-		 * @param executorService
-		 * @return
+		 * @param executorService used to perform cycle tasks
+		 * @return this
 		 */
 		Builder<T> scheduleExecutorService(ScheduledExecutorService executorService);
 		/**

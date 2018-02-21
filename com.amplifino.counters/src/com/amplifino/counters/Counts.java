@@ -19,21 +19,21 @@ public interface Counts {
 	 */
 	Map<Enum<?>, Long> asMap();
 	/**
-	 * get the count for the given key
-	 * @param key
-	 * @return
+	 * returns the current count for the given key
+	 * @param key the given key
+	 * @return the count
 	 */
 	long get(Enum<?> key);
 	/**
 	 * return the time snapshot was taken (since counting started).
-	 * @param unit 
-	 * @return
+	 * @param unit time unit
+	 * @return the elapsed time
 	 */
 	long elapsed(TimeUnit unit);
 	/**
 	 * takes the delta with a previous snapshot 
-	 * @param snapshot
-	 * @return
+	 * @param snapshot previous snapshot
+	 * @return the delta
 	 */
 	Counts delta(Counts snapshot);
 	/**
@@ -43,8 +43,8 @@ public interface Counts {
 	 *  <pre>snapshot = conutssupplier.counts();</pre>
 	 *  After each step or iteration: 
 	 *  <pre>snapshot = countssupplier.counts().delta(snapshot, Counts::print);</pre>
-	 * @param snapshot
-	 * @param consumer
+	 * @param snapshot the previous delta
+	 * @param consumer to process delta
 	 * @return this
 	 */
 	Counts delta(Counts snapshot, Consumer<Counts> consumer);
@@ -54,18 +54,18 @@ public interface Counts {
 	void print();
 	/**
 	 * print counters
-	 * @param stream
+	 * @param stream the output stream
 	 */
 	void print(PrintStream stream);
 	/**
 	 * print counters to System.out using header
-	 * @param header
+	 * @param header the leading header
 	 */
 	void print(String header);
 	/**
 	 * print counters using the header
-	 * @param header
-	 * @param stream
+	 * @param header the leading header 
+	 * @param stream the output stream
 	 */
 	void print(String header, PrintStream stream);
 

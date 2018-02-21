@@ -27,7 +27,7 @@ final class DefaultAccumulators<T extends Enum<T>> implements Accumulators<T> {
 		if (enumConstant.name().toUpperCase().contains("MAX")) {
 			return new LongAccumulator(Long::max, 0);
 		} else {
-			return new LongAccumulator((x,y) -> x + y, 0);
+			return new LongAccumulator(Long::sum, 0);
 		}
 	}
 	

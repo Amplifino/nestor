@@ -10,7 +10,7 @@ import org.osgi.annotation.versioning.ConsumerType;
 public interface CountsSupplier {
 	/**
 	 * return a snapshot of the current counts
-	 * @return
+	 * @return the count snapshot
 	 */
 	Counts counts();
 }
