@@ -10,7 +10,7 @@
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>amplifino.nestor.jdbc.pools</artifactId>
+    <artifactId>com.amplifino.nestor.jdbc.pools</artifactId>
     <version>3.2.1</version>
 
     <dependencies>
