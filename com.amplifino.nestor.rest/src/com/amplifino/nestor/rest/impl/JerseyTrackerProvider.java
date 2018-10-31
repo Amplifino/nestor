@@ -16,12 +16,7 @@
 
 package com.amplifino.nestor.rest.impl;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.concurrent.Phaser;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.amplifino.nestor.rest.JerseyTracker;
 import org.glassfish.hk2.osgiresourcelocator.ServiceLoader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -34,29 +29,33 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
-import com.amplifino.nestor.rest.JerseyTracker;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.concurrent.Phaser;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
  * This component waits for Jersey initialization.
- * 
+ *
  * 1) Wait for hk2 (Jersey's injector) to become initialized
  * to avoid starting applications while HK2 is still in the resolved state
- * 
+ *
  * 2) Wait for jersey bundles to start, so these bundles correctly detect they are running in an osgi environment.
- * 
+ *
  */
 @Component
 public class JerseyTrackerProvider {
-	
+
 	private static final int stateMask =
             Bundle.INSTALLED | Bundle.RESOLVED | Bundle.STARTING | Bundle.ACTIVE | Bundle.STOPPING;
-    
+
 	private volatile BundleTracker<Bundle> tracker;
     private volatile BundleContext context;
 	private volatile ServiceRegistration<JerseyTracker> registration;
 
 	@Activate
-	public void activate(BundleContext context) {		
+	public void activate(BundleContext context) {
 		this.context = context;
 		// we need to wait for jersey and hk2 bundles to be active (started)
 		Set<Bundle> bundles = Stream.concat(jerseyBundles(), hk2Bundles())
@@ -69,12 +68,16 @@ public class JerseyTrackerProvider {
 			tracker.open();
 		}
 	}
-	
+
 	Stream<Bundle> jerseyBundles() {
 		return Arrays.stream(context.getBundles())
-			.filter(b -> b.getSymbolicName().startsWith("org.glassfish.jersey"));
+			.filter(b -> nullSafeStartsWith(b.getSymbolicName(), "org.glassfish.jersey"));
 	}
-	
+
+	private boolean nullSafeStartsWith(String mistery, String prefix) {
+		return mistery != null && mistery.startsWith(prefix);
+	}
+
 	Stream<Bundle> hk2Bundles() {
 		// find the hk2 osgi resource locator bundle, in order to wait for it to become active
     	// if hk2 is still in resolved state , we risk running HK2 initialization before activator has run
@@ -82,7 +85,7 @@ public class JerseyTrackerProvider {
 		// as we have loaded a class from the HK2 bundle, this will cause the bundle, which has the lazy activation option,
 		return Stream.of(FrameworkUtil.getBundle(ServiceLoader.class));
 	}
-	
+
 	@Deactivate
 	public synchronized void deactivate() {
 		if (tracker != null) {
@@ -91,7 +94,7 @@ public class JerseyTrackerProvider {
 		if (registration != null) {
 			registration.unregister();
 			registration = null;
-		}		
+		}
 	}
 
 	private synchronized void start() {
@@ -101,40 +104,40 @@ public class JerseyTrackerProvider {
 			tracker = null;
 		}
 	}
-	
+
 	private void register() {
 		registration = context.registerService(JerseyTracker.class, new JerseyTrackerImpl(), null);
 	}
-	
+
     private class BundleWaiter implements BundleTrackerCustomizer<Bundle> {
     	private final Set<Bundle> targets;
     	private final Phaser phaser;
-    	
+
     	private BundleWaiter(Set<Bundle> targets) {
     		this.targets = targets;
     		phaser = new Phaser(targets.size()) {
     			@Override
-    			protected boolean onAdvance(int phase, int registeredParties) {    				
+    			protected boolean onAdvance(int phase, int registeredParties) {
     				start();
     				return true;
     			}
     		};
     	}
-    	
+
     	@Override
-        public Bundle addingBundle(Bundle bundle, BundleEvent event) {    		
+        public Bundle addingBundle(Bundle bundle, BundleEvent event) {
     		if (!targets.contains(bundle)) {
                 return null;
-    		} else if (bundle.getState() == Bundle.ACTIVE) {   
+    		} else if (bundle.getState() == Bundle.ACTIVE) {
     			phaser.arrive();
     			return null;
-    		}  else {             	
+    		}  else {
     			return bundle;
     		}
         }
 
 	    @Override
-        public void modifiedBundle(Bundle bundle, BundleEvent event, Bundle ignore) {	    	
+        public void modifiedBundle(Bundle bundle, BundleEvent event, Bundle ignore) {
 	    	if (event.getType() == BundleEvent.STARTED) {
 	    		phaser.arrive();
 	    	}
@@ -143,6 +146,6 @@ public class JerseyTrackerProvider {
         @Override
         public void removedBundle(Bundle bundle, BundleEvent event, Bundle ignore) {
         }
-        
+
     }
 }
