@@ -7,4 +7,5 @@
 hs_err_pid*
 /.gradle/
 /reports/
-/generated/
+**/generated/
+**/target/
