@@ -1,79 +1,43 @@
-<!doctype html>
-<html lang="en" ng-app="dataSourceApp">
-	<head>
-	  <meta charset="utf-8">
-	  <title>Ad Hoc Sql</title>
-	  <link rel="stylesheet" href="css/bootstrap.min.css">
-	  <link rel="stylesheet" href="css/ui-grid.min.css">
-	    <link rel="stylesheet" href="css/isteven-multi-select.css">
-	  <link rel="stylesheet" href="css/app.css">
-	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.js"></script>
-	  <script src="css/ui-grid.min.js"></script>
-	  <script src="js/ui-bootstrap-tpls-1.1.1.min.js"></script>
-	  <script src="js/isteven-multi-select.js"></script>
-	  <script src="js/app.js"></script>
-	  <script src="js/controllers.js"></script>
-	  <script src="js/services.js"></script>
-	</head>
-	<body>
-	    <div class="container-fluid" ng-controller="SqlCtrl"> 
-			<h3>Ad Hoc Sql</h3>
-			<form class="form-horizontal" name="sqlForm" ng-submit="submitQuery()">
-				<div class="form-group">
-					<label for="dataSource" class="col-sm-2">DataSource</label>
-					<div class="col-sm-10">
-						<input ng-show="dataSources && dataSources.length == 1" class="form-control" type="text" id=dataSource class="form-control" ng-model="selectedDataSource.name" readOnly>
-						</input>
-						<select ng-show="dataSources && dataSources.length > 1" class="form-control" name="dataSource" id="dataSource" ng-options="each.name for each in dataSources" ng-model="selectedDataSource">
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="dataSource" class="col-sm-2">Table</label>
-					<div class="col-sm-8">
-						<select ng-show="selectedDataSource.getTables() && selectedDataSource.getTables().length > 0" class="form-control" name="tables" id="tables" ng-options="each.name for each in selectedDataSource.getTables()" ng-model="selectedTable">
-						<option style="display:none" value="">select a table</option>						
-						</select>
-					</div>
-					<div class="col-sm-2">
-    					<button class="btn" type="button" ng-click=addTable() ng-disabled="!selectedTable">Add to SQL Text</button>
-    				</div>
-				</div>
-				<div class="form-group" >
-  					<label for="column" class="col-sm-2">Columns</label>
-  					<div ng-show="selectedTable.getColumns() && selectedTable.getColumns().length > 0">
-  						<div class="col-sm-8">
-  							<div isteven-multi-select input-model="selectedTable.getColumns()" 
-  								output-model="selectedColumns" 
-  								button-label="name" 
-  								item-label="name"  
-  								tick-property="ticked" 
-  								max_labels="30"
-  								helper-elements="all none filter">
-  							</div>
-    					</div>  				
-    					<div class="col-sm-2">
-    						<button class="btn" type="button" ng-click=addColumns() ng-disabled="!selectedColumns || !selectedColumns.length > 0">Add to SQL Text</button>
-    					</div>
-    				</div>
-  				</div>
-				<div class="form-group">
-					<label for="sqlText" class="col-sm-2">SQL text</label>
-					<div class="col-sm-10">
-						<textarea id="sqlText" class="form-control" ng-model="sqlText"></textarea>
-					</div>		</div>
-				<div class="form-group">
-					<div class="col-sm-2">
-					</div>
-					<div class="col-sm-1">
-						<input type="submit" class="btn btn-default" ng-disabled="!selectedDataSource || !sqlText || sqlText.length === 0" />
-					</div>
-				</div>
-			</form> 
-			<p>{{message}}</p>
-			<div ng-if="gridOptions.data" ui-grid="gridOptions" ui-grid-resize-columns ui-grid-move-columns class="order-grid">
-			</div>
-		</div>
-	</body>
+<!DOCTYPE HTML>
+<html lang="en" ng-app="adHocSql2">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Amplifino's database app"/>
+    <meta name="keywords" content="Amplifino database app"/>
+    <meta name="author" content="Amplifino"/>
+    <meta name="robots" content="all"/>
+    <link rel="icon" type="image/png" href="favicon.ico"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.8.3/angular-resource.min.js"></script>
+    <!-- https://materializecss.com/about.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- code-->
+    <script src="./js/app.js"></script>
+    <script src="./js/services.js"></script>
+    <script src="./classes/UserInterface.js"></script>
+    <script src="./classes/Table.class.js"></script>
+    <title>Ad Hoc Sql 2.0</title>
+  </head>
+
+  <body ng-controller="MainCtrl">
+    <div>
+      <h3>Ad Hoc Sql 2.0</h3>
+    </div>
+    <div>
+      dataSources {{ui.dataSources}}</h3>
+    </div>
+    <div>
+      activeDS {{ui.activeDS}}</h3>
+    </div>
+    <div>
+      tables {{ui.tables}}</h3>
+    </div>
+    <div>
+      activeTable {{ui.activeTable}}</h3>
+    </div>
+  </body>
+
 </html>
