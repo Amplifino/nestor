@@ -5,8 +5,8 @@ services.service('HttpService', ['$resource',
     this.getDataSources = function() {
       return $resource('/api/datasources').query().$promise;
     }
-    this.getTables = function(dsName) {
-      const url = '/api/datasources/' + dsName + '/tables';
+    this.getTables = function(ds) {
+      const url = '/api/datasources/' + ds.name + '/tables';
       return $resource(url).query().$promise;
     }
     this.getTableFields = function(table) {

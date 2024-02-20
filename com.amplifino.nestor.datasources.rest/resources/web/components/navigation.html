@@ -1,0 +1,51 @@
+<!-- CSS included -->
+
+<nav class="navigation lime darken-1">
+  <div class="navbar-fixed">
+    <span class="brand-logo right">
+      <img src="components/amplifino.png" alt="amplifino" class="amplifino responsive-img">
+    </span>
+    <ul class="left">
+      <li ng-repeat="tab in ui.nav.tabs"
+          ng-class="tab.active ? 'active' : ''">
+        <a class="navigation-item center-align">
+          {{tab.display}}
+          <span class="badge lime">1</span>
+        </a>
+      </li>
+      <li ">
+        <a
+          ng-click="ui.nav.open($event.currentTarget)"
+          href="#!"
+          class="dropdown-trigger btn lime darken-1"
+          data-target="selectDataSource">
+          Datasource: {{ ui.activeDS.name }}
+          <i class="material-icons right">arrow_drop_down</i>
+        </a>
+        <ul id='selectDataSource' class='dropdown-content lime lighten-5'>
+          <li ng-repeat="dataSource in ui.dataSources"
+              ng-click="ui.selectDS(dataSource)"
+              ng-class="dataSource.name === ui.activeDS.name ? 'active' : ''">
+            <a class="navigation-item center-align grey-text text-darken-1">
+              {{ dataSource.name }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  nav.navigation {
+    padding: 0 30px;
+  }
+  nav.navigation li a.navigation-item {
+    min-width: 150px;
+    border-right: 1px solid #dce775;
+  }
+  nav.navigation img.amplifino {
+    height: 64px;
+    padding: 8px 0;
+  }
+</style>

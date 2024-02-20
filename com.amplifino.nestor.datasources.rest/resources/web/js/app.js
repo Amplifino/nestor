@@ -15,6 +15,13 @@ controllers.controller('MainCtrl',
     ]
 );
 
+function initMaterializeCss() {
+  // https://materializecss.com/dropdown.html
+  const elems = document.querySelectorAll('.dropdown-trigger');
+  const options = {};
+  const instances = M.Dropdown.init(elems, options);
+}
+
 function initDataSource(ui, httpService) {
   ui.dataSources.length = 0;
   ui.tables.length = 0;
@@ -29,7 +36,7 @@ function setDataSources(ui, response, httpService) {
   ui.activeDS = null;
   ui.tables.length = 0;
 	if (ui.dataSources.length > 0) {
-		ui.activeDS = response[0].name;
+		ui.activeDS = response[0];
     initTables(ui, httpService);
 	}
 }
@@ -45,5 +52,6 @@ function setTables(ui, response, httpService) {
   ui.tables.length = 0;
   ui.activeTable = null;
   response.forEach((table) => { ui.tables.push(new Table(table, httpService)); });
-
+  ui.initTableAliases();
+  initMaterializeCss();
 }
