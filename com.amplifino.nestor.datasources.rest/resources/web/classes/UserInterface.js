@@ -6,7 +6,8 @@ class Ui {
     this.tables = new Array(); // Array<Table>()
     this.activeTable = null;
     this.nav = new Navigation();
-    this.sql = 'SELECT ';
+    this.sql = 'SELECT * from project';
+    this.result = new Result();
     this.statements = Statement;
   }
 
@@ -39,6 +40,13 @@ class Ui {
       }
     }
     return fields;
+  }
+
+  setResult(result) {
+    this.result.rowCount = result.rowCount;
+    this.result.tuples = result.tuples;
+    this.nav.selectTab(TabId.RESULT, this.result.rowCount);
+    console.warn('this.result: '+JSON.stringify(this.result))
   }
 
 }

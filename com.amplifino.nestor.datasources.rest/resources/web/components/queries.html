@@ -9,6 +9,15 @@
         ng-model="ui.sql"
         class="materialize-textarea lime lighten-5">
       </textarea>
+      <a ng-click="runQuery()"
+         class="waves-effect waves-light btn lime darken-1">
+        <i class="material-icons left">send</i>
+        execute
+      </a>
+      <a class="waves-effect waves-dark btn lime lighten-5 grey-text" style="margin-left: 10px;">
+        <i class="material-icons left">clear</i>
+        clear
+      </a>
     </div>
     <div class="col s3 history">
       history
@@ -68,7 +77,7 @@
 
   div.queries-wrapper div.query {
     padding: 30px;
-    height: 100%;
+    height: calc(100% - 30px);
   }
   div.queries-wrapper div.query textarea {
     padding: 15px;

@@ -2,18 +2,22 @@
 
 <nav class="navigation lime darken-1">
   <div class="navbar-fixed">
+
     <span class="brand-logo right">
       <img src="components/amplifino.png" alt="amplifino" class="amplifino responsive-img">
     </span>
+
     <ul class="left">
+
       <li ng-repeat="tab in ui.nav.tabs"
           ng-class="tab.active ? 'active' : ''">
         <a class="navigation-item center-align">
           {{tab.display}}
-          <span class="badge lime">1</span>
+          <span ng-if="tab.count" class="badge lime">1</span>
         </a>
       </li>
-      <li ">
+
+      <li>
         <a
           ng-click="ui.nav.open($event.currentTarget)"
           href="#!"
@@ -31,6 +35,10 @@
             </a>
           </li>
         </ul>
+      </li>
+
+      <li>
+        <a>Limit 200</a>
       </li>
     </ul>
   </div>
