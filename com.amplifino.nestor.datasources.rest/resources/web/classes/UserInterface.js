@@ -44,7 +44,8 @@ class Ui {
 
   setResult(result) {
     this.result.rowCount = result.rowCount;
-    this.result.tuples = result.tuples;
+    this.result.columns = JSON.parse(result.columns);
+    this.result.tuples = JSON.parse(result.tuples);
     this.nav.selectTab(TabId.RESULT, this.result.rowCount);
     console.warn('this.result: '+JSON.stringify(this.result))
   }

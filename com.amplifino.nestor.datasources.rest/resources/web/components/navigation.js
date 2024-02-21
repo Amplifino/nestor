@@ -47,7 +47,7 @@ class Navigation {
     }
     const useTab = found ? found : this.tabs[0];
     useTab.active = true;
-    useTab.count = count || 0;
+    if (Number.isInteger(count)) useTab.count = count;
     this.activeTab = useTab;
   }
 

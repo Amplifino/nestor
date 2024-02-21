@@ -13,7 +13,7 @@
           ng-class="tab.active ? 'active' : ''">
         <a class="navigation-item center-align">
           {{tab.display}}
-          <span ng-if="tab.count" class="badge lime">1</span>
+          <span ng-if="tab.count" class="badge lime">{{ tab.count }}</span>
         </a>
       </li>
 

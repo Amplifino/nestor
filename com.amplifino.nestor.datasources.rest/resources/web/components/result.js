@@ -12,8 +12,9 @@ app.component('result', {
 class Result {
 
   constructor(o) {
-    rowCount: o && o.rowCount ? o.rowCount : 0;
-    tuples: o && o.tuples ? o.tuples : new Array();
+    this.rowCount = o && o.rowCount ? o.rowCount : 0;
+    this.columns = o && o.columns ? o.columns : {};
+    this.tuples = o && o.tuples ? o.tuples : new Array();
   }
 
 }
