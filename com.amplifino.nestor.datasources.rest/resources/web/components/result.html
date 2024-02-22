@@ -1,4 +1,51 @@
-<div>
-  result<br>
-  {{ui.result}}
+<!-- CSS included -->
+
+<div class="result-table">
+  <table class="striped" >
+
+    <thead class="lime lighten-4 grey-text" >
+      <tr>
+          <th ng-repeat="col in ui.result.columns"
+              ng-class="'idx-' + $index" >
+            <span class="hint--bottom hint--bounce hint--warning" aria-label="{{ col.table }}">
+              {{ col.name }}
+            </span>
+          </th>
+      </tr>
+    </thead>
+
+    <tbody class="scrollable-y">
+      <tr ng-repeat="row in ui.result.tuples">
+        <td ng-repeat="col in ui.result.columns"
+            ng-class="'idx-' + $index" >
+          <span class="truncate">
+            {{ ui.result.getData(row, col) }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
 </div>
+
+<style>
+
+  div.result-table {
+    max-height: calc(100vh - 64px);
+    padding: 10px 0 20px 0;
+    overflow-x: auto;
+  }
+
+  div.result-table th,
+  div.result-table td {
+    padding: 10px;
+    min-width: 50px;
+    max-width: 400px;
+  }
+  div.result-table th.idx-0 span,
+  div.result-table td.idx-0 span {
+    padding-left: 30px;
+  }
+
+</style>

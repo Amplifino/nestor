@@ -17,9 +17,9 @@ controllers.controller('MainCtrl',
 
 function initMaterializeCss() {
   // https://materializecss.com/dropdown.html
-  const elems = document.querySelectorAll('.dropdown-trigger');
-  const options = {};
-  const instances = M.Dropdown.init(elems, options);
+  const dropdownElements = document.querySelectorAll('.dropdown-trigger');
+  const dropdownOptions = {};
+  const dropdownInstances = M.Dropdown.init(dropdownElements, dropdownOptions);
 }
 
 function initDataSource(ui, httpService) {

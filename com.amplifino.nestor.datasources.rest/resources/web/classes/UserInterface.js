@@ -6,7 +6,7 @@ class Ui {
     this.tables = new Array(); // Array<Table>()
     this.activeTable = null;
     this.nav = new Navigation();
-    this.sql = 'SELECT * from project';
+    this.sql = 'SELECT * from project p join time_registration t on t.project_id = p.id limit 2000';
     this.result = new Result();
     this.statements = Statement;
   }
@@ -44,10 +44,9 @@ class Ui {
 
   setResult(result) {
     this.result.rowCount = result.rowCount;
-    this.result.columns = JSON.parse(result.columns);
-    this.result.tuples = JSON.parse(result.tuples);
+    this.result.columns = result.columns
+    this.result.tuples = result.tuples
     this.nav.selectTab(TabId.RESULT, this.result.rowCount);
-    console.warn('this.result: '+JSON.stringify(this.result))
   }
 
 }

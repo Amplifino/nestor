@@ -1,9 +1,5 @@
 package com.amplifino.nestor.datasources.rest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -27,8 +23,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -161,58 +155,58 @@ public class DataSourceResource {
 
     private Response execute(DataSource dataSource, String sql) {
         try {
-            SqlJsonResult result = doSql(dataSource, sql);
+            RunSqlResult result = doSql(dataSource, sql);
             return Response.ok().entity(result).build();
-        } catch (SQLException | JSONException e) {
+        } catch (SQLException e) {
             return badRequestResponse(e);
         }
     }
 
-    private SqlJsonResult doSql(DataSource dataSource, String sql) throws SQLException, JSONException {
+    private RunSqlResult doSql(DataSource dataSource, String sql) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 boolean hasResultSet = statement.execute(sql);
                 if (!hasResultSet) {
-                    return new SqlJsonResult(statement.getUpdateCount());
+                    return new RunSqlResult(statement.getUpdateCount());
                 }
                 try (ResultSet resultSet = statement.getResultSet()) {
-                    return new SqlJsonResult(parseColumns(resultSet.getMetaData()), parseTuples(resultSet));
+                    return new RunSqlResult(parseColumns(resultSet.getMetaData()), parseTuples(resultSet));
                 }
             }
         }
     }
 
-    private JSONObject parseColumns(ResultSetMetaData metaData) throws SQLException, JSONException {
-        JSONObject columns = new JSONObject();
+    private List<ColumnInfo> parseColumns(ResultSetMetaData metaData) throws SQLException {
+        List<ColumnInfo> columns = new ArrayList<>();
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
             String table = metaData.getTableName(i);
             String column = metaData.getColumnName(i);
-            JSONObject tableJson = this.getOrAddJSONObject(columns, table);
-            tableJson.put(column, column.toLowerCase());
+            String type = metaData.getColumnTypeName(i);
+            columns.add(new ColumnInfo(column, table, type));
         }
         return columns;
     }
 
-    private JSONObject getOrAddJSONObject(JSONObject json, String prop) throws JSONException {
-        if (!json.has(prop)) {
-            json.put(prop, new JSONObject());
+    private <T> Map<String, T> getOrAddTableMap(Map<String, Map<String, T>> map, String key) {
+        if (!map.containsKey(key)) {
+            map.put(key, new HashMap<>());
         }
-        return json.getJSONObject(prop);
+        return map.get(key);
     }
 
-    private JSONArray parseTuples(ResultSet resultSet) throws SQLException, JSONException {
+    private List<Map<String, Map<String, Object>>> parseTuples(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
-        JSONArray rows = new JSONArray();
+        List<Map<String, Map<String, Object>>> rows = new ArrayList<>();
         while (resultSet.next()) {
-            JSONObject row = new JSONObject();
+            Map<String, Map<String, Object>> row = new HashMap<>();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 String table = metaData.getTableName(i);
                 String column = metaData.getColumnName(i);
                 Object value = resultSet.getObject(i);
-                JSONObject tableJson = this.getOrAddJSONObject(row, table);
-                tableJson.put(column, value);
+                Map<String, Object> tableMap = this.getOrAddTableMap(row, table);
+                tableMap.put(column, value);
             }
-            rows.put(row);
+            rows.add(row);
         }
         return rows;
     }
@@ -259,7 +253,7 @@ public class DataSourceResource {
                 List<ColumnInfo> result = new ArrayList<>();
                 try (ResultSet rs = metaData.getColumns(null, null, tableName, "%")) {
                     while (rs.next()) {
-                        result.add(new ColumnInfo(rs.getString(4)));
+                        result.add(new ColumnInfo(rs.getString(4), tableName, null));
                     }
                 }
                 return result;
