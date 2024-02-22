@@ -12,8 +12,17 @@
       <li ng-repeat="tab in ui.nav.tabs"
           ng-class="tab.active ? 'active' : ''">
         <a class="navigation-item center-align">
-          {{tab.display}}
-          <span ng-if="tab.count" class="badge lime">{{ tab.count }}</span>
+          {{tab.display}}&nbsp;
+          <span ng-if="tab.count">
+            <span class="badge lime">{{ tab.count }}</span>&nbsp;
+            <span
+              ng-click="ui.result.export()"
+              class="large material-icons orange"
+              style="position: relative; top: 6px;">
+              file_download
+            </span>
+          </span>
+
         </a>
       </li>
 
