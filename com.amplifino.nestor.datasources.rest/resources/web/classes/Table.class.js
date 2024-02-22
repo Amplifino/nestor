@@ -17,6 +17,7 @@ function initTableFields(table, httpService) {
 }
 
 function setTableFields(table, response) {
+  table.fields.push(new Field(table, { name: '*'}));
   response.forEach((entry) => {
     const field = new Field(table, entry);
     table.fields.push(field);

@@ -10,6 +10,7 @@
     <ul class="left">
 
       <li ng-repeat="tab in ui.nav.tabs"
+          ng-click="ui.nav.selectTab(tab.tabId)"
           ng-class="tab.active ? 'active' : ''">
         <a class="navigation-item center-align">
           {{tab.display}}&nbsp;

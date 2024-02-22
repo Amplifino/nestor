@@ -14,7 +14,9 @@
         <i class="material-icons left">send</i>
         execute
       </a>
-      <a class="waves-effect waves-dark btn lime lighten-5 grey-text" style="margin-left: 10px;">
+      <a ng-click="ui.sql = ''"
+         class="waves-effect waves-dark btn lime lighten-5 grey-text"
+         style="margin-left: 10px;">
         <i class="material-icons left">clear</i>
         clear
       </a>
@@ -28,18 +30,21 @@
     <div class="fix-col-problem" style="color: transparent;"> ? </div>
     <div class="col s3 statements">
       <span ng-repeat="statement in ui.statements"
+            ng-click="ui.addSqlInput(statement.text)"
             class="badge left lime lighten-5">
         {{ statement.text }}
       </span>
     </div>
     <div class="col s3 tables">
       <span ng-repeat="table in ui.tables"
+            ng-click="ui.addSqlInput(table.name + ' as ' + table.alias)"
             class="badge left lime lighten-5">
         {{ table.name }} as {{ table.alias }}
       </span>
     </div>
     <div class="col s6 fields">
       <span ng-repeat="field in ui.getFields()"
+            ng-click="ui.addSqlInput(field.alias)"
             class="badge left lime lighten-5">
         {{ field.alias }}
       </span>
@@ -73,6 +78,11 @@
   }
   div.queries-wrapper div.helpers span.badge {
     margin-bottom: 10px;
+    border: 1px solid white;
+  }
+  div.queries-wrapper div.helpers span.badge:hover {
+    background-color: #dce775 !important;
+    cursor: pointer;
   }
 
   div.queries-wrapper div.query {
@@ -87,6 +97,6 @@
   div.queries-wrapper div.query.input-field textarea:focus {
      border-bottom: 1px solid #dce775;
      box-shadow: 0 1px 0 0 #dce775;
-   }
+  }
 
 </style>

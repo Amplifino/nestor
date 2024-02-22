@@ -49,6 +49,16 @@ class Ui {
     this.nav.selectTab(TabId.RESULT, this.result.rowCount);
   }
 
+  addSqlInput(text) {
+    const el = document.getElementById('sqlInput');
+    const cursorPosition = el.selectionStart || this.sql.length;
+    const preCursor = this.sql.substring(0, cursorPosition);
+    const postCursor = this.sql.substring(cursorPosition, this.sql.length);
+    this.sql = preCursor + ' ' + text + ' ' + postCursor;
+    el.focus();
+    el.selectionStart = preCursor.length + text.length;
+  }
+
 }
 
 function getAlias(table) {
