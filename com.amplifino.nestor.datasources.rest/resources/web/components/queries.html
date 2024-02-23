@@ -1,4 +1,4 @@
-<!-- CSS included -->
+<link href="components/queries.css" rel="stylesheet">
 
 <div class="queries-wrapper">
 
@@ -7,6 +7,7 @@
       <textarea
         id="sqlInput"
         ng-model="ui.sql"
+        ng-keydown="ui.handleKeydown($event)"
         class="materialize-textarea lime lighten-5">
       </textarea>
       <a ng-click="runQuery()"
@@ -31,72 +32,25 @@
     <div class="col s3 statements">
       <span ng-repeat="statement in ui.statements"
             ng-click="ui.addSqlInput(statement)"
+            ng-class="statement.ngClass"
             class="badge left lime lighten-5">
-        {{ statement.insert() }}
+        {{ statement.insert() }}{{ statement.autocomplete ? ' (Ctrl#)' : '' }}
       </span>
     </div>
     <div class="col s3 tables">
       <span ng-repeat="table in ui.tables"
             ng-click="ui.addSqlInput(table)"
             class="badge left lime lighten-5">
-        {{ table.insert() }}
+        {{ table.insert() }}{{ table.autocomplete ? ' (Ctrl#)' : '' }}
       </span>
     </div>
     <div class="col s6 fields">
       <span ng-repeat="field in ui.getFields()"
             ng-click="ui.addSqlInput(field)"
             class="badge left lime lighten-5">
-        {{ field.insert() }}
+        {{ field.insert() }}{{ field.autocomplete ? ' (Ctrl#)' : '' }}
       </span>
     </div>
   </div>
 
 </div>
-
-<style>
-
-  div.queries-wrapper {
-    width: 100%;
-    height: fit-content;
-  }
-
-  div.queries-wrapper div.query-and-history,
-  div.queries-wrapper div.helpers {
-    height: calc((100vh - 64px - 60px) / 2);
-    min-height: 300px;
-  }
-
-  div.queries-wrapper div.statements,
-  div.queries-wrapper div.history,
-  div.queries-wrapper div.tables,
-  div.queries-wrapper div.fields {
-    border-left: 1px solid #dce775;
-    height: 100%;
-  }
-  div.queries-wrapper div.helpers {
-    border-top: 1px solid #dce775;
-  }
-  div.queries-wrapper div.helpers span.badge {
-    margin-bottom: 10px;
-    border: 1px solid white;
-  }
-  div.queries-wrapper div.helpers span.badge:hover {
-    background-color: #dce775 !important;
-    cursor: pointer;
-  }
-
-  div.queries-wrapper div.query {
-    padding: 30px;
-    height: calc(100% - 30px);
-  }
-  div.queries-wrapper div.query textarea {
-    padding: 15px;
-    height: 100%;
-    border-bottom: 0;
-  }
-  div.queries-wrapper div.query.input-field textarea:focus {
-     border-bottom: 1px solid #dce775;
-     box-shadow: 0 1px 0 0 #dce775;
-  }
-
-</style>

@@ -1,0 +1,56 @@
+div.queries-wrapper {
+  width: 100%;
+  height: fit-content;
+}
+
+div.queries-wrapper div.query-and-history,
+div.queries-wrapper div.helpers {
+  height: calc((100vh - 64px - 60px) / 2);
+  min-height: 300px;
+}
+
+div.queries-wrapper div.statements,
+div.queries-wrapper div.history,
+div.queries-wrapper div.tables,
+div.queries-wrapper div.fields {
+  border-left: 1px solid #dce775;
+  height: 100%;
+}
+div.queries-wrapper div.helpers {
+  border-top: 1px solid #dce775;
+}
+div.queries-wrapper div.helpers span.badge {
+  margin-bottom: 8px;
+  border: 1px solid white;
+  border-radius: 6px;
+  height: 24px;
+}
+div.queries-wrapper div.helpers span.badge.disabled-false:hover {
+  background-color: #dce775 !important;
+  cursor: pointer;
+}
+div.queries-wrapper div.helpers span.badge.disabled-true {
+  background-color: #f5f5f5 !important;
+  color: #bdbdbd;
+}
+div.queries-wrapper div.helpers span.badge.highlight-true {
+  background-color: #c0ca33 !important;
+  color: white;
+}
+div.queries-wrapper div.helpers span.badge.highlight-true.autocomplete-true {
+  background-color: #ff9800 !important;
+}
+
+div.queries-wrapper div.query {
+  padding: 30px;
+  height: calc(100% - 30px);
+}
+div.queries-wrapper div.query textarea {
+  padding: 15px;
+  height: 100%;
+  border-bottom: 0;
+}
+div.queries-wrapper div.query.input-field textarea:focus {
+   border-bottom: 1px solid #dce775;
+   box-shadow: 0 1px 0 0 #dce775;
+}

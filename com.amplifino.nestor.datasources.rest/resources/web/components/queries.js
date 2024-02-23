@@ -1,11 +1,17 @@
 function queriesCtrl($scope, HttpService) {
+
   this.$onInit = function() { $scope.ui = this.ui; }
+
   $scope.runQuery = function() {
     HttpService
       .runQuery($scope.ui.activeDS, $scope.ui.sql)
         .then(response => { $scope.ui.setResult(response); })
         .catch(err => console.error('queriesCtrl.runQuery(): ' + JSON.stringify(err)));
   }
+
+  $scope.$watch('$scope.ui.sql', function() {
+    updateSegments($scope.ui);
+  });
 }
 
 app.component('queries', {
@@ -14,3 +20,10 @@ app.component('queries', {
   controllerAs: '$scope',
   bindings: { ui: '=' },
 });
+
+updateSegments = function(ui) {
+  for (const [key, statement] of Object.entries(ui.statements)) {
+    statement.resetUI(ui.sql);
+  }
+  ui.tables.forEach((table) => { table.resetUI(ui.sql); });
+}

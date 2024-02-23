@@ -13,6 +13,14 @@ class AbstractSegment {
     this.type = type;
     this.nextType = nextType;
     this.disabled = false;
+    this.highlight = false;
+    this.autocomplete = false;
+    this.ngClass = 'type-' + this.type + ' ';
+  }
+  resetUI(sql) {
+    this.disabled = false;
+    this.highlight = false;
+    this.autocomplete = false;
     this.ngClass = '';
   }
   insert() {
@@ -77,7 +85,34 @@ class FieldSegment extends AbstractSegment {
  * STATEMENT
  */
 class StatementSegment extends AbstractSegment {
+
   constructor(name, nextType) {
     super({ name: name }, Type.STATEMENT, nextType);
   }
+
+  /** @override */
+  resetUI(sql) {
+    super.resetUI(sql);
+    if (sqlIsEmpty(sql)) {
+      switch (this.name) {
+        case 'SELECT':
+          this.highlight = true;
+          this.autocomplete = true;
+          break;
+        case 'UPDATE':
+        case 'DELETE': break;
+        default:
+          this.disabled = true;
+          break;
+      }
+    }
+    this.ngClass += 'autocomplete-' + this.autocomplete + ' ';
+    this.ngClass += 'highlight-' + this.highlight + ' ';
+    this.ngClass += 'disabled-' + this.disabled + ' ';
+  }
+
+}
+
+function sqlIsEmpty(sql) {
+  return !sql || sql === '';
 }

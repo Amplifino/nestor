@@ -1,6 +1,7 @@
 class Ui {
 
   constructor() {
+    this.statements = initStatements();
     this.dataSources = new Array(); // Array<String>()
     this.activeDS = null;
     this.tables = new Array(); // Array<TableSegment>()
@@ -8,7 +9,6 @@ class Ui {
     this.nav = new Navigation();
     this.sql = 'SELECT * from project p join time_registration t on t.project_id = p.id limit 500';
     this.result = new Result();
-    this.statements = initStatements();
   }
 
   selectDS(ds) {
@@ -50,16 +50,46 @@ class Ui {
   }
 
   addSqlInput(segment) {
+    this.sql = this.sql.replaceAll('  ', ' '); // remove double spaces
     const el = document.getElementById('sqlInput');
     const cursorPosition = el.selectionStart || this.sql.length;
     const preCursor = this.sql.substring(0, cursorPosition);
     const postCursor = this.sql.substring(cursorPosition, this.sql.length);
     const text = segment.insert();
     this.sql = preCursor + ' ' + text + ' ' + postCursor;
+    this.sql = this.sql.replaceAll('  ', ' '); // remove double spaces
     el.focus();
     el.selectionStart = preCursor.length + text.length;
   }
 
+  handleKeydown(event) {
+    if (!event || event.code !== 'Space') return;
+    if (event.isTrusted &&
+      event.ctrlKey &&
+      !event.altKey && !event.shiftKey && !event.metaKey && !event.repeat) {
+        const segment = findAutocompleteStatement(this.statements) || findAutocompleteSegment(this.tables);
+        if (segment) this.addSqlInput(segment)
+      }
+  }
+
+}
+
+function findAutocompleteStatement(statements) {
+  for (const [key, statement] of Object.entries(statements)) {
+    if (statement.autocomplete) return statement;
+  }
+  return null;
+}
+function findAutocompleteSegment(tables) {
+  for (var tdx = 0; tdx < tables.length; tdx++) {
+    const table = tables[tdx];
+    if (table.autocomplete) return table;
+    for (var fdx = 0; fdx < table.fields.length; fdx++) {
+      const field = table.fields[fdx];
+      if (field.autocomplete) return field;
+    }
+  }
+  return null;
 }
 
 function getAlias(table) {
