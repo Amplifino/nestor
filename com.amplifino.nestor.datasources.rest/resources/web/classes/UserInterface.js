@@ -3,12 +3,12 @@ class Ui {
   constructor() {
     this.dataSources = new Array(); // Array<String>()
     this.activeDS = null;
-    this.tables = new Array(); // Array<Table>()
+    this.tables = new Array(); // Array<TableSegment>()
     this.activeTable = null;
     this.nav = new Navigation();
     this.sql = 'SELECT * from project p join time_registration t on t.project_id = p.id limit 500';
     this.result = new Result();
-    this.statements = Statement;
+    this.statements = initStatements();
   }
 
   selectDS(ds) {
@@ -49,11 +49,12 @@ class Ui {
     this.nav.selectTab(TabId.RESULT, this.result.rowCount);
   }
 
-  addSqlInput(text) {
+  addSqlInput(segment) {
     const el = document.getElementById('sqlInput');
     const cursorPosition = el.selectionStart || this.sql.length;
     const preCursor = this.sql.substring(0, cursorPosition);
     const postCursor = this.sql.substring(cursorPosition, this.sql.length);
+    const text = segment.insert();
     this.sql = preCursor + ' ' + text + ' ' + postCursor;
     el.focus();
     el.selectionStart = preCursor.length + text.length;
@@ -74,22 +75,18 @@ function getAlias(table) {
   return alias;
 }
 
-const Type = {
-  STATEMENT: 'STATEMENT',
-  TABLE: 'TABLE',
-  FIELD: 'FIELD',
-  ALIAS: 'ALIAS',
-}
-
-const Statement = {
-  SELECT: { text: 'SELECT', type: Type.STATEMENT, sort: 1, nextType: Type.FIELD },
-  UPDATE: { text: 'UPDATE', type: Type.STATEMENT, sort: 1, nextType: Type.TABLE },
-  DELETE: { text: 'DELETE', type: Type.STATEMENT, sort: 1, nextType: Type.STATEMENT },
-  JOIN: { text: 'JOIN', type: Type.STATEMENT, sort: 1, nextType: Type.TABLE },
-  INNER_JOIN: { text: 'INNER JOIN', type: Type.STATEMENT, sort: 1, nextType: Type.TABLE },
-  OUTER_JOIN: { text: 'OUTER JOIN', type: Type.STATEMENT, sort: 1, nextType: Type.TABLE },
-  FROM: { text: 'FROM', type: Type.STATEMENT, sort: 1, nextType: Type.TABLE },
-  AS: { text: 'AS', type: Type.STATEMENT, sort: 1, nextType: Type.ALIAS },
-  WHERE: { text: 'WHERE', type: Type.STATEMENT, sort: 1, nextType: Type.FIELD },
-  ORDER_BY: { text: 'ORDER BY', type: Type.STATEMENT, sort: 1, nextType: Type.FIELD },
+function initStatements() {
+  const o = {};
+  o.SELECT = new StatementSegment('SELECT', Type.FIELD);
+  o.UPDATE = new StatementSegment('UPDATE', Type.TABLE);
+  o.DELETE = new StatementSegment('DELETE', Type.STATEMENT);
+  o.JOIN = new StatementSegment('JOIN', Type.TABLE);
+  o.INNER_JOIN = new StatementSegment('INNER JOIN', Type.TABLE);
+  o.OUTER_JOIN = new StatementSegment('OUTER JOIN', Type.TABLE);
+  o.FROM = new StatementSegment('FROM', Type.TABLE);
+  o.AS = new StatementSegment('AS', Type.ALIAS);
+  o.WHERE = new StatementSegment('WHERE', Type.FIELD);
+  o.ORDER_BY = new StatementSegment('ORDER BY', Type.FIELD);
+  o.LIMIT = new StatementSegment('LIMIT', Type.NUMBER);
+  return o;
 }

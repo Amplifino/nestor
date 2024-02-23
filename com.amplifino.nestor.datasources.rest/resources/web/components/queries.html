@@ -30,23 +30,23 @@
     <div class="fix-col-problem" style="color: transparent;"> ? </div>
     <div class="col s3 statements">
       <span ng-repeat="statement in ui.statements"
-            ng-click="ui.addSqlInput(statement.text)"
+            ng-click="ui.addSqlInput(statement)"
             class="badge left lime lighten-5">
-        {{ statement.text }}
+        {{ statement.insert() }}
       </span>
     </div>
     <div class="col s3 tables">
       <span ng-repeat="table in ui.tables"
-            ng-click="ui.addSqlInput(table.name + ' as ' + table.alias)"
+            ng-click="ui.addSqlInput(table)"
             class="badge left lime lighten-5">
-        {{ table.name }} as {{ table.alias }}
+        {{ table.insert() }}
       </span>
     </div>
     <div class="col s6 fields">
       <span ng-repeat="field in ui.getFields()"
-            ng-click="ui.addSqlInput(field.alias)"
+            ng-click="ui.addSqlInput(field)"
             class="badge left lime lighten-5">
-        {{ field.alias }}
+        {{ field.insert() }}
       </span>
     </div>
   </div>

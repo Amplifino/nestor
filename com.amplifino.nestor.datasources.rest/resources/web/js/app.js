@@ -51,7 +51,7 @@ function initTables(ui, httpService) {
 function setTables(ui, response, httpService) {
   ui.tables.length = 0;
   ui.activeTable = null;
-  response.forEach((table) => { ui.tables.push(new Table(table, httpService)); });
+  response.forEach((table) => { ui.tables.push(new TableSegment(table, httpService)); });
   ui.initTableAliases();
   initMaterializeCss();
 }
