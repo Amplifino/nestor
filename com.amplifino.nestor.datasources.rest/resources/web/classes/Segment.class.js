@@ -23,6 +23,11 @@ class AbstractSegment {
     this.autocomplete = false;
     this.ngClass = '';
   }
+  buildNgClass() {
+    this.ngClass += 'autocomplete-' + this.autocomplete + ' ';
+    this.ngClass += 'highlight-' + this.highlight + ' ';
+    this.ngClass += 'disabled-' + this.disabled + ' ';
+  }
   insert() {
     return ' ' + this.name.toUpperCase() + ' ';
   }
@@ -39,6 +44,17 @@ class TableSegment extends AbstractSegment {
     this.dataSource = o && o.dataSource ? o.dataSource : 'noDataSource';
     this.fields = new Array(); // Array<FieldSegment>()
     initTableFields(this, httpService);
+  }
+
+  /** @override */
+  resetUI(sql) {
+    super.resetUI(sql);
+    if (sqlIsEmpty(sql)) {
+      this.disabled = true;
+    }
+    this.buildNgClass();
+    this.fields.forEach((field) => { field.resetUI(sql); });
+    return;
   }
 
   /** @override */
@@ -75,6 +91,17 @@ class FieldSegment extends AbstractSegment {
     this.table.alias = table.alias;
     this.alias = table.alias + '.' + field.name.toLowerCase();
   }
+
+  /** @override */
+  resetUI(sql) {
+    super.resetUI(sql);
+    if (sqlIsEmpty(sql)) {
+      this.disabled = true;
+    }
+    this.buildNgClass();
+    return;
+  }
+
   /** @override */
   insert() {
     return ' ' + this.alias + ', ';
@@ -91,7 +118,7 @@ class StatementSegment extends AbstractSegment {
   }
 
   /** @override */
-  resetUI(sql) {
+  resetUI(sql, statements, tables) {
     super.resetUI(sql);
     if (sqlIsEmpty(sql)) {
       switch (this.name) {
@@ -105,10 +132,15 @@ class StatementSegment extends AbstractSegment {
           this.disabled = true;
           break;
       }
+    } else {
+      const segment = findLastSqlSegment(sql, statements, tables);
+      if (segment && this.name === segment.name) {
+        this.highlight = (segment.nextType === Type.STATEMENT);
+        console.warn('segment.nextType: '+JSON.stringify(segment))
+      }
     }
-    this.ngClass += 'autocomplete-' + this.autocomplete + ' ';
-    this.ngClass += 'highlight-' + this.highlight + ' ';
-    this.ngClass += 'disabled-' + this.disabled + ' ';
+    this.buildNgClass();
+    return;
   }
 
 }
@@ -116,3 +148,41 @@ class StatementSegment extends AbstractSegment {
 function sqlIsEmpty(sql) {
   return !sql || sql === '';
 }
+
+function findLastSqlSegment(sql, statements, tables) {
+  const s = sql.replaceAll('\n', ' '); // new line > space
+  const part = s.split(' ').pop().toUpperCase();
+  return findStatement(part, statements) || findTableOrField(part, tables);
+}
+
+function findStatement(part, statements) {
+  const pLength = part.length;
+  for (const [key, statement] of Object.entries(statements)) {
+    if (key.length >= pLength && key.toUpperCase().startsWith(part)) return statement;
+  }
+  return null;
+}
+
+function findTableOrField(part, tables) {
+  return null;
+}
+
+/*
+function findAutocompleteStatement(statements) {
+  for (const [key, statement] of Object.entries(statements)) {
+    if (statement.autocomplete) return statement;
+  }
+  return null;
+}
+function findAutocompleteSegment(tables) {
+  for (var tdx = 0; tdx < tables.length; tdx++) {
+    const table = tables[tdx];
+    if (table.autocomplete) return table;
+    for (var fdx = 0; fdx < table.fields.length; fdx++) {
+      const field = table.fields[fdx];
+      if (field.autocomplete) return field;
+    }
+  }
+  return null;
+}
+*/

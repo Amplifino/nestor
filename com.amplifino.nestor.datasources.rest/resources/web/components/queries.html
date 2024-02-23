@@ -1,13 +1,13 @@
 <link href="components/queries.css" rel="stylesheet">
 
-<div class="queries-wrapper">
+<div id="queriesKeydownHandlerId"
+     class="queries-wrapper">
 
   <div class="row query-and-history">
     <div class="col s9 input-field query">
       <textarea
         id="sqlInput"
         ng-model="ui.sql"
-        ng-keydown="ui.handleKeydown($event)"
         class="materialize-textarea lime lighten-5">
       </textarea>
       <a ng-click="runQuery()"
@@ -40,6 +40,7 @@
     <div class="col s3 tables">
       <span ng-repeat="table in ui.tables"
             ng-click="ui.addSqlInput(table)"
+            ng-class="table.ngClass"
             class="badge left lime lighten-5">
         {{ table.insert() }}{{ table.autocomplete ? ' (Ctrl#)' : '' }}
       </span>
@@ -47,6 +48,7 @@
     <div class="col s6 fields">
       <span ng-repeat="field in ui.getFields()"
             ng-click="ui.addSqlInput(field)"
+            ng-class="field.ngClass"
             class="badge left lime lighten-5">
         {{ field.insert() }}{{ field.autocomplete ? ' (Ctrl#)' : '' }}
       </span>

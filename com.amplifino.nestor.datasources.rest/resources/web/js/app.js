@@ -11,6 +11,7 @@ controllers.controller('MainCtrl',
         function ($scope, HttpService) {
           $scope.ui = new Ui();
           initDataSource($scope.ui, HttpService);
+          document.onkeydown = function(event) { $scope.ui.handleKeydown($scope, event); };
         }
     ]
 );

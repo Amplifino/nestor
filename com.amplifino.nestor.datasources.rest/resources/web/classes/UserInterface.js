@@ -62,13 +62,16 @@ class Ui {
     el.selectionStart = preCursor.length + text.length;
   }
 
-  handleKeydown(event) {
+  handleKeydown(scope, event) {
     if (!event || event.code !== 'Space') return;
     if (event.isTrusted &&
       event.ctrlKey &&
       !event.altKey && !event.shiftKey && !event.metaKey && !event.repeat) {
         const segment = findAutocompleteStatement(this.statements) || findAutocompleteSegment(this.tables);
-        if (segment) this.addSqlInput(segment)
+        if (segment) {
+          this.addSqlInput(segment);
+          scope.$apply();
+        }
       }
   }
 

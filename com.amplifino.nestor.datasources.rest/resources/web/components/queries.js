@@ -1,6 +1,8 @@
 function queriesCtrl($scope, HttpService) {
 
-  this.$onInit = function() { $scope.ui = this.ui; }
+  this.$onInit = function() {
+    $scope.ui = this.ui;
+  }
 
   $scope.runQuery = function() {
     HttpService
@@ -23,7 +25,7 @@ app.component('queries', {
 
 updateSegments = function(ui) {
   for (const [key, statement] of Object.entries(ui.statements)) {
-    statement.resetUI(ui.sql);
+    statement.resetUI(ui.sql, ui.statements, ui.tables);
   }
-  ui.tables.forEach((table) => { table.resetUI(ui.sql); });
+  ui.tables.forEach((table) => { table.resetUI(ui.sql, ui.statements, ui.tables); });
 }
