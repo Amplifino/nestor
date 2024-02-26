@@ -9,6 +9,8 @@ class Ui {
     this.nav = new Navigation();
     this.sql = 'SELECT * from project p join time_registration t on t.project_id = p.id limit 500';
     this.result = new Result();
+    this.enableHistory = true;
+    this.history = new Array();
   }
 
   selectDS(ds) {
@@ -47,6 +49,10 @@ class Ui {
     this.result.columns = result.columns
     this.result.tuples = result.tuples
     this.nav.selectTab(TabId.RESULT, this.result.rowCount);
+  }
+
+  setHistory(response) {
+    this.history = response;
   }
 
   addSqlInput(segment) {

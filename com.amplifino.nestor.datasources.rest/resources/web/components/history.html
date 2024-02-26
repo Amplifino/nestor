@@ -1,0 +1,53 @@
+<!-- CSS included -->
+
+<div class="history-wrapper grey-text text-darken-1">
+
+  <div ng-if="showCreateTable" class="history-disabled orange lighten-2 grey-text text-darken-2">
+    <h3>History disabled </h3>
+    <p>
+      Check if the datasource <strong>{{ ui.activeDS.name }}</strong> has the table <strong>QUERY_HISTORY</strong><br>
+      Use create table statement :
+    </p>
+    <p>
+      CREATE TABLE QUERY_HISTORY(<br>
+      <span>ID    INT auto_increment PRIMARY KEY,</span>
+      <span>TIMESTAMP  TIMESTAMP NOT NULL,</span>
+      <span>NAME  VARCHAR(255) NOT NULL,</span>
+      <span>QUERY VARCHAR(4096));</span>
+    </p>
+    <button
+      ng-click="closeMessage()"
+      class="btn waves-effect waves-light orange darken-2">Close
+      <i class="material-icons right">clear</i>
+    </button>
+  </div>
+
+  <div v-if="ui.enableHistory" class="history-table">
+    <table class="highlight" style="width: 100%">
+      <tbody>
+        <tr ng-repeat="row in ui.history"
+            ng-click="ui.sql = row.query">
+          <td>
+            <span class="truncate">{{ row.query }}</span>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+<style>
+
+  div.history-wrapper {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  div.history-wrapper div.history-disabled {
+    padding: 30px;
+    padding-top: 10px;
+  }
+
+</style>

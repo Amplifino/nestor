@@ -54,3 +54,10 @@ div.queries-wrapper div.query.input-field textarea:focus {
    border-bottom: 1px solid #dce775;
    box-shadow: 0 1px 0 0 #dce775;
 }
+
+div.queries-wrapper history.scrollable-y {
+  max-height: inherit;
+  height: inherit;
+  overflow-y: auto;
+  display: block;
+}

@@ -13,6 +13,10 @@ services.service('HttpService', ['$resource',
       const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/columns';
       return $resource(url).query().$promise;
     }
+    this.getHistory = function(ds) {
+      const url = '/api/datasources/' + ds.name + '/history';
+      return $resource(url).query().$promise;
+    }
     this.runQuery = function(ds, sql) {
       const url = '/api/datasources/' + ds.name;
       return $resource(url).save(sql).$promise;
