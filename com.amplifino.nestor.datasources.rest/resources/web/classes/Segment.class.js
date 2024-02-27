@@ -47,13 +47,29 @@ class TableSegment extends AbstractSegment {
   }
 
   /** @override */
-  resetUI(sql) {
+  resetUI(sql, statements, tables) {
     super.resetUI(sql);
     if (sqlIsEmpty(sql)) {
       this.disabled = true;
+    } else {
+      const parts = findLastSqlSegmentParts(sql, statements, tables);
+      // console.warn('TableSegment parts: '+JSON.stringify(parts))
+      if (!parts.last) {
+        this.disabled = true;
+      } else {
+        if (parts.last.nextType !== Type.TABLE) {
+          this.disabled = true;
+        } else {
+          if (!parts.secondLast) {
+            this.disabled = true;
+          } else {
+            this.highlight = this.name.toUpperCase().startsWith(parts.part);
+          }
+        }
+      }
     }
     this.buildNgClass();
-    this.fields.forEach((field) => { field.resetUI(sql); });
+    this.fields.forEach((field) => { field.resetUI(sql, statements, tables); });
     return;
   }
 
@@ -93,10 +109,31 @@ class FieldSegment extends AbstractSegment {
   }
 
   /** @override */
-  resetUI(sql) {
+  resetUI(sql, statements, tables) {
     super.resetUI(sql);
     if (sqlIsEmpty(sql)) {
       this.disabled = true;
+    } else {
+      const parts = findLastSqlSegmentParts(sql, statements, tables);
+      // console.warn('FieldSegment parts: '+JSON.stringify(parts))
+      if (!parts.last && !parts.secondLast) {
+        this.disabled = true;
+      } else {
+        if (parts.last) {
+          if (parts.last.nextType !== Type.FIELD) {
+            this.disabled = true;
+          } else {
+            this.highlight = this.name === '*';
+            // if (!parts.secondLast) {
+            //   this.highlight = this.name === '*';
+            // } else {
+            //   this.highlight = this.name.toUpperCase().endsWith(parts.part);
+            // }
+          }
+        } else if (parts.secondLast) {
+          console.warn('FieldSegment parts: TODO')
+        }
+      }
     }
     this.buildNgClass();
     return;
@@ -133,10 +170,14 @@ class StatementSegment extends AbstractSegment {
           break;
       }
     } else {
-      const segment = findLastSqlSegment(sql, statements, tables);
-      if (segment && this.name === segment.name) {
-        this.highlight = (segment.nextType === Type.STATEMENT);
-        console.warn('segment.nextType: '+JSON.stringify(segment))
+      const parts = findLastSqlSegmentParts(sql, statements, tables);
+      console.warn('StatementSegment parts: '+JSON.stringify(parts))
+      if (!parts.last) {
+        this.highlight = this.name.toUpperCase().startsWith(parts.part);
+      } else {
+        if (parts.last.nextType !== Type.STATEMENT) {
+          this.disabled = true;
+        }
       }
     }
     this.buildNgClass();
@@ -149,40 +190,75 @@ function sqlIsEmpty(sql) {
   return !sql || sql === '';
 }
 
-function findLastSqlSegment(sql, statements, tables) {
+function findLastSqlSegmentParts(sql, statements, tables) {
   const s = sql.replaceAll('\n', ' '); // new line > space
-  const part = s.split(' ').pop().toUpperCase();
-  return findStatement(part, statements) || findTableOrField(part, tables);
+  const splitted = s.split(' ');
+  const parts = new Array();
+  for (var idx = 0; idx < splitted.length; idx++) {
+    const check = splitted[idx];
+    if (check.length) parts.push(check);
+  }
+  const part = parts.pop().toUpperCase();
+  var secondLastPart = null;
+  var secondLastSegmentPart = null;
+  if (parts.length) {
+    secondLastPart = parts.pop().toUpperCase();
+    const statementSecondSegmentPart = findStatement(secondLastPart, statements);
+    if (statementSecondSegmentPart.last) {
+      secondLastSegmentPart = statementSecondSegmentPart;
+    } else {
+      secondLastSegmentPart = findTableOrField(secondLastPart, tables);
+    }
+  }
+  const statementSegmentPart = findStatement(part, statements);
+  statementSegmentPart.secondLast = secondLastSegmentPart;
+  if (statementSegmentPart.last) return statementSegmentPart;
+  //
+  const tableSegmentPart =  findTableOrField(part, tables);
+  tableSegmentPart.secondLast = secondLastSegmentPart;
+  return tableSegmentPart;
+}
+
+class SegmentPart {
+  constructor(part) {
+    this.part = part;
+    this.last = null;
+    this.secondLast = null;
+  }
 }
 
 function findStatement(part, statements) {
+  const segmentPart = new SegmentPart(part);
   const pLength = part.length;
+  if (pLength === 0) return segmentPart;
   for (const [key, statement] of Object.entries(statements)) {
-    if (key.length >= pLength && key.toUpperCase().startsWith(part)) return statement;
+    if (key.toUpperCase() === part) {
+      segmentPart.last = statement;
+      break;
+    }
   }
-  return null;
+  return segmentPart;
 }
 
 function findTableOrField(part, tables) {
-  return null;
-}
-
-/*
-function findAutocompleteStatement(statements) {
-  for (const [key, statement] of Object.entries(statements)) {
-    if (statement.autocomplete) return statement;
-  }
-  return null;
-}
-function findAutocompleteSegment(tables) {
-  for (var tdx = 0; tdx < tables.length; tdx++) {
+  const segmentPart = new SegmentPart(part);
+  const pLength = part.length;
+  const partNoComma = part.replaceAll(',', '');
+  if (pLength === 0) return segmentPart;
+  for (var tdx = 0; tdx < tables.length; tdx++){
     const table = tables[tdx];
-    if (table.autocomplete) return table;
-    for (var fdx = 0; fdx < table.fields.length; fdx++) {
-      const field = table.fields[fdx];
-      if (field.autocomplete) return field;
+    if (table.name.toUpperCase() === part) {
+      segmentPart.last = table;
+      return segmentPart;
+    } else {
+      for (var fdx = 0; fdx < table.fields.length; fdx++) {
+        const field = table.fields[fdx];
+        if (field.alias.toUpperCase() === partNoComma) {
+          segmentPart.last = field;
+          return segmentPart;
+        }
+      }
     }
   }
-  return null;
+  return segmentPart;
 }
-*/
