@@ -52,7 +52,12 @@ function initTables(ui, httpService) {
 function setTables(ui, response, httpService) {
   ui.tables.length = 0;
   ui.activeTable = null;
-  response.forEach((table) => { ui.tables.push(new TableSegment(table, httpService)); });
+  for (var idx = 0; idx < response.length; idx++) {
+    const table = response[idx];
+    if (table.name === 'QUERY_HISTORY') continue;
+    const segment = new TableSegment(table, httpService);
+    ui.tables.push(segment);
+  }
   ui.initTableAliases();
   initMaterializeCss();
 }

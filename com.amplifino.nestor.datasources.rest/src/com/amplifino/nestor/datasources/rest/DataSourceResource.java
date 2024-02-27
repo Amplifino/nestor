@@ -1,20 +1,20 @@
 package com.amplifino.nestor.datasources.rest;
 
 import com.amplifino.nestor.jdbc.api.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
 
 @Path("/")
 public class DataSourceResource {
@@ -46,8 +47,8 @@ public class DataSourceResource {
     @Inject
     private DataSourceApplication dataSourceApplication;
 
-    private static String QUERY_HISTORY_TABLE_NAME = "QUERY_HISTORY";
-    private static int MAX_HISTORY_PER_USER = 10;
+    private static final String QUERY_HISTORY_TABLE_NAME = "QUERY_HISTORY";
+    private static final int MAX_HISTORY_PER_USER = 200;
     private final Map<String, Boolean> datasourceHasHistoryTableMap = new HashMap<>();
 
     @GET
@@ -342,7 +343,10 @@ public class DataSourceResource {
                 .on(dataSource)
                 .text(selectStatement)
                 .parameters(userName)
-                .select(resultSet -> new HistoryInfo(resultSet.getTimestamp(1), resultSet.getString(2)));
+                .select(resultSet -> new HistoryInfo(resultSet.getTimestamp(1), resultSet.getString(2)))
+                .stream()
+                .sorted(Comparator.comparing(hi -> ((HistoryInfo) hi).timestamp).reversed())
+                .collect(Collectors.toList());
     }
 
     private void appendToHistory(SecurityContext context, DataSource dataSource, String query) {
@@ -361,8 +365,15 @@ public class DataSourceResource {
         if (optionalId.isPresent()) {
             this.updateHistoryDate(dataSource, (int) optionalId.get());
         } else {
-//            this.removeSurplusHistory(dataSource, userName);
-            this.appendToHistory(dataSource, userName, query);
+            try {
+                this.removeSurplusHistory(dataSource, userName);
+                this.appendToHistory(dataSource, userName, query);
+            }
+            catch (Exception ex) {
+                Logger log = LoggerFactory.getLogger(this.getClass());
+                log.error("Unable to persist history", ex);
+            }
+
         }
     }
 
@@ -380,19 +391,22 @@ public class DataSourceResource {
     }
 
     private void removeSurplusHistory(DataSource dataSource, String userName) {
-        String deleteStatement = "" +
-            "DELETE del.* FROM " +
-            "(" +
-            "SELECT j.id FROM " + QUERY_HISTORY_TABLE_NAME + " as j" +
+        String selectStatement = "" +
+            "SELECT id FROM " + QUERY_HISTORY_TABLE_NAME + " " +
             "WHERE name = ? " +
             "ORDER BY timestamp desc " +
-            "LIMIT 1000, ? " +
-            ") as del " +
-            "WHERE del.id > 0";
-        Query.on(dataSource)
-            .text(deleteStatement)
-            .parameters(userName, MAX_HISTORY_PER_USER - 1)
-            .executeUpdate();
+            "LIMIT ?, 1000 " ;
+        List<Integer> oldestIds =
+            Query.on(dataSource)
+                .text(selectStatement)
+                .parameters(userName, MAX_HISTORY_PER_USER - 1)
+                .select(resultSet -> resultSet.getInt(1));
+        Query query = Query.on(dataSource)
+            .text("DELETE FROM " + QUERY_HISTORY_TABLE_NAME + " ")
+            .text("WHERE id in ")
+            .text(oldestIds.stream().map(id -> "?").collect(Collectors.joining(",", "(", ")")));
+        oldestIds.forEach(query::parameters);
+        query.executeUpdate();
     }
 
     private void appendToHistory(DataSource dataSource, String userName, String query) {

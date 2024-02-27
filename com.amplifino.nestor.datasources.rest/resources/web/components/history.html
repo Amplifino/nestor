@@ -23,12 +23,17 @@
   </div>
 
   <div v-if="ui.enableHistory" class="history-table">
-    <table class="highlight" style="width: 100%">
+    <table class="highlight" style="table-layout: fixed; width: 100%;">
       <tbody>
         <tr ng-repeat="row in ui.history"
-            ng-click="ui.sql = row.query">
+            ng-show="row.query.toUpperCase().startsWith(ui.sql.toUpperCase())"
+            ng-click="ui.sql = row.query"
+            ng-mouseover="row.ngClass = 'disable-truncate'"
+            ng-mouseleave="row.ngClass = 'truncate'" >
           <td>
-            <span class="truncate">{{ row.query }}</span>
+            <span ng-class="row.ngClass ? row.ngClass : 'truncate'" >
+              {{ row.query }}
+            </span>
           </td>
         </tr>
       </tbody>
