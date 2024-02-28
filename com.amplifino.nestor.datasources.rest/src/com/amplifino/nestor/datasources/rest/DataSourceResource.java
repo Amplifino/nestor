@@ -25,12 +25,14 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -39,7 +41,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.joining;
 
 @Path("/")
 public class DataSourceResource {
@@ -49,6 +50,7 @@ public class DataSourceResource {
 
     private static final String QUERY_HISTORY_TABLE_NAME = "QUERY_HISTORY";
     private static final int MAX_HISTORY_PER_USER = 200;
+    private static final int DEFAULT_LIMIT = 500;
     private final Map<String, Boolean> datasourceHasHistoryTableMap = new HashMap<>();
 
     @GET
@@ -168,16 +170,18 @@ public class DataSourceResource {
     @Path("/{dataSourceName}")
     public Response run(
             @PathParam("dataSourceName") String dataSourceName,
+            @QueryParam("limit") @DefaultValue("0") Integer limit,
             @Context SecurityContext context,
             String sql) {
+        int useLimit = limit < 1 ? DEFAULT_LIMIT : limit;
         return dataSourceApplication.dataSource(dataSourceName)
-            .map(dataSource -> this.execute(context, dataSource, sql))
+            .map(dataSource -> this.execute(context, dataSource, sql, useLimit))
             .orElseThrow(NotFoundException::new);
     }
 
-    private Response execute(SecurityContext context, DataSource dataSource, String sql) {
+    private Response execute(SecurityContext context, DataSource dataSource, String sql, int limit) {
         try {
-            RunSqlResult result = doSql(dataSource, sql);
+            RunSqlResult result = doSql(dataSource, sql, limit);
             this.appendToHistory(context, dataSource, sql);
             return Response.ok().entity(result).build();
         }
@@ -186,7 +190,7 @@ public class DataSourceResource {
         }
     }
 
-    private RunSqlResult doSql(DataSource dataSource, String sql) throws SQLException {
+    private RunSqlResult doSql(DataSource dataSource, String sql, int limit) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 boolean hasResultSet = statement.execute(sql);
@@ -194,7 +198,7 @@ public class DataSourceResource {
                     return new RunSqlResult(statement.getUpdateCount());
                 }
                 try (ResultSet resultSet = statement.getResultSet()) {
-                    return new RunSqlResult(parseColumns(resultSet.getMetaData()), parseTuples(resultSet));
+                    return new RunSqlResult(parseColumns(resultSet.getMetaData()), parseTuples(resultSet, limit));
                 }
             }
         }
@@ -218,10 +222,10 @@ public class DataSourceResource {
         return map.get(key);
     }
 
-    private List<Map<String, Map<String, Object>>> parseTuples(ResultSet resultSet) throws SQLException {
+    private List<Map<String, Map<String, Object>>> parseTuples(ResultSet resultSet, int limit) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         List<Map<String, Map<String, Object>>> rows = new ArrayList<>();
-        while (resultSet.next()) {
+        while (resultSet.next() && rows.size() < limit) {
             Map<String, Map<String, Object>> row = new HashMap<>();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 String table = metaData.getTableName(i);

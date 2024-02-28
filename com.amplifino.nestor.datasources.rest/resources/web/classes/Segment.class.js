@@ -8,10 +8,12 @@ const Type = {
 }
 
 class AbstractSegment {
-  constructor(o, type, nextType) {
+  constructor(o, type, nextType1, nextType2) {
     this.name = o && o.name ? o.name : 'noName';
     this.type = type;
-    this.nextType = nextType;
+    this.nextType = {};
+    if (nextType1 && nextType1.length) this.nextType[nextType1] = true;
+    if (nextType2 && nextType2.length) this.nextType[nextType2] = true;
     this.disabled = false;
     this.highlight = false;
     this.autocomplete = false;
@@ -55,10 +57,18 @@ class TableSegment extends AbstractSegment {
       const parts = findLastSqlSegmentParts(sql, statements, tables);
       // console.warn('TableSegment parts: '+JSON.stringify(parts))
       if (!parts.last) {
-        this.disabled = true;
-      } else {
-        if (parts.last.nextType !== Type.TABLE) {
+        if (!parts.secondLast) {
           this.disabled = true;
+        } else {
+          this.highlight = this.name.toUpperCase().startsWith(parts.part);
+        }
+      } else {
+        if (!Object.hasOwn(parts.last.nextType, Type.TABLE)) {
+          if (!parts.secondLast) {
+            this.disabled = true;
+          } else {
+            this.highlight = this.name.toUpperCase().startsWith(parts.part);
+          }
         } else {
           if (!parts.secondLast) {
             this.disabled = true;
@@ -101,7 +111,7 @@ function setTableFields(table, response) {
  */
 class FieldSegment extends AbstractSegment {
   constructor(table, field) {
-    super(field, Type.FIELD, Type.STATEMENT);
+    super(field, Type.FIELD, Type.FIELD, Type.STATEMENT);
     this.table = {};
     this.table.name = table.name;
     this.table.alias = table.alias;
@@ -120,18 +130,14 @@ class FieldSegment extends AbstractSegment {
         this.disabled = true;
       } else {
         if (parts.last) {
-          if (parts.last.nextType !== Type.FIELD) {
+          if (!Object.hasOwn(parts.last.nextType, Type.FIELD)) {
             this.disabled = true;
           } else {
             this.highlight = this.name === '*';
-            // if (!parts.secondLast) {
-            //   this.highlight = this.name === '*';
-            // } else {
-            //   this.highlight = this.name.toUpperCase().endsWith(parts.part);
-            // }
           }
-        } else if (parts.secondLast) {
-          console.warn('FieldSegment parts: TODO')
+        } else if (parts.secondLast && Object.hasOwn(parts.secondLast.nextType, Type.FIELD)) {
+          const startWithPart = this.insert().toUpperCase().startsWith(' ' + parts.part)
+          this.highlight = startWithPart || this.name === '*';
         }
       }
     }
@@ -141,7 +147,7 @@ class FieldSegment extends AbstractSegment {
 
   /** @override */
   insert() {
-    return ' ' + this.alias + ', ';
+    return ' ' + this.alias + ' ';
   }
 }
 
@@ -175,7 +181,7 @@ class StatementSegment extends AbstractSegment {
       if (!parts.last) {
         this.highlight = this.name.toUpperCase().startsWith(parts.part);
       } else {
-        if (parts.last.nextType !== Type.STATEMENT) {
+        if (!Object.hasOwn(parts.last.nextType, Type.STATEMENT)) {
           this.disabled = true;
         }
       }
@@ -191,7 +197,7 @@ function sqlIsEmpty(sql) {
 }
 
 function findLastSqlSegmentParts(sql, statements, tables) {
-  const s = sql.replaceAll('\n', ' '); // new line > space
+  const s = sql.replaceAll('\n', ' ').replaceAll(',', ' '); // new line and comma > space
   const splitted = s.split(' ');
   const parts = new Array();
   for (var idx = 0; idx < splitted.length; idx++) {
@@ -211,11 +217,11 @@ function findLastSqlSegmentParts(sql, statements, tables) {
     }
   }
   const statementSegmentPart = findStatement(part, statements);
-  statementSegmentPart.secondLast = secondLastSegmentPart;
+  statementSegmentPart.secondLast = secondLastSegmentPart ? secondLastSegmentPart.last : null;
   if (statementSegmentPart.last) return statementSegmentPart;
   //
   const tableSegmentPart =  findTableOrField(part, tables);
-  tableSegmentPart.secondLast = secondLastSegmentPart;
+  tableSegmentPart.secondLast = secondLastSegmentPart ? secondLastSegmentPart.last : null;
   return tableSegmentPart;
 }
 

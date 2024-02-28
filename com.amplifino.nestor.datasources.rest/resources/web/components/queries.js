@@ -13,6 +13,7 @@ function queriesCtrl($scope, HttpService) {
 
   $scope.$watch('$scope.ui.sql', function() {
     updateSegments($scope.ui);
+    document.getElementById('sqlInput').focus();
   });
 }
 
