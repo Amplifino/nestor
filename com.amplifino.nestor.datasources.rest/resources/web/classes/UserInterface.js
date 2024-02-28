@@ -7,7 +7,7 @@ class Ui {
     this.tables = new Array(); // Array<TableSegment>()
     this.activeTable = null;
     this.nav = new Navigation();
-    this.sql = 'SELECT * from project p join time_registration t on t.project_id = p.id limit 500';
+    this.sql = '';
     this.result = new Result();
     this.enableHistory = true;
     this.history = new Array();

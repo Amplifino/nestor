@@ -33,7 +33,13 @@ class Result {
     if (!rTable) return '';
     const cName = col.name;
     const rCol = rTable[cName];
-    return rCol;
+    if (col.type === 'DATE') return this.getDataAsDate(rCol);
+    else return rCol;
+  }
+
+  /** @private */
+  getDataAsDate(value) {
+    return new Date(value).toLocaleDateString(undefined, { timezone: 'Europe/Brussels' })
   }
 
   export() {
