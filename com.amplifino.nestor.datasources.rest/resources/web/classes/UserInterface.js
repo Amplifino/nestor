@@ -81,6 +81,17 @@ class Ui {
       }
   }
 
+  getCleanSql() {
+    const removeEndOfLines = this.sql.replace(/[\n\r]/g, ' ');
+    var noDoubleSpaces = removeEndOfLines.replaceAll('  ', ' ');
+    var hasDoublespaces = noDoubleSpaces.includes('  ');
+    while (hasDoublespaces) {
+      noDoubleSpaces = noDoubleSpaces.replaceAll('  ', ' ');
+      hasDoublespaces = noDoubleSpaces.includes('  ');
+    }
+    return noDoubleSpaces;
+  }
+
   logError(msg, stringify) {
     const json = stringify ? ': ' + JSON.stringify(stringify) : '';
     console.error(msg + json);

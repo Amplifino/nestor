@@ -12,6 +12,10 @@ controllers.controller('MainCtrl',
           $scope.ui = new Ui();
           initDataSource($scope.ui, HttpService);
           document.onkeydown = function(event) { $scope.ui.handleKeydown($scope, event); };
+
+          $scope.$watch('$scope.ui.activeDS', function() {
+            if ($scope.ui.activeDS) initTables($scope.ui, HttpService);
+          });
         }
     ]
 );

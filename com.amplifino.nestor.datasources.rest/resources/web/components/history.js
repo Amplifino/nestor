@@ -5,7 +5,20 @@ function historyCtrl($scope, HttpService) {
   }
 
   $scope.$watch('$scope.ui.activeDS', function() {
-    if ($scope.ui.activeDS) $scope.getHistory();
+    if ($scope.ui.activeDS) {
+      $scope.ui.enableHistory = true;
+      $scope.ui.history.length = 0;
+      $scope.getHistory();
+    }
+  });
+
+  $scope.$watch('$scope.ui.sql', function() {
+    const cleanSql = $scope.ui.getCleanSql().toUpperCase();
+    for (var idx = 0; idx < $scope.ui.history.length; idx++) {
+      const history = $scope.ui.history[idx];
+      const sql = history.query;
+      history.show = (sql.length > 0 && sql.toUpperCase().startsWith(cleanSql));
+    }
   });
 
   $scope.showCreateTable = false;

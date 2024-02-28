@@ -26,7 +26,7 @@
     <table class="highlight" style="table-layout: fixed; width: 100%;">
       <tbody>
         <tr ng-repeat="row in ui.history"
-            ng-show="row.query.toUpperCase().startsWith(ui.sql.toUpperCase())"
+            ng-show="row.show !== false"
             ng-click="ui.sql = row.query"
             ng-mouseover="row.ngClass = 'disable-truncate'"
             ng-mouseleave="row.ngClass = 'truncate'" >
