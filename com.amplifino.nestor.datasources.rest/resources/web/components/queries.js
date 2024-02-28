@@ -10,13 +10,22 @@ function queriesCtrl($scope, HttpService) {
     HttpService
       .runQuery($scope.ui.activeDS, $scope.ui.sql)
       .then(response => { $scope.ui.setResult(response); })
-      .catch(err => { $scope.ui.logError('queriesCtrl.runQuery()', err); });
+      .catch(err => { $scope.ui.logError('queriesCtrl.runQuery()', err); })
+      .finally(() => { $scope.ui.sql = formatSql($scope.ui.sql); });
   }
 
   $scope.$watch('$scope.ui.sql', function() {
     updateSegments($scope.ui);
     document.getElementById('sqlInput').focus();
   });
+}
+
+formatSql = function(sql) {
+  const sqlFormatter = window.sqlFormatter;
+  const formatOptions = {
+    language: 'sql',
+    keywordCase: 'upper', };
+  return sqlFormatter.format(sql, formatOptions);
 }
 
 app.component('queries', {
