@@ -1,7 +1,9 @@
 function resultCtrl($scope) {
+
   this.$onInit = function() {
     $scope.ui = this.ui;
   }
+
 }
 
 app.component('result', {
@@ -17,6 +19,12 @@ class Result {
     this.rowCount = o && o.rowCount ? o.rowCount : 0;
     this.columns = o && o.columns ? o.columns : {};
     this.tuples = o && o.tuples ? o.tuples : new Array();
+  }
+
+  reset() {
+    this.rowCount = 0;
+    this.columns = {};
+    this.tuples.length = 0;
   }
 
   getData(row, col) {

@@ -38,6 +38,13 @@ class Navigation {
     this.tabs.push(new Tab(TabId.UTILS, 'Utilities'));
   }
 
+  clearCounts() {
+    for (var idx = 0; idx < this.tabs.length; idx++) {
+      const tab = this.tabs[idx];
+      tab.count = 0;
+    }
+  }
+
   selectTab(tabId, count) {
     var found = null;
     for (var idx = 0; idx < this.tabs.length; idx++) {

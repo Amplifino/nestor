@@ -5,10 +5,12 @@ function queriesCtrl($scope, HttpService) {
   }
 
   $scope.runQuery = function() {
+    $scope.ui.result.reset();
+    $scope.ui.nav.clearCounts();
     HttpService
       .runQuery($scope.ui.activeDS, $scope.ui.sql)
       .then(response => { $scope.ui.setResult(response); })
-      .catch(err => console.error('queriesCtrl.runQuery(): ' + JSON.stringify(err)));
+      .catch(err => { $scope.ui.logError('queriesCtrl.runQuery()', err); });
   }
 
   $scope.$watch('$scope.ui.sql', function() {

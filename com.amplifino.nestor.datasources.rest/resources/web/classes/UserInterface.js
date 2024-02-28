@@ -81,6 +81,11 @@ class Ui {
       }
   }
 
+  logError(msg, stringify) {
+    const json = stringify ? ': ' + JSON.stringify(stringify) : '';
+    console.error(msg + json);
+  }
+
 }
 
 function findAutocompleteStatement(statements) {
@@ -117,12 +122,15 @@ function getAlias(table) {
 function initStatements() {
   const o = {};
   o.SELECT = new StatementSegment('SELECT', Type.FIELD);
+  o.FROM = new StatementSegment('FROM', Type.TABLE);
   o.UPDATE = new StatementSegment('UPDATE', Type.TABLE);
+  o.SET = new StatementSegment('SET', Type.FIELD);
   o.DELETE = new StatementSegment('DELETE', Type.STATEMENT);
   o.JOIN = new StatementSegment('JOIN', Type.TABLE);
   o.INNER_JOIN = new StatementSegment('INNER JOIN', Type.TABLE);
   o.OUTER_JOIN = new StatementSegment('OUTER JOIN', Type.TABLE);
-  o.FROM = new StatementSegment('FROM', Type.TABLE);
+  o.ON = new StatementSegment('ON', Type.FIELD);
+
   o.AS = new StatementSegment('AS', Type.ALIAS);
   o.WHERE = new StatementSegment('WHERE', Type.FIELD);
   o.ORDER_BY = new StatementSegment('ORDER BY', Type.FIELD);

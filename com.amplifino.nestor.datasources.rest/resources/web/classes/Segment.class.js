@@ -57,24 +57,18 @@ class TableSegment extends AbstractSegment {
       const parts = findLastSqlSegmentParts(sql, statements, tables);
       // console.warn('TableSegment parts: '+JSON.stringify(parts))
       if (!parts.last) {
-        if (!parts.secondLast) {
-          this.disabled = true;
-        } else {
-          this.highlight = this.name.toUpperCase().startsWith(parts.part);
-        }
+        this.disabled = true;
       } else {
-        if (!Object.hasOwn(parts.last.nextType, Type.TABLE)) {
-          if (!parts.secondLast) {
-            this.disabled = true;
+        if (Object.hasOwn(parts.last.nextType, Type.TABLE)) {
+          if (parts.secondLast && parts.secondLast.type === Type.FIELD) {
+            this.autocomplete = (this.name === parts.secondLast.table.name);
+            this.highlight = this.autocomplete;
           } else {
             this.highlight = this.name.toUpperCase().startsWith(parts.part);
           }
+
         } else {
-          if (!parts.secondLast) {
-            this.disabled = true;
-          } else {
-            this.highlight = this.name.toUpperCase().startsWith(parts.part);
-          }
+          this.disabled = true;
         }
       }
     }
@@ -129,14 +123,14 @@ class FieldSegment extends AbstractSegment {
       if (!parts.last && !parts.secondLast) {
         this.disabled = true;
       } else {
+        const startWithPart = this.insert().toUpperCase().startsWith(' ' + parts.part)
         if (parts.last) {
           if (!Object.hasOwn(parts.last.nextType, Type.FIELD)) {
             this.disabled = true;
           } else {
-            this.highlight = this.name === '*';
+            this.highlight = startWithPart || this.name === '*';
           }
         } else if (parts.secondLast && Object.hasOwn(parts.secondLast.nextType, Type.FIELD)) {
-          const startWithPart = this.insert().toUpperCase().startsWith(' ' + parts.part)
           this.highlight = startWithPart || this.name === '*';
         }
       }
@@ -177,11 +171,13 @@ class StatementSegment extends AbstractSegment {
       }
     } else {
       const parts = findLastSqlSegmentParts(sql, statements, tables);
-      console.warn('StatementSegment parts: '+JSON.stringify(parts))
+      // console.warn('StatementSegment parts: '+JSON.stringify(parts))
       if (!parts.last) {
         this.highlight = this.name.toUpperCase().startsWith(parts.part);
       } else {
-        if (!Object.hasOwn(parts.last.nextType, Type.STATEMENT)) {
+        if (Object.hasOwn(parts.last.nextType, Type.STATEMENT)) {
+          this.highlight = this.name.toUpperCase().startsWith(parts.part);
+        } else {
           this.disabled = true;
         }
       }
@@ -204,25 +200,20 @@ function findLastSqlSegmentParts(sql, statements, tables) {
     const check = splitted[idx];
     if (check.length) parts.push(check);
   }
-  const part = parts.pop().toUpperCase();
-  var secondLastPart = null;
-  var secondLastSegmentPart = null;
-  if (parts.length) {
-    secondLastPart = parts.pop().toUpperCase();
-    const statementSecondSegmentPart = findStatement(secondLastPart, statements);
-    if (statementSecondSegmentPart.last) {
-      secondLastSegmentPart = statementSecondSegmentPart;
-    } else {
-      secondLastSegmentPart = findTableOrField(secondLastPart, tables);
+  const segments = toSegmentArray(statements, tables);
+  var part = parts.pop().toUpperCase();
+  const segmentPart = new SegmentPart(part);
+  segmentPart.last = findSegment(part, segments);
+  while (parts.length && !segmentPart.secondLast) {
+    part = parts.pop().toUpperCase();
+    const segment = findSegment(part, segments);
+    if (segment) {
+      if (!segmentPart.last) segmentPart.last = segment;
+      else segmentPart.secondLast = segment;
     }
   }
-  const statementSegmentPart = findStatement(part, statements);
-  statementSegmentPart.secondLast = secondLastSegmentPart ? secondLastSegmentPart.last : null;
-  if (statementSegmentPart.last) return statementSegmentPart;
-  //
-  const tableSegmentPart =  findTableOrField(part, tables);
-  tableSegmentPart.secondLast = secondLastSegmentPart ? secondLastSegmentPart.last : null;
-  return tableSegmentPart;
+  // console.warn('segmentPart:'+JSON.stringify(segmentPart))
+  return segmentPart;
 }
 
 class SegmentPart {
@@ -233,38 +224,33 @@ class SegmentPart {
   }
 }
 
-function findStatement(part, statements) {
-  const segmentPart = new SegmentPart(part);
-  const pLength = part.length;
-  if (pLength === 0) return segmentPart;
-  for (const [key, statement] of Object.entries(statements)) {
-    if (key.toUpperCase() === part) {
-      segmentPart.last = statement;
-      break;
-    }
-  }
-  return segmentPart;
-}
-
-function findTableOrField(part, tables) {
-  const segmentPart = new SegmentPart(part);
-  const pLength = part.length;
-  const partNoComma = part.replaceAll(',', '');
-  if (pLength === 0) return segmentPart;
-  for (var tdx = 0; tdx < tables.length; tdx++){
-    const table = tables[tdx];
-    if (table.name.toUpperCase() === part) {
-      segmentPart.last = table;
-      return segmentPart;
-    } else {
-      for (var fdx = 0; fdx < table.fields.length; fdx++) {
-        const field = table.fields[fdx];
-        if (field.alias.toUpperCase() === partNoComma) {
-          segmentPart.last = field;
-          return segmentPart;
+function findSegment(part, segments) {
+  for (var idx = 0; idx < segments.length; idx++) {
+    const segment = segments[idx];
+    if (segment.type === Type.STATEMENT) {
+      if (segment.name.toUpperCase() === part) return segment;
+    } else if (segment.type === Type.TABLE) {
+      if (segment.name.toUpperCase() === part) {
+        return segment;
+      } else {
+        for (var fdx = 0; fdx < segment.fields.length; fdx++) {
+          const field = segment.fields[fdx];
+          if (field.alias.toUpperCase() === part) {
+            return field;
+          }
         }
       }
     }
+    // console.warn('segment.type: '+segment.type)
   }
-  return segmentPart;
+  return null;
+}
+
+function toSegmentArray(statements, tables) {
+  const arr = new Array();
+  for (const [key, statement] of Object.entries(statements)) {
+    arr.push(statement);
+  }
+  tables.forEach((table) => { arr.push(table);});
+  return arr;
 }
