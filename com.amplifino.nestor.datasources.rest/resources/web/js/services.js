@@ -22,4 +22,20 @@ services.service('HttpService', ['$resource',
       if (limit) url += '?limit=' + limit;
       return $resource(url).save(sql).$promise;
     }
+    this.describe = function(table) {
+      const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/describe';
+      return $resource(url).query().$promise;
+    }
+    this.keys = function(table) {
+      const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/keys';
+      return $resource(url).query().$promise;
+    }
+    this.relations = function(table) {
+      const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/relations';
+      return $resource(url).query().$promise;
+    }
+    this.references = function(table) {
+      const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/references';
+      return $resource(url).query().$promise;
+    }
 }]);

@@ -31,6 +31,7 @@
     <script src="./components/result.js"></script>
     <script src="./components/history.js"></script>
     <script src="./components/errors.js"></script>
+    <script src="./components/utilities.js"></script>
     <script src="./classes/UserInterface.js"></script>
 
     <title>Ad Hoc Sql 2.0</title>
@@ -43,6 +44,7 @@
       <queries ng-if="ui.nav.activeTab.tabId === 'SQL'" ui="ui"></queries>
       <result  ng-if="ui.nav.activeTab.tabId === 'RESULT'" ui="ui"></result>
       <errors  ng-if="ui.nav.activeTab.tabId === 'ERRORS'" ui="ui"></errors>
+      <utilities ng-if="ui.nav.activeTab.tabId === 'UTILS'" ui="ui"></utilities>
     </div>
 
   </body>

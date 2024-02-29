@@ -1,0 +1,98 @@
+<!-- CSS included -->
+
+<div class="utilities-wrapper">
+
+  <div ng-if="!showResult" class="show-utilities">
+
+    <div class="row">
+
+      <div class="col s2 line-right">
+        <table class="striped highlight">
+          <thead class="lime lighten-4 grey-text" >
+            <tr class="table-header"><th>Tables</th></tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in ui.tables"
+                ng-click="setTable(row)">
+              <td class="truncate">{{row.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col s5 line-right">
+        <table class="striped highlight">
+          <thead class="lime lighten-4 grey-text" >
+            <tr class="table-header"><th>Fields</th></tr>
+          </thead>
+          <tbody ng-if="activeTable" >
+            <tr ng-repeat="row in activeTable.fields">
+              <td class="truncate">{{row.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col s5 line-right">
+        <table class="striped highlight">
+          <thead class="lime lighten-4 grey-text" >
+            <tr class="table-header"><th>Utilities</th></tr>
+          </thead>
+          <tbody ng-if="activeTable" >
+            <tr ng-repeat="row in utilities"
+                ng-click="openResultView(row)">
+              <td class="truncate">{{row}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div ng-if="showResult" class="row show-utilities">
+    <table ng-class="'table-' + showResult">
+      <thead class="lime lighten-4 grey-text" >
+        <tr class="table-header">
+          <th>
+            {{showResult}}
+            <a ng-click="showResult = null"
+               class="right waves-effect waves-light btn orange">
+              <i class="material-icons right">close</i> close
+            </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ result || 'Loading...' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<style>
+
+  div.utilities-wrapper {
+    height: calc(100vh - 64px);
+    width: 100%;
+    padding-top: 10px;
+  }
+  div.utilities-wrapper div.col {
+    height: calc(100vh - 64px - 10px);
+    overflow-y: auto;
+  }
+  div.utilities-wrapper div.col.line-right {
+    border-right: 1px solid #dce775;
+  }
+
+  div.utilities-wrapper div.show-utilities table th,
+  div.utilities-wrapper div.show-utilities table td {
+    padding-left: 30px;
+    padding-right: 20px;
+  }
+
+</style>
