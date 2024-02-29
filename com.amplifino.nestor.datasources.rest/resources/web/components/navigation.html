@@ -17,10 +17,18 @@
           <span ng-if="tab.count">
             <span class="badge lime">{{ tab.count }}</span>&nbsp;
             <span
+              ng-if="ui.nav.activeTab.tabId === 'RESULT'"
               ng-click="ui.result.export()"
               class="large material-icons orange"
               style="position: relative; top: 6px;">
               file_download
+            </span>
+            <span
+              ng-if="ui.nav.activeTab.tabId === 'ERRORS'"
+              ng-click="clearErrors()"
+              class="large material-icons orange"
+              style="position: relative; top: 6px;">
+              delete_forever
             </span>
           </span>
 

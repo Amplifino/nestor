@@ -1,5 +1,15 @@
 function navigationCtrl($scope) {
-  this.$onInit = function() { $scope.ui = this.ui; }
+
+  this.$onInit = function() {
+    $scope.ui = this.ui;
+  }
+
+  $scope.clearErrors = function() {
+    $scope.ui.errors.length = 0;
+    $scope.ui.nav.selectTab(TabId.ERRORS, 0);
+    $scope.ui.nav.selectTab(TabId.RESULT, 0); // does not work: why ?
+  }
+
 }
 
 app.component('navigation', {

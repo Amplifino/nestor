@@ -1,0 +1,32 @@
+<!-- CSS included -->
+
+<div class="errors-wrapper">
+
+  <table class="striped">
+
+    <tbody>
+      <tr ng-repeat="row in ui.errors">
+        <td class="full-width">
+          <span class="truncate grey-text">{{ row.sql }}</span>
+          <span class="truncate"><strong>{{ row.cause }}</strong></span>
+          <span class="truncate grey-text">{{ row.message }}</span>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
+
+<style>
+
+  div.errors-wrapper {
+    width: 100%;
+    padding-top: 10px;
+  }
+  div.errors-wrapper td.full-width {
+    padding-left: 30px;
+    padding-right: 20px;
+  }
+
+</style>

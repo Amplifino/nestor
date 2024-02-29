@@ -82,6 +82,7 @@ public class DataSourceResource {
         }
     }
 
+    @Deprecated // replace by method sqlErrorResponse ?
     private Response badRequestResponse(Exception e) {
         e.printStackTrace();
         return Response.status(Status.BAD_REQUEST)
@@ -186,8 +187,32 @@ public class DataSourceResource {
             return Response.ok().entity(result).build();
         }
         catch (SQLException e) {
-            return badRequestResponse(e);
+            return this.sqlErrorResponse(e, sql);
         }
+    }
+
+    private Response sqlErrorResponse(SQLException e, String sql) {
+
+        class SqlErrorResponse {
+            public final String sql;
+            public final String cause;
+            public final String message;
+            public final String state;
+            public SqlErrorResponse(SQLException e, String sql) {
+                this.sql = sql;
+                this.message = e.getMessage();
+                int pos = this.message.indexOf("; SQL statement:");
+                this.cause = this.message.substring(0, pos);
+                this.state = e.getSQLState();
+            }
+        }
+
+        e.printStackTrace();
+        return Response.status(Status.BAD_REQUEST)
+            .entity(new SqlErrorResponse(e, sql))
+            .type("application/json")
+            .build();
+
     }
 
     private RunSqlResult doSql(DataSource dataSource, String sql, int limit) throws SQLException {

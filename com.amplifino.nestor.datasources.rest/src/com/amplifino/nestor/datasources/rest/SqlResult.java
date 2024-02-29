@@ -3,6 +3,7 @@ package com.amplifino.nestor.datasources.rest;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated // replace by RunSqlResult ?
 public class SqlResult {
 
 	public int rowCount;

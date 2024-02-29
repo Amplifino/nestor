@@ -11,6 +11,7 @@ class Ui {
     this.result = new Result();
     this.enableHistory = true;
     this.history = new Array();
+    this.errors = new Array(); // Array<SqlError>()
   }
 
   selectDS(ds) {
@@ -92,9 +93,16 @@ class Ui {
     return noDoubleSpaces;
   }
 
-  logError(msg, stringify) {
-    const json = stringify ? ': ' + JSON.stringify(stringify) : '';
-    console.error(msg + json);
+  logError(internalMsg, stringify) {
+    const data = stringify && stringify.data ? stringify.data : {};
+    if (data && data.sql && data.cause && data.message) {
+      const error = new SqlError(data);
+      this.errors.push(error);
+      this.nav.selectTab(TabId.ERRORS, this.errors.length);
+    } else {
+      const json = stringify ? ': ' + JSON.stringify(stringify) : '';
+      console.error(internalMsg + json);
+    }
   }
 
 }
