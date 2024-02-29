@@ -10,6 +10,10 @@ function navigationCtrl($scope) {
     $scope.ui.nav.selectTab(TabId.RESULT, 0); // does not work: why ?
   }
 
+  $scope.validateLimit = function() {
+    if ($scope.ui.limit < 1) $scope.ui.limit = $scope.ui.limitDefault;
+  }
+
 }
 
 app.component('navigation', {

@@ -56,7 +56,14 @@
       </li>
 
       <li>
-        <a>Limit 200</a>
+        <a>
+          Limit:&nbsp;
+          <input
+            ng-model="ui.limit"
+            ng-change="validateLimit()"
+            class="input-field inline-limit white-text"
+            type="text" >
+        </a>
       </li>
     </ul>
   </div>
@@ -73,5 +80,10 @@
   nav.navigation img.amplifino {
     height: 64px;
     padding: 8px 0;
+  }
+  nav.navigation input.inline-limit {
+    width: 75px;
+    border-color: transparent;
+    font-weight: bolder;
   }
 </style>

@@ -10,7 +10,7 @@ function queriesCtrl($scope, HttpService) {
     const sql = $scope.ui.getCleanSql();
     if (!sql.length) return;
     HttpService
-      .runQuery($scope.ui.activeDS, sql)
+      .runQuery($scope.ui.activeDS, sql, $scope.ui.limit)
       .then(response => { $scope.ui.setResult(response); })
       .catch(err => { $scope.ui.logError('queriesCtrl.runQuery()', err); })
       .finally(() => { $scope.ui.sql = formatSql($scope.ui.sql); });

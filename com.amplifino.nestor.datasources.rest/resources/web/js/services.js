@@ -17,8 +17,9 @@ services.service('HttpService', ['$resource',
       const url = '/api/datasources/' + ds.name + '/history';
       return $resource(url).query().$promise;
     }
-    this.runQuery = function(ds, sql) {
-      const url = '/api/datasources/' + ds.name;
+    this.runQuery = function(ds, sql, limit) {
+      var url = '/api/datasources/' + ds.name;
+      if (limit) url += '?limit=' + limit;
       return $resource(url).save(sql).$promise;
     }
 }]);

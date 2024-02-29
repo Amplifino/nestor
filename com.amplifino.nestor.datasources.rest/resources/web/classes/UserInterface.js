@@ -12,6 +12,8 @@ class Ui {
     this.enableHistory = true;
     this.history = new Array();
     this.errors = new Array(); // Array<SqlError>()
+    this.limitDefault = 500;
+    this.limit = this.limitDefault;
   }
 
   selectDS(ds) {
