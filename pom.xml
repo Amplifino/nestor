@@ -9,6 +9,12 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>com.amplifino.nestor.datasources.rest</module>
+        <module>com.amplifino.nestor.dot</module>
+        <module>com.amplifino.nestor.jdbc.api</module>
+    </modules>
+
     <properties>
         <include.source>true</include.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -167,6 +173,11 @@
                 <artifactId>provider-swagger</artifactId>
                 <version>1.1.1</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.13</version>
             </dependency>
 
         </dependencies>

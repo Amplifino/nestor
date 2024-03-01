@@ -29,7 +29,7 @@ function utilitiesCtrl($scope, HttpService) {
     }
     if (promise) {
       promise
-        .then(response => { console.warn('response: '+JSON.stringify(response)); $scope.result = response.tuples;  })
+        .then(response => { $scope.result = response.tuples || new Array();  })
         .catch(err => {
           $scope.result = [ JSON.stringify(err) ];debugger;
           console.error('utilitiesCtrl.openResultView(): ' + JSON.stringify(err));

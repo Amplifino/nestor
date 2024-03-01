@@ -24,18 +24,18 @@ services.service('HttpService', ['$resource',
     }
     this.describe = function(table) {
       const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/describe';
-      return $resource(url).query().$promise;
+      return $resource(url, {}, { describe: { isArray: false }}).describe().$promise;
     }
     this.keys = function(table) {
       const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/keys';
-      return $resource(url).query().$promise;
+      return $resource(url, {}, { keys: { isArray: false }}).keys().$promise;
     }
     this.relations = function(table) {
       const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/relations';
-      return $resource(url).query().$promise;
+      return $resource(url, {}, { relations: { isArray: false }}).relations().$promise;
     }
     this.references = function(table) {
       const url = '/api/datasources/' + table.dataSource + '/tables/' + table.name + '/references';
-      return $resource(url).query().$promise;
+      return $resource(url, {}, { references: { isArray: false }}).references().$promise;
     }
 }]);

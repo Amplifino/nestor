@@ -174,16 +174,21 @@ public class DataSourceResource {
             @QueryParam("limit") @DefaultValue("0") Integer limit,
             @Context SecurityContext context,
             String sql) {
+        boolean historyTableExists =
+            this.datasourceHasHistoryTableMap
+                .computeIfAbsent(dataSourceName, this::queryHistoryTablePresent);
         int useLimit = limit < 1 ? DEFAULT_LIMIT : limit;
         return dataSourceApplication.dataSource(dataSourceName)
-            .map(dataSource -> this.execute(context, dataSource, sql, useLimit))
+            .map(dataSource -> this.execute(context, dataSource, sql, useLimit, historyTableExists))
             .orElseThrow(NotFoundException::new);
     }
 
-    private Response execute(SecurityContext context, DataSource dataSource, String sql, int limit) {
+    private Response execute(SecurityContext context, DataSource dataSource, String sql, int limit, boolean historyTableExists) {
         try {
             RunSqlResult result = doSql(dataSource, sql, limit);
-            this.appendToHistory(context, dataSource, sql);
+            if (historyTableExists) {
+                this.appendToHistory(context, dataSource, sql);
+            }
             return Response.ok().entity(result).build();
         }
         catch (SQLException e) {
