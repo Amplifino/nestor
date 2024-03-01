@@ -7,6 +7,7 @@ function historyCtrl($scope, HttpService) {
   $scope.$watch('$scope.ui.activeDS', function() {
     if ($scope.ui.activeDS) {
       $scope.ui.enableHistory = true;
+      $scope.showCreateTable = false;
       $scope.ui.history.length = 0;
       $scope.getHistory();
     }

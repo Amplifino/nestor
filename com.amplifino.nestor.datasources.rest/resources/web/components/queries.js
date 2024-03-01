@@ -20,6 +20,11 @@ function queriesCtrl($scope, HttpService) {
     updateSegments($scope.ui);
     document.getElementById('sqlInput').focus();
   });
+
+  $scope.$watch('$scope.ui.activeDS', function() {
+    $scope.ui.initTables(HttpService);
+  });
+
 }
 
 formatSql = function(sql) {

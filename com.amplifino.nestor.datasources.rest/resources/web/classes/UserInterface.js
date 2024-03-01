@@ -18,6 +18,16 @@ class Ui {
 
   selectDS(ds) {
     this.activeDS = ds;
+    this.enableHistory = true;
+    this.tables.length = 0;
+  }
+
+  initTables(httpService) {
+    if (!this.activeDS) return;
+    httpService
+      .getTables(this.activeDS)
+        .then(response => { setTables(this, response, httpService); })
+        .catch(err => console.error('getTables(): ' + err));
   }
 
   initTableAliases() {
@@ -157,4 +167,44 @@ function initStatements() {
   o.ORDER_BY = new StatementSegment('ORDER BY', Type.FIELD);
   o.LIMIT = new StatementSegment('LIMIT', Type.NUMBER);
   return o;
+}
+
+function initMaterializeCss() {
+  // https://materializecss.com/dropdown.html
+  const dropdownElements = document.querySelectorAll('.dropdown-trigger');
+  const dropdownOptions = {};
+  const dropdownInstances = M.Dropdown.init(dropdownElements, dropdownOptions);
+}
+
+function initDataSource(ui, httpService) {
+  ui.dataSources.length = 0;
+  ui.tables.length = 0;
+	httpService
+    .getDataSources()
+      .then(response => { setDataSources(ui, response, httpService); })
+      .catch(err => console.error('getDataSources(): ' + err));
+}
+
+function setDataSources(ui, response, httpService) {
+  ui.dataSources = response;
+  ui.activeDS = null;
+  ui.enableHistory = true;
+  ui.tables.length = 0;
+	if (ui.dataSources.length > 0) {
+		ui.activeDS = response[0];
+    ui.initTables(httpService);
+	}
+}
+
+function setTables(ui, response, httpService) {
+  ui.tables.length = 0;
+  ui.activeTable = null;
+  for (var idx = 0; idx < response.length; idx++) {
+    const table = response[idx];
+    if (table.name === 'QUERY_HISTORY') continue;
+    const segment = new TableSegment(table, httpService);
+    ui.tables.push(segment);
+  }
+  ui.initTableAliases();
+  initMaterializeCss();
 }
