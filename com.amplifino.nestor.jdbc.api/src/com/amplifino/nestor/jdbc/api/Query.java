@@ -1,5 +1,8 @@
 package com.amplifino.nestor.jdbc.api;
 
+import org.osgi.annotation.versioning.ProviderType;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.List;
@@ -7,9 +10,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import javax.sql.DataSource;
-
-import org.osgi.annotation.versioning.ProviderType;
 
 import static java.util.stream.Collectors.joining;
 
@@ -43,16 +43,16 @@ public interface Query {
 	 */
 	Query text(String sql);
 
-	default void columns(String... names) {
-		this.text(String.join(", ", names));
+	default Query columns(String... names) {
+		return this.text(String.join(", ", names));
 	}
 
-	default void columns(String alias, String... names) {
-		this.text(Stream.of(names).map(each -> alias + "." + each).collect(joining(", ")));
+	default Query columns(String alias, String... names) {
+		return this.text(Stream.of(names).map(each -> alias + "." + each).collect(joining(", ")));
 	}
 
-	default void values(int columns) {
-		this.text(IntStream.range(0, columns).mapToObj(i -> "?").collect(joining(", ", "values (",") ")));
+	default Query values(int columns) {
+		return this.text(IntStream.range(0, columns).mapToObj(i -> "?").collect(joining(", ", "values (",") ")));
 	}
 
 	/**
