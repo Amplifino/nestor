@@ -47,7 +47,7 @@ public interface Query {
 		return this.text(String.join(", ", names));
 	}
 
-	default Query columns(String alias, String... names) {
+	default Query aliasedColumns(String alias, String... names) {
 		return this.text(Stream.of(names).map(each -> alias + "." + each).collect(joining(", ")));
 	}
 
